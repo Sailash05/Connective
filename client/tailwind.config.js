@@ -7,7 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['poppins', 'san-serif']  // Override sans to get the poppins to entire website
+        sans: ['poppins', 'san-serif'],  // Override sans to get the poppins to entire website
+        palanquin: ['Palanquin', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
       }
     },
   },
