@@ -4,7 +4,7 @@ import { statistics } from '../../../utils/constants'
 
 const MainSection = () => {
     return (
-        <section className='mt-[5rem] max-sm:mt-[3.5rem] h-[calc(100dvh-5rem)] max-sm:h-[calc(100dvh-3.5rem)] px-[12rem] dark:bg-gray-950 max-sm:px-[2rem]'>
+        <section id="home" className='mt-[5rem] max-sm:mt-[3.5rem] h-[calc(100dvh-5rem)] max-sm:h-[calc(100dvh-3.5rem)] px-[12rem] dark:bg-gray-950 max-sm:px-[2rem]'>
 
 
             <div className='flex h-3/4 max-sm:h-fit max-sm:flex-col-reverse'>

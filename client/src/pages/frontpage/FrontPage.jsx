@@ -1,4 +1,5 @@
 import NavBar from "../../component/NavBar";
+import AboutSection from "./sections/AboutSection";
 import MainSection from "./sections/MainSection";
 
 const FrontPage = () => {
@@ -6,6 +7,7 @@ const FrontPage = () => {
         <main className="">
             <NavBar />
             <MainSection />
+            <AboutSection />
         </main>
     )
 }
