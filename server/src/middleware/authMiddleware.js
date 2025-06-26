@@ -30,3 +30,21 @@ export const validateCreateUser = (req, res, next) => {
     
     next();
 }
+
+export const validateLoginInput = (req, res, next) => {
+    let { userName, password } = req.body;
+
+    // Sanitize input
+    userName = userName?.trim();
+    password = password?.trim();
+
+    // Input validation
+    if (!userName) return res.status(400).send(response('FAILED', 'Enter your user name!', null));
+    if (!password) return res.status(400).send(response('FAILED', 'Enter your password!', null));
+
+    // Replace trimmed inputs
+    req.body.userName = userName;
+    req.body.password = password;
+    
+    next();
+}

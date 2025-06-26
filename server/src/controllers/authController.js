@@ -1,14 +1,34 @@
 import { response } from '../utils/response.js';
-import { createUserService, deleteUserService } from '../service/authService.js';
+import { createUserService, loginUserService, deleteUserService } from '../service/authService.js';
+import { generateJwtToken } from '../utils/jwtToken.js';
 
 export const createUser = async (req, res) => {
     try {
         const result = await createUserService(req.body);
+        
         if(result.status === 201) {
-            return res.status(201).send(response('SUCCESS', result.message, result.data));
+            const token = generateJwtToken({ userId: result.userId });
+            return res.status(201).send(response('SUCCESS', result.message, {jwtToken: token}));
         }
         else if(result.status === 409) {
             return res.status(409).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const loginUser = async (req, res) => {
+    try {
+        const result = await loginUserService(req.body);
+        
+        if(result.status === 401 || result.status === 404) {
+            return res.status(result.status).send(response('FAILED', result.message, null));
+        }
+        else if(result.status === 200) {
+            const token = generateJwtToken({ userId: result.userId });
+            return res.status(200).send(response('SUCCESS', result.message, {jwtToken: token}));
         }
     }
     catch(err) {
@@ -31,3 +51,4 @@ export const deleteUser = async (req, res) => {
         return res.status(500).send(response('FAILED', err.message, null));
     }
 }
+

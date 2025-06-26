@@ -19,14 +19,28 @@ export const createUserService = async ({userName, email, password}) => {
         createdAt: currentDateAndTime,
         updatedAt: currentDateAndTime
     });
-    return { status: 201, message: 'User created successfully', data: newUser};
+    return { status: 201, message: 'User created successfully', userId: newUser._id};
+}
+
+export const loginUserService = async ({ userName, password}) => {
+    const user = await User.findOne({ userName }).exec();
+
+    if(!user) return {status: 404, message: 'User not found'};
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (isPasswordCorrect) {
+        return {status: 200, message: 'Login successfully', userId: user._id};
+    }
+    else {
+        return {status: 401, message: 'Invalid password'};
+    }
 }
 
 export const deleteUserService = async (userId) => {
 
     const userById = await User.findById(userId)
-    if(!userById) return {status: 404, message: "User not found"};
+    if(!userById) return {status: 404, message: 'User not found'};
 
     await User.deleteOne({ _id: userId });
-    return { status: 200, message: "User deleted successfully"};
+    return { status: 200, message: 'User deleted successfully'};
 }
