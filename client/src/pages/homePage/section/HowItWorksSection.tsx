@@ -1,0 +1,83 @@
+import { FaUserCircle, FaLayerGroup, FaUserFriends, FaPhotoVideo, FaRobot } from "react-icons/fa";
+
+const steps = [
+    {
+        icon: <FaUserCircle size={22} />,
+        title: "Create Your Profile",
+        description: "Sign up and personalize your profile to showcase who you are."
+    },
+    {
+        icon: <FaLayerGroup size={22} />,
+        title: "Discover Communities",
+        description: "Browse and join groups based on your interests and passions."
+    },
+    {
+        icon: <FaUserFriends size={22} />,
+        title: "Connect with People",
+        description: "Follow like-minded members and start meaningful conversations."
+    },
+    {
+        icon: <FaPhotoVideo size={22} />,
+        title: "Share Your Content",
+        description: "Post photos, videos, resources, and helpful insights."
+    },
+    {
+        icon: <FaRobot size={22} />,
+        title: "Get Smart Suggestions",
+        description: "Let AI recommend connections and communities for you."
+    }
+];
+
+const HowItWorksSection = () => {
+    return (
+        <section className="w-[70%] mx-auto pt-20 pb-10">
+            <h2 className="text-3xl font-bold text-center mb-4">How It Works</h2>
+            <p className="text-gray-500 text-center max-w-xl mx-auto mb-12">Follow these simple steps to start connecting with people who match your mindset.</p>
+
+
+            <div className="flex ">
+                {/* Left side content */}
+                <div className="w-1/2 flex flex-col justify-center pr-8">
+                    <p className="text-blue-600 font-extrabold uppercase tracking-wide mb-2 text-sm">
+                        Get started
+                    </p>
+                    <h1 className="text-3xl font-bold leading-tight mb-2">
+                        Build meaningful connections
+                    </h1>
+                    <h1 className="text-3xl font-bold text-blue-600 leading-tight mb-4">
+                        in minutes
+                    </h1>
+
+                    <p className="text-gray-600 text-sm mb-6">
+                        Create your profile, join interest-based communities, and share photos,
+                        videos, and resources that matter to you. Connective makes it effortless
+                        to meet people who think like you do.
+                    </p>
+
+                    <button className="w-fit bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-800 transition-all cursor-pointer">
+                        Join Connective Free
+                    </button>
+                </div>
+
+
+                {/* Right side content */}
+                <div className="relative border-l-4 border-blue-600 ml-4 space-y-12 w-1/2">
+                    {steps.map((step, index) => (
+                    <div key={index} className="relative pl-10 group">
+                        <span className="absolute -left-[1.5rem] top-1 bg-blue-600 text-white rounded-full p-2 shadow-md">
+                            {step.icon}
+                        </span>
+                        <h3 className="text-xl font-semibold mb-1">{index + 1}. {step.title}</h3>
+                        <p className="text-gray-600 text-sm">{step.description}</p>
+                    </div>
+                    ))}
+                </div>
+            </div>
+
+
+            
+        </section>
+    );
+};
+
+export default HowItWorksSection;
