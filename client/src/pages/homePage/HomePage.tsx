@@ -14,15 +14,15 @@ import './homePage.css';
 const HomePage = () => {
 
     return(
-        <div className="pt-[5rem]"> 
+        <div className=""> 
             <NavBar/>
-            <HomeSection />
-            <FeaturesSection />
+            <HomeSection id={'home'} />
+            <FeaturesSection id={'features'} />
             <HowItWorksSection />
-            <CommunityShowcaseSection />
-            <BlogSection />
+            <CommunityShowcaseSection id={'reviews'} />
+            <BlogSection id={'blogs'} />
             <PricingPlansSection />
-            <FaqSection />
+            <FaqSection id={'faq'} />
             <CtaSection />
             <FooterSection />
         </div>
