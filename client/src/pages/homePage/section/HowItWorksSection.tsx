@@ -30,25 +30,25 @@ const steps = [
 
 const HowItWorksSection = () => {
     return (
-        <section className="w-[90%] md:w-[70%] mx-auto pt-15 md:pt-20 pb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">How It Works</h2>
-            <p className="text-gray-500 text-center max-w-xl mx-auto mb-12 max-sm:text-sm">Follow these simple steps to start connecting with people who match your mindset.</p>
+        <section className="w-[90%] md:w-[70%] mx-auto pt-12 md:pt-20 pb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 dark:text-white">How It Works</h2>
+            <p className="text-gray-500 dark:text-gray-200 text-center max-w-xl mx-auto mb-12 max-sm:text-sm">Follow these simple steps to start connecting with people who match your mindset.</p>
 
 
             <div className="md:flex">
                 {/* Left side content */}
                 <div className="max-sm:pl-2 md:w-1/2 flex flex-col justify-center md:pr-8">
-                    <p className="text-blue-600 font-extrabold uppercase tracking-wide mb-2 text-xs md:text-sm">
+                    <p className="text-blue-600 dark:text-blue-500 font-extrabold uppercase tracking-wide mb-2 text-xs md:text-sm">
                         Get started
                     </p>
-                    <h1 className="text-2xl md:text-3xl font-bold leading-tight md:mb-2">
+                    <h1 className="text-2xl md:text-3xl font-bold leading-tight md:mb-2 dark:text-white">
                         Build meaningful connections
                     </h1>
-                    <h1 className="text-2xl md:text-3xl font-bold text-blue-600 leading-tight mb-4">
+                    <h1 className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-500 leading-tight mb-4">
                         in minutes
                     </h1>
 
-                    <p className="text-gray-600 text-sm mb-4 md:mb-6">
+                    <p className="text-gray-600 dark:text-gray-200 text-sm mb-4 md:mb-6">
                         Create your profile, join interest-based communities, and share photos,
                         videos, and resources that matter to you. Connective makes it effortless
                         to meet people who think like you do.
@@ -68,8 +68,8 @@ const HowItWorksSection = () => {
                                 <span className="absolute -left-[1.5rem] top-1 bg-blue-600 text-white rounded-full p-2 shadow-md">
                                     {step.icon}
                                 </span>
-                                <h3 className="text-xl font-semibold mb-1">{index + 1}. {step.title}</h3>
-                                <p className="text-gray-600 text-sm">{step.description}</p>
+                                <h3 className="text-xl font-semibold mb-1 dark:text-white">{index + 1}. {step.title}</h3>
+                                <p className="text-gray-600 dark:text-gray-200 text-sm">{step.description}</p>
                             </div>
                         ))
                     }

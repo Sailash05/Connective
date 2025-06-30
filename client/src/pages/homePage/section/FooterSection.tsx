@@ -10,7 +10,7 @@ import {
 
 const FooterSection = () => {
     return (
-        <footer className="bg-gray-900 text-gray-300 mt-20 pt-10 text-sm font-medium">
+        <footer className="bg-gray-900 text-gray-300 mt-16 pt-10 text-sm font-medium">
             <div className="w-11/12 max-w-6xl mx-auto grid md:grid-cols-4 sm:grid-cols-2 gap-10 border-b border-gray-800 pb-5">
             
                 {/* Brand */}

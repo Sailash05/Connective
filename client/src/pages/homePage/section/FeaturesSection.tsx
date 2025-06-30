@@ -36,15 +36,18 @@ const features = [
 const FeaturesSection = ({ id }: { id: string }) => {
     return (
         <section id={id} className="scroll-mt-8 md:scroll-mt-24 pt-12 md:pt-4 w-11/12 max-w-6xl mx-auto text-center ">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8">Platform Features</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 dark:text-white">Platform Features</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
                 {
                     features.map((feature, index) => (
-                        <div key={index} className="rounded-2xl shadow-lg p-3 md:p-6 flex flex-col items-center hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        <div key={index} className="rounded-2xl shadow-lg p-3 md:p-6 flex flex-col items-center bg-white dark:bg-slate-800 hover:scale-105 transition-transform duration-300 cursor-pointer shadow-gray-300 dark:shadow-slate-900">
                             <div className="mb-2 md:mb-4">{feature.icon}</div>
-                            <h3 className="text-md md:text-lg font-semibold mb-2">{feature.title}</h3>
-                            <p className="text-sm text-gray-600">{feature.description}</p>
+                            <h3 className="text-md md:text-lg font-semibold mb-2 text-black dark:text-white">
+                                {feature.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{feature.description}</p>
                         </div>
+
                     ))
                 }
             </div>
