@@ -3,7 +3,7 @@ const SignUpSection = ({ setLoginSection }: { setLoginSection: (value: boolean) 
 
     return(
         <div className='mt-2'>
-            <h3 className='text-2xl font-bold underline mb-4'>Sign Up</h3>
+            <h3 className='text-xl md:text-2xl font-bold underline mb-4'>Sign Up</h3>
 
             <div>
                 <h5 className='font-bold text-sm'>User Name</h5>
@@ -17,7 +17,7 @@ const SignUpSection = ({ setLoginSection }: { setLoginSection: (value: boolean) 
             </div>
 
             <div>
-                <h5 className='font-bold text-sm'>Password</h5>
+                <h5 className='font-bold text-sm'>Set Password</h5>
                 <input type="password" placeholder='Enter Password' className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4' />
             </div>
 
