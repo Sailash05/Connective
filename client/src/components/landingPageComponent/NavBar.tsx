@@ -7,16 +7,28 @@ import darkModeIcon from '../../assets/icons/dark-mode.png';
 const NavBar = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        const theme: string | null = localStorage.getItem("Theme");
+        if(theme == null) {
+            localStorage.setItem("Theme", 'LIGHT');
+            return false;
+        }
+        else {
+            return theme == 'DARK';
+        }
+    });
+
+    useEffect(() => {
+        const root = document.documentElement;
+        root.classList.toggle('dark', darkMode);
+        localStorage.setItem('Theme', darkMode ? 'DARK' : 'LIGHT');
+    }, [darkMode]);
 
     const handleMenubtn = () => {
         setMenuOpen(!menuOpen);
     }
 
-    useEffect(() => {
-        const root = window.document.documentElement;
-        darkMode ? root.classList.add('dark') : root.classList.remove('dark');
-    }, [darkMode]);
+    
 
     return(
         <nav className="w-full fixed top-0 left-0 right-0 z-50 shadow-sm dark:shadow-slate-800 bg-white dark:bg-slate-950">
