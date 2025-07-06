@@ -19,7 +19,7 @@ export const createUserService = async ({userName, email, password}) => {
         createdAt: currentDateAndTime,
         updatedAt: currentDateAndTime
     });
-    return { status: 201, message: 'User created successfully', userId: newUser._id};
+    return { status: 201, message: 'User account created successfully', userId: newUser._id};
 }
 
 export const loginUserService = async ({ userName, password}) => {

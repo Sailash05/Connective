@@ -36,6 +36,10 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const verifyTokenController = async (req, res) => {
+    return res.status(200).json({ valid: true, user: req.user });
+}
+
 export const deleteUser = async (req, res) => {
     try {
         const result = await deleteUserService(req.body.userId);
@@ -51,4 +55,3 @@ export const deleteUser = async (req, res) => {
         return res.status(500).send(response('FAILED', err.message, null));
     }
 }
-
