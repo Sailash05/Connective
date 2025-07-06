@@ -1,6 +1,6 @@
 import { FaCheckCircle } from "react-icons/fa";
 
-import { plans } from "../../../utils/landingPageConstants";
+import { plans } from "../../../constants/landingPageConstants";
 
 const PricingPlansSection = () => {
     return (

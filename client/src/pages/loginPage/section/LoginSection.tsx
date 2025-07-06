@@ -1,5 +1,66 @@
+import { useState } from 'react';
+import { AuthService } from '../../../service/auth.service';
+import { useNavigate } from 'react-router-dom';
 
-const LoginSection = ({ setLoginSection }: { setLoginSection: (value: boolean) => void }) => {
+const LoginSection = ({
+    setLoginSection,
+    redirectPath,
+    showFailMessage,
+}: {
+    setLoginSection: (value: boolean) => void;
+    redirectPath: string;
+    showFailMessage: (
+        title: string,
+        msg: string[],
+        buttonTxt: string
+    ) => void;
+}) => {
+    const navigate = useNavigate();
+
+    const [userName, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
+    const handleLogin = async () => {
+        const trimmedUserName: string = userName.trim();
+        const trimmedPassword: string = password.trim();
+
+        if (!trimmedUserName) {
+            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again');
+            return;
+        }
+
+        if (!trimmedPassword) {
+            showFailMessage('Failed!', ['Please enter the password', 'and try again'], 'Try again');
+            return;
+        }
+
+        try {
+            const response = await AuthService.login({
+                userName: trimmedUserName,
+                password: trimmedPassword,
+            });
+            const data = response.data;
+            if(response.status === 200) {
+                localStorage.setItem('Token', data.data.jwtToken);
+                //showSuccessMessage('Success!', [data.message], 'Okay', (() => { navigate(redirectPath);}));
+                navigate(redirectPath);
+            }
+        }
+        catch(error: any) {
+            if (error.response?.status === 404) {
+                const data = error.response.data;
+                showFailMessage("Failed!", [data.message], "Try again");
+            }
+            else if (error.response?.status === 401) {
+                const data = error.response.data;
+                showFailMessage("Unauthorized!", [data.message], "Try again");
+            } 
+            else {
+                showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
+            }
+        }
+
+    }
 
     return(
         <div className='mt-4'>
@@ -7,17 +68,17 @@ const LoginSection = ({ setLoginSection }: { setLoginSection: (value: boolean) =
 
             <div>
                 <h5 className='font-bold text-sm'>User Name</h5>
-                <input type="text" placeholder='Enter User Name' className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
+                <input type="text" placeholder='Enter User Name' value={userName} onChange={(e) => setUserName(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
 
             </div>
 
             <div>
                 <h5 className='font-bold text-sm'>Password</h5>
-                <input type="password" placeholder='Enter Password' className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
+                <input type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
             </div>
             <p className="text-blue-700 font-bold mb-4 text-end text-sm mt-1"><span className="cursor-pointer">Forgot Password?</span></p>
 
-            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all'>Log In</button>
+            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all' onClick={() => handleLogin()}>Log In</button>
 
             <p className='mb-4'>Don't have an account? <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(false)}>Sign Up</span></p>
 

@@ -14,7 +14,7 @@ import './homePage.css';
 const HomePage = () => {
 
     return(
-        <div className=" bg-white dark:bg-slate-950"> 
+        <div className=" bg-white dark:bg-slate-950">
             <NavBar/>
             <HomeSection id={'home'} />
             <FeaturesSection id={'features'} />

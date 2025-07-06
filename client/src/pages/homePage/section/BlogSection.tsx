@@ -1,4 +1,4 @@
-import { blogPosts } from "../../../utils/landingPageConstants";
+import { blogPosts } from "../../../constants/landingPageConstants";
 
 const BlogSection = ({ id }: { id: string }) => {
     return (

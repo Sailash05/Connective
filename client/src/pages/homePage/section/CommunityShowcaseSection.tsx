@@ -1,6 +1,6 @@
 import { FaQuoteLeft, FaStar } from 'react-icons/fa';
 
-import { featuredCommunities, testimonials } from '../../../utils/landingPageConstants';
+import { featuredCommunities, testimonials } from '../../../constants/landingPageConstants';
 
 const CommunityShowcaseSection = ({ id }: { id: string }) => {
     return (

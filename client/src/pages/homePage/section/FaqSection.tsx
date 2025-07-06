@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { faqs } from "../../../utils/landingPageConstants";
+import { faqs } from "../../../constants/landingPageConstants";
 
 const FaqSection = ({ id }: { id: string }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);

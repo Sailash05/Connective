@@ -2,7 +2,7 @@ import StatsDataCard from "../../../components/landingPageComponent/StatsDataCar
 import socialMediaImage from '../../../assets/landingPageImage/sample3.png';
 import rightArrowIcon from '../../../assets/landingPageImage/right-arrow.png';
 
-import { statsData } from '../../../utils/landingPageConstants.ts';
+import { statsData } from '../../../constants/landingPageConstants.ts';
 
 const HomeSection = ({ id }: { id: string }) => {
 
