@@ -8,7 +8,7 @@ export const createUser = async (req, res) => {
         
         if(result.status === 201) {
             const token = generateJwtToken({ userId: result.userId });
-            return res.status(201).send(response('SUCCESS', result.message, {jwtToken: token}));
+            return res.status(201).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
         }
         else if(result.status === 409) {
             return res.status(409).send(response('FAILED', result.message, null));
@@ -28,7 +28,7 @@ export const loginUser = async (req, res) => {
         }
         else if(result.status === 200) {
             const token = generateJwtToken({ userId: result.userId });
-            return res.status(200).send(response('SUCCESS', result.message, {jwtToken: token}));
+            return res.status(200).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
         }
     }
     catch(err) {

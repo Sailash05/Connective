@@ -55,6 +55,7 @@ const SignUpSection = ({
             const data = response.data;
             if(response.status === 201) {
                 localStorage.setItem('Token', data.data.jwtToken);
+                localStorage.setItem('UserId', data.data.userId);
                 //showSuccessMessage('Success!', [data.message], 'Okay', (() => { navigate('/home');}));
                 navigate(redirectPath);
             }

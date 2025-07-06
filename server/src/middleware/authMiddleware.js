@@ -51,7 +51,6 @@ export const validateLoginInput = (req, res, next) => {
 }
 
 export const verifyToken = (req, res, next) => {
-    console.log('hdsf');
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {

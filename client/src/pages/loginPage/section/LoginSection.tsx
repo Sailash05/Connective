@@ -42,6 +42,7 @@ const LoginSection = ({
             const data = response.data;
             if(response.status === 200) {
                 localStorage.setItem('Token', data.data.jwtToken);
+                localStorage.setItem('UserId', data.data.userId);
                 //showSuccessMessage('Success!', [data.message], 'Okay', (() => { navigate(redirectPath);}));
                 navigate(redirectPath);
             }
