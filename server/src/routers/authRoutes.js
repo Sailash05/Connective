@@ -7,6 +7,6 @@ import { createUser, loginUser, deleteUser, verifyTokenController } from '../con
 router.post('/createuser', validateCreateUser, createUser);
 router.post('/loginuser', validateLoginInput, loginUser);
 router.get('/verifytoken', verifyToken, verifyTokenController);
-router.delete('/deleteuser', deleteUser);
+router.delete('/deleteuser', verifyToken, deleteUser);
 
 export default router;

@@ -21,7 +21,7 @@ const PublicRoute = ({ element }: { element: JSX.Element }) => {
         verifyToken();
     }, []);
 
-    if (isValid === null) return <div className="p-4 text-center">Checking access...</div>;
+    if (isValid === null) return <div className="p-4 text-center">Checking access...</div>;   // Entry loading - need to change it later
 
     return isValid ? <Navigate to="/home" replace /> : element;
 };
