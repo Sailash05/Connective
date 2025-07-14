@@ -81,21 +81,21 @@ const CreatePostForm = ({ setCreatePost, showFailMessage, showSuccessMessage }: 
     }
 
     return(
-        <div className="bg-black bg-opacity-25 w-[100dvw] h-[100dvh] fixed flex justify-center items-center">
-            <div className="bg-white w-[35dvw] h-[90dvh] p-6 rounded-2xl flex flex-col justify-between">
+        <div className="bg-black bg-opacity-25 dark:bg-opacity-30 w-[100dvw] h-[100dvh] fixed flex justify-center items-center">
+            <div className="bg-white dark:bg-slate-800 w-[35dvw] h-[90dvh] p-6 rounded-2xl flex flex-col justify-between">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-blue-600 font-bold text-2xl">New Post</h2>
-                    <span className="py-1 px-2 hover:scale-125 transition-all cursor-pointer font-bold" onClick={() => setCreatePost(false)}>X</span>
+                    <h2 className="text-blue-600 dark:text-blue-500 font-bold text-2xl">New Post</h2>
+                    <span className="py-1 px-2 hover:scale-125 transition-all cursor-pointer font-bold dark:text-white" onClick={() => setCreatePost(false)}>X</span>
                 </div>
 
                 <form className="flex-grow flex flex-col justify-evenly">
                     <div>
-                        <label className="font-bold">What's on your mind...</label> <br />
+                        <label className="font-bold dark:text-white">What's on your mind...</label> <br />
                         <textarea name="" placeholder="Write something..." value={content} onChange={(e) => setContent(e.target.value)} className="w-full h-[8rem] resize-none border border-slate-500 rounded-lg outline-blue-600 p-2"></textarea>
                     </div>
 
                     <div>
-                        <label className="font-bold">Upload Images/Videos</label>
+                        <label className="font-bold dark:text-white">Upload Images/Videos</label>
 
                         {/*  Image or video preview */}
                         {
@@ -135,12 +135,12 @@ const CreatePostForm = ({ setCreatePost, showFailMessage, showSuccessMessage }: 
                     
 
                     <div>
-                        <label className="font-bold">Tags <span className="text-slate-600 font-medium">(Comma-separated)</span></label> <br />
+                        <label className="font-bold dark:text-white">Tags <span className="text-slate-600 dark:text-slate-200 font-medium">(Comma-separated)</span></label> <br />
                         <input type="text" placeholder="eg. tech, ai, programming" value={tags} onChange={(e) => setTags(e.target.value)} className="w-full p-2 rounded-lg border border-slate-500 outline-blue-600" />
                     </div>
 
                     <div>
-                        <label className="font-bold">Visibility</label> <br />
+                        <label className="font-bold dark:text-white">Visibility</label> <br />
                         <select value={Visibility} onChange={(e) => setVisibility(e.target.value as VisibilityOption)} className="w-full p-2 rounded-lg outline-blue-600 bg-white border border-slate-500 cursor-pointer">
                             <option value="PUBLIC">Public</option>
                             <option value="PRIVATE">Private</option>

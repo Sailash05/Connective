@@ -21,7 +21,7 @@ const RightSidebar = () => {
     ];
 
     return (
-        <aside className="w-full h-full py-4 px-6 bg-white border-l border-gray-300 overflow-y-auto space-y-6 text-sm hide-scrollbar dark:bg-slate-950">
+        <aside className="w-full h-full py-4 px-6 bg-white border-l border-gray-300 dark:border-gray-600 overflow-y-auto space-y-6 text-sm hide-scrollbar dark:bg-slate-950">
 
             {/* User Summary */}
             <div className="p-4 rounded-lg bg-blue-50 shadow-sm dark:bg-slate-800 dark:shadow-slate-900">

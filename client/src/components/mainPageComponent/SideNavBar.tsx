@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import homeIcon from '../../assets/mainPageImages/sideNavBarIcons/social/home.png';
 import friendsIcon from '../../assets/mainPageImages/sideNavBarIcons/social/friends.png'
@@ -22,26 +23,29 @@ import settingsIcon from '../../assets/mainPageImages/sideNavBarIcons/settings.p
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 const SideNavBar = () => {
+    const location = useLocation();
 
     const [subMenu, setSubMenu] = useState(false);
 
+    const currentPath = location.pathname.replace(/\/$/, '');
+
     return(
-        <aside className="h-full px-8 flex flex-col pt-4 pb-4 overflow-y-scroll hide-scrollbar text-[15px] border-r border-gray-300 text-slate-700 dark:text-white font-bold">
+        <aside className="h-full px-8 flex flex-col pt-4 pb-4 overflow-y-scroll hide-scrollbar text-[15px] border-r border-gray-300 dark:border-gray-600 text-slate-700 dark:text-white font-bold">
 
             {/* Social */}
             <div className="py-2">
                 <h2 className='font-extrabold text-md pl-2'>Social</h2>
 
                 <div className='pt-2'>
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all bg-blue-50 dark:bg-blue-950">
+                    <Link to='/home' className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/home' && 'bg-blue-50 dark:bg-blue-950'}`}>
                         <img src={homeIcon} alt="" width={20} className='dark:invert' />
                         Home
-                    </button>
+                    </Link>
 
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    <Link to='/home/friends' className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/home/friends' && 'bg-blue-50 dark:bg-blue-950'}`}>
                         <img src={friendsIcon} alt="" width={20} className='dark:invert' />
                         Friends
-                    </button>
+                    </Link>
 
                     <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={exploreIcon} alt="" width={20} className='dark:invert' />

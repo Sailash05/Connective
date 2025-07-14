@@ -7,7 +7,6 @@ import ThemeProvider from './context/ThemeContext';
 import HomePage from "./pages/homePage/HomePage";
 import LoginPage from "./pages/loginPage/LoginPage";
 import MainPage from './pages/mainPage/MainPage';
-import FileUploader from './pages/FileUploader';
 
 function App() {
 
@@ -17,8 +16,7 @@ function App() {
                 <Routes>
 
                     <Route element={<ProtectedRoute />}>
-                        <Route path="/home" element={<MainPage/>} />
-                        <Route path="/file" element={<FileUploader/>} />
+                        <Route path="/home/*" element={<MainPage/>} />
                     </Route>
 
                     <Route path="/" element={<PublicRoute element={<HomePage />} />} />

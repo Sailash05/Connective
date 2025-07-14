@@ -7,7 +7,7 @@ import addLinkIcon from '../../../assets/mainPageImages/feedSectionIcons/add-lin
 const FeedPost = ({ setCreatePost }: { setCreatePost: (value: boolean) => void}) => {
 
     return(
-        <div className="bg-white rounded-2xl py-4 px-8 dark:bg-slate-800 shadow-md shadow-blue-100 dark:shadow-slate-800">
+        <div className="bg-white rounded-2xl py-4 px-8 dark:bg-slate-950 shadow-md shadow-blue-100 dark:shadow-slate-800">
             <div className='flex gap-4'>
                 <img src={profileIcon} alt="" width={45} className='dark:invert' />
                 <input type="text" placeholder={`What's on your mind?`} onClick={() => setCreatePost(true)} defaultValue="" className='bg-gray-100 dark:bg-white w-[18rem] flex-grow py-2 px-6 rounded-full outline-none placeholder:text-black dark:hover:bg-gray-100 hover:bg-gray-50 transition-all' />

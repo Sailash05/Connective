@@ -33,7 +33,7 @@ const LoginSection = ({
             showFailMessage('Failed!', ['Please enter the password', 'and try again'], 'Try again');
             return;
         }
-
+        
         try {
             const response = await AuthService.login({
                 userName: trimmedUserName,

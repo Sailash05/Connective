@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import Header from "../../components/mainPageComponent/Header";
 import SideNavBar from "../../components/mainPageComponent/SideNavBar";
@@ -43,8 +44,11 @@ const MainPage = () => {
             <div className="overflow-y-hidden">
                 <SideNavBar />
             </div>
-            <div className="bg-white">
-                <FeedSection setCreatePost={setCreatePost} />
+            <div className="overflow-y-scroll hide-scrollbar">
+                <Routes>
+                    <Route path="/" element={<FeedSection setCreatePost={setCreatePost} />} />
+                    <Route path="/friends" element={<div>Friends Page</div>} />
+                </Routes>
             </div>
             <div className="overflow-y-hidden">
                 <RightSidebar />

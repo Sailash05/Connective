@@ -16,7 +16,7 @@ const Header = ({ setCreatePost }: {setCreatePost: (value: boolean) => void}) =>
     const { darkMode, setDarkMode } = useContext(ThemeContext);
 
     return(
-         <header className="flex justify-between py-3 px-16 border-b border-gray-300">
+         <header className="flex justify-between py-3 px-16 border-b border-gray-300 dark:border-gray-600">
             <div className='basis-1/3'>
                 <h1 className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer'>Connective</h1>
             </div>

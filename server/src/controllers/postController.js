@@ -1,5 +1,5 @@
 import { response } from "../utils/response.js";
-import { createPostService } from "../service/postService.js";
+import { createPostService, getFeedService } from "../service/postService.js";
 
 export const createPost = async (req, res) => {
 
@@ -18,6 +18,19 @@ export const createPost = async (req, res) => {
         }
         else {
             return res.status(500).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const getFeed = async (req, res) => {
+
+    try {
+        const result = await getFeedService();
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, result.data));
         }
     }
     catch(err) {
