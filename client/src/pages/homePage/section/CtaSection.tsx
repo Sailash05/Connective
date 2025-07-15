@@ -1,5 +1,6 @@
-import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
+import { FaCheckCircle } from "react-icons/fa";
 
 const CtaSection = () => {
     return (
@@ -16,9 +17,9 @@ const CtaSection = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <button className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-full cursor-pointer font-semibold transition-all">
+                        <Link to='/auth' className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-full cursor-pointer font-semibold transition-all">
                             Get Started for Free
-                        </button>
+                        </Link>
                         <button className="border dark:bg-gray-200 dark:hover:bg-gray-300 border-blue-600 hover:bg-blue-50 transition-all text-blue-600 px-6 py-3 rounded-full cursor-pointer font-semibold">
                             Explore Communities
                         </button>

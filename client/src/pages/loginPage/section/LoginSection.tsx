@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { AuthService } from '../../../service/auth.service';
 import { useNavigate } from 'react-router-dom';
 
+import showPasswordIcon from '../../../assets/loginPageImage/show-password.png'
+import hidePasswordIcon from '../../../assets/loginPageImage/hide-password.png';
+
 const LoginSection = ({
     setLoginSection,
     redirectPath,
@@ -19,6 +22,8 @@ const LoginSection = ({
 
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const handleLogin = async () => {
         const trimmedUserName: string = userName.trim();
@@ -75,7 +80,10 @@ const LoginSection = ({
 
             <div>
                 <h5 className='font-bold text-sm'>Password</h5>
-                <input type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
+                <div className='relative flex items-center'>
+                    <input type={showPassword ? 'text' : 'password'} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
+                    <img src={showPassword ? hidePasswordIcon : showPasswordIcon} alt="" width={30} onClick={() => setShowPassword(!showPassword)} className='absolute right-5 p-1 cursor-pointer' />
+                </div>
             </div>
             <p className="text-blue-700 font-bold mb-4 text-end text-sm mt-1"><span className="cursor-pointer">Forgot Password?</span></p>
 

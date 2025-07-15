@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { FaUserCircle, FaLayerGroup, FaUserFriends, FaPhotoVideo, FaRobot } from "react-icons/fa";
 
 const steps = [
@@ -54,9 +56,9 @@ const HowItWorksSection = () => {
                         to meet people who think like you do.
                     </p>
 
-                    <button className="w-fit bg-blue-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold hover:bg-blue-800 transition-all cursor-pointer">
+                    <Link to='/auth' className="w-fit bg-blue-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold hover:bg-blue-800 transition-all cursor-pointer">
                         Join Connective Free
-                    </button>
+                    </Link>
                 </div>
 
 

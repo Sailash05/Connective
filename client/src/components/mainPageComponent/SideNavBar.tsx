@@ -17,15 +17,15 @@ import personalTrainingIcon from '../../assets/mainPageImages/sideNavBarIcons/ca
 import mockTestIcon from '../../assets/mainPageImages/sideNavBarIcons/career/mockTest.png';
 import careerGuidanceIcon from '../../assets/mainPageImages/sideNavBarIcons/career/careerGuidance.png';
 
-import helpIcon from '../../assets/mainPageImages/sideNavBarIcons/help.png';
 import settingsIcon from '../../assets/mainPageImages/sideNavBarIcons/settings.png';
+import logoutIcon from '../../assets/mainPageImages/sideNavBarIcons/logout.png';
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-const SideNavBar = () => {
+const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => void }) => {
     const location = useLocation();
 
-    const [subMenu, setSubMenu] = useState(false);
+    const [subMenu, setSubMenu] = useState<boolean>(false);
 
     const currentPath = location.pathname.replace(/\/$/, '');
 
@@ -136,13 +136,13 @@ const SideNavBar = () => {
 
                 <div className='pt-2'>
                     <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
-                        <img src={helpIcon} alt="" width={25} className='dark:invert' />
-                        Help
-                    </button>
-
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={settingsIcon} alt="" width={20} className='dark:invert' />
                         Settings
+                    </button>
+
+                    <button onClick={() => setLogoutPopup(true)} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                        <img src={logoutIcon} alt="" width={25} className='dark:invert' />
+                        Logout
                     </button>
                 </div>
             </div>

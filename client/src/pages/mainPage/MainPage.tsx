@@ -9,6 +9,7 @@ import CreatePostForm from "../../components/mainPageComponent/feedComponent/Cre
 
 import FailMessage from "../../components/message/FailMessage";
 import SuccessMessage from "../../components/message/SuccessMessage";
+import Logout from "../../components/message/Logout";
 
 const MainPage = () => {
 
@@ -16,6 +17,7 @@ const MainPage = () => {
 
     const [failMessage, setFailMessage] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<boolean>(false);
+    const [logoutPopup, setLogoutPopup] = useState<Boolean>(false);
 
     const [title, setTitle] = useState<string>("");
     const [msg, setMsg] = useState<string[]>([]);
@@ -42,7 +44,7 @@ const MainPage = () => {
                 <Header setCreatePost={setCreatePost} />
             </div>
             <div className="overflow-y-hidden">
-                <SideNavBar />
+                <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
             <div className="overflow-y-scroll hide-scrollbar">
                 <Routes>
@@ -64,6 +66,10 @@ const MainPage = () => {
 
             {
                 successMessage && <SuccessMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => setSuccessMessage(false)}/>
+            }
+
+            {
+                logoutPopup && <Logout setLogoutPopup={setLogoutPopup} />
             }
         </div>
     );

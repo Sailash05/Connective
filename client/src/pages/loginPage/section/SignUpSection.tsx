@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { AuthService } from "../../../service/auth.service";
+
+import showPasswordIcon from '../../../assets/loginPageImage/show-password.png'
+import hidePasswordIcon from '../../../assets/loginPageImage/hide-password.png';
 
 const SignUpSection = ({
     setLoginSection,
@@ -22,6 +24,8 @@ const SignUpSection = ({
     const [userName, setUserName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     
     const handleSignUp = async () => {
         const trimmedUserName: string = userName.trim();
@@ -88,10 +92,13 @@ const SignUpSection = ({
 
             <div>
                 <h5 className='font-bold text-sm'>Set Password</h5>
-                <input type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4' />
+                <div className='relative flex items-center'>
+                    <input type={showPassword ? 'text' : 'password'} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400' />
+                    <img src={showPassword ? hidePasswordIcon : showPasswordIcon} alt="" width={30} onClick={() => setShowPassword(!showPassword)} className='absolute right-5 p-1 cursor-pointer' />
+                </div>
             </div>
 
-            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all' onClick={handleSignUp}>Sign Up</button>
+            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg my-4 hover:bg-blue-800 transition-all' onClick={handleSignUp}>Sign Up</button>
 
             <p className='mb-4'>Already have an account? <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(true)}>Log In</span></p>
 

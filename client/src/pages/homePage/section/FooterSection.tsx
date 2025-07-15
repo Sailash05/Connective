@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import {
   FaFacebookF,
   FaTwitter,
@@ -28,7 +30,7 @@ const FooterSection = () => {
                         <FaLink className="text-blue-500" /> Explore
                     </h2>
                     <ul className="space-y-1">
-                        <li><a href="#" className="hover:text-white hover:underline">Home</a></li>
+                        <li><Link to='/home' className="hover:text-white hover:underline">Home</Link></li>
                         <li><a href="#" className="hover:text-white hover:underline">Communities</a></li>
                         <li><a href="#" className="hover:text-white hover:underline">Blog</a></li>
                         <li><a href="#" className="hover:text-white hover:underline">Careers</a></li>
