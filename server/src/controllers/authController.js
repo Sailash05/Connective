@@ -1,6 +1,7 @@
 import { response } from '../utils/response.js';
-import { createUserService, loginUserService, deleteUserService } from '../service/authService.js';
+import { createUserService, loginUserService, sendOtpService, deleteUserService } from '../service/authService.js';
 import { generateJwtToken } from '../utils/jwtToken.js';
+import { isValidEmail } from '../utils/emailValidator.js';
 
 export const createUser = async (req, res) => {
     try {
@@ -10,8 +11,8 @@ export const createUser = async (req, res) => {
             const token = generateJwtToken({ userId: result.userId });
             return res.status(201).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
         }
-        else if(result.status === 409) {
-            return res.status(409).send(response('FAILED', result.message, null));
+        else if(result.status === 400) {
+            return res.status(400).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {
@@ -29,6 +30,25 @@ export const loginUser = async (req, res) => {
         else if(result.status === 200) {
             const token = generateJwtToken({ userId: result.userId });
             return res.status(200).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const getOtp = async (req, res) => {
+
+    let { userName, email } = req.body;
+
+    try {
+        const result = await sendOtpService(userName, email);
+
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, null));
+        }
+        else if(result.status === 409) {
+            return res.status(409).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {

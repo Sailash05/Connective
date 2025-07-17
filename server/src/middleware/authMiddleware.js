@@ -1,11 +1,8 @@
 import { response } from '../utils/response.js';
 import jwt from "jsonwebtoken";
+import { isValidEmail } from '../utils/emailValidator.js';
 
 import User from '../models/userModel.js';
-
-const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email === email.toLowerCase();
-};
 
 const isStrongPassword = (password) => {
     const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
@@ -20,9 +17,6 @@ export const validateCreateUser = (req, res, next) => {
     email = email?.trim();
     password = password?.trim();
 
-    // Input validation
-    if (!userName) return res.status(400).send(response('FAILED', 'Enter your user name!', null));
-    if (!email || !isValidEmail(email)) return res.status(400).send(response('FAILED', 'Invalid email!', null));
     if (!password) return res.status(400).send(response('FAILED', 'Enter your password!', null));
     if (!isStrongPassword(password)) return res.status(400).send(response('FAILED', 'Enter a strong password!', null));
 
@@ -48,6 +42,24 @@ export const validateLoginInput = (req, res, next) => {
     // Replace trimmed inputs
     req.body.userName = userName;
     req.body.password = password;
+    
+    next();
+}
+
+export const validateForOtp = (req, res, next) => {
+    let { userName, email } = req.body;
+
+    // Sanitize input
+    userName = userName?.trim();
+    email = email?.trim();
+
+    // Input validation
+    if (!userName) return res.status(400).send(response('FAILED', 'Enter your user name!', null));
+    if (!email || !isValidEmail(email)) return res.status(400).send(response('FAILED', 'Invalid email!', null));
+
+    // Replace trimmed inputs
+    req.body.userName = userName;
+    req.body.email = email;
     
     next();
 }

@@ -4,7 +4,8 @@ import authAxios from "../api/authAxios";
 type signupDataType = {
     userName: string,
     email: string,
-    password: string
+    password: string,
+    otp: number
 }
 
 type loginDataType = {
@@ -12,8 +13,14 @@ type loginDataType = {
     password: string
 }
 
+type getOtpType = {
+    userName: string,
+    email: string
+}
+
 export const AuthService = {
     signup: (data: signupDataType) => publicAxios.post('/api/auth/createuser', data),
     login: (data: loginDataType) => publicAxios.post('/api/auth/loginuser', data),
+    getOtp: (data: getOtpType) => publicAxios.post('/api/auth/getotp', data),
     verifyToken: () => authAxios.get('/api/auth/verifytoken')
 }

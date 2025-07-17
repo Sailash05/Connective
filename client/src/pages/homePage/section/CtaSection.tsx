@@ -17,7 +17,7 @@ const CtaSection = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Link to='/auth' className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-full cursor-pointer font-semibold transition-all">
+                        <Link to='/auth' className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-full cursor-pointer font-semibold transition-all text-center">
                             Get Started for Free
                         </Link>
                         <button className="border dark:bg-gray-200 dark:hover:bg-gray-300 border-blue-600 hover:bg-blue-50 transition-all text-blue-600 px-6 py-3 rounded-full cursor-pointer font-semibold">

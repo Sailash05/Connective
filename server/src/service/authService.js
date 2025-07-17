@@ -1,13 +1,21 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcrypt';
+import { sendOtp } from '../utils/sendEmail.js';
+import redisClient from '../config/redisClient.js';
 
-export const createUserService = async ({userName, email, password}) => {
+export const createUserService = async ({ userName, email, password, otp }) => {
 
-    const userByName = await User.findOne({ userName }).exec();
-    if (userByName) return { status: 409, message: 'Username already exists' };
+    const storedOtp = await redisClient.get(`otp:${email}`);
 
-    const userByEmail = await User.findOne({ email }).exec();
-    if (userByEmail) return { status: 409, message: 'Email already registered' };
+    if (!storedOtp) {
+        return { status: 400, message: 'OTP expired.' };
+    }
+    
+    if (Number(storedOtp) !== otp) {
+        return { status: 400, message: 'Invalid OTP.' };
+    }
+
+    await redisClient.del(`otp:${email}`);
 
     const currentDateAndTime = new Date();
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -19,7 +27,7 @@ export const createUserService = async ({userName, email, password}) => {
         createdAt: currentDateAndTime,
         updatedAt: currentDateAndTime
     });
-    return { status: 201, message: 'User account created successfully', userId: newUser._id};
+    return { status: 201, message: 'User account created successfully.', userId: newUser._id};
 }
 
 export const loginUserService = async ({ userName, password}) => {
@@ -33,6 +41,26 @@ export const loginUserService = async ({ userName, password}) => {
     }
     else {
         return {status: 401, message: 'Invalid password'};
+    }
+}
+
+export const sendOtpService = async (userName, email) => {
+
+    const userByName = await User.findOne({ userName }).exec();
+    if (userByName) return { status: 409, message: 'Username already exists' };
+
+    const userByEmail = await User.findOne({ email }).exec();
+    if (userByEmail) return { status: 409, message: 'Email already registered' };
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    try {
+        await redisClient.set(`otp:${email}`, otp.toString(), { EX: 300 });
+        await sendOtp(userName, email, otp);
+        return { status: 200, message: 'OPT successfully sent to your email.' };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
     }
 }
 

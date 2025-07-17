@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../service/auth.service";
 
+import OtpForm from "../../../components/loginPageComponent/OtpForm";
+import OtpLoading from "../../../components/loadingComponent/OtpLoading";
+
 import showPasswordIcon from '../../../assets/loginPageImage/show-password.png'
 import hidePasswordIcon from '../../../assets/loginPageImage/hide-password.png';
 
@@ -26,8 +29,11 @@ const SignUpSection = ({
     const [password, setPassword] = useState<string>("");
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    
-    const handleSignUp = async () => {
+
+    const [OtpFormPopup, setOtpFormPopup] = useState<boolean>(false);
+    const [gettingOtp, setGettingOtp] = useState<boolean>(false);
+
+    const getOtp = async () => {
         const trimmedUserName: string = userName.trim();
         const trimmedEmail: string = email.trim().toLowerCase();
         const trimmedPassword: string = password.trim();
@@ -50,21 +56,19 @@ const SignUpSection = ({
         }
 
         try {
-            const response = await AuthService.signup({
+            setGettingOtp(true);
+            const response = await AuthService.getOtp({
                 userName: trimmedUserName,
-                email: trimmedEmail,
-                password: trimmedPassword,
+                email: trimmedEmail
             });
 
-            const data = response.data;
-            if(response.status === 201) {
-                localStorage.setItem('Token', data.data.jwtToken);
-                localStorage.setItem('UserId', data.data.userId);
-                //showSuccessMessage('Success!', [data.message], 'Okay', (() => { navigate('/home');}));
-                navigate(redirectPath);
-            }
-        } 
+            setGettingOtp(false);
+            if(response.status === 200) {
+                setOtpFormPopup(true);
+            }            
+        }
         catch (error: any) {
+            setGettingOtp(false);
             if (error.response?.status === 409) {
                 const data = error.response.data;
                 showFailMessage("Failed!", [data.message], "Try again");
@@ -72,6 +76,49 @@ const SignUpSection = ({
             else {
                 showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
             }
+        }
+
+    }
+    
+    const handleSignUp = async (otp: number) => {
+
+        setOtpFormPopup(false);
+
+        const trimmedUserName: string = userName.trim();
+        const trimmedEmail: string = email.trim().toLowerCase();
+        const trimmedPassword: string = password.trim();
+
+        try {
+            // signup loading true
+            const response = await AuthService.signup({
+                userName: trimmedUserName,
+                email: trimmedEmail,
+                password: trimmedPassword,
+                otp: otp
+            });
+
+            // signup loading false
+
+            const data = response.data;
+            if(response.status === 201) {
+                localStorage.setItem('Token', data.data.jwtToken);
+                localStorage.setItem('UserId', data.data.userId);
+                navigate(redirectPath);
+            }
+        } 
+        catch (error: any) {
+            // signup loading false
+
+            if (error.response?.status === 400) {
+                const data = error.response.data;
+                showFailMessage("Failed!", [data.message], "Try again");
+                setOtpFormPopup(true);
+            } 
+            else {
+                showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
+            }
+
+            
         }
     };
 
@@ -98,7 +145,7 @@ const SignUpSection = ({
                 </div>
             </div>
 
-            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg my-4 hover:bg-blue-800 transition-all' onClick={handleSignUp}>Sign Up</button>
+            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg my-4 hover:bg-blue-800 transition-all' onClick={() => getOtp()}>Sign Up</button>
 
             <p className='mb-4'>Already have an account? <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(true)}>Log In</span></p>
 
@@ -113,6 +160,12 @@ const SignUpSection = ({
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" className="h-8 w-8 p-0.5 invert"/>
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
+            {
+                OtpFormPopup && <OtpForm handleSignUp={handleSignUp} setOtpFormPopup={setOtpFormPopup} getOtp={getOtp} />
+            }
+            {
+                gettingOtp && <OtpLoading />
+            }
         </div>
     );
 }
