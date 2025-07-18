@@ -33,11 +33,11 @@ const userSchema = mongoose.Schema({
 
     password: {
         type: String,
-        required: true
     },
 
-    mobileNo: {
-        type: Number,
+    authProvider: {
+        type: String, // 'local', 'google', or 'github'
+        default: 'local'
     },
 
     bio: {

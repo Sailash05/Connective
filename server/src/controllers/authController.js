@@ -8,7 +8,7 @@ export const createUser = async (req, res) => {
         
         if(result.status === 201) {
             const token = generateJwtToken({ userId: result.userId });
-            return res.status(201).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
+            return res.status(201).send(response('SUCCESS', result.message, { jwtToken: token, userId: result.userId }));
         }
         else if(result.status === 400) {
             return res.status(400).send(response('FAILED', result.message, null));
@@ -28,7 +28,7 @@ export const loginUser = async (req, res) => {
         }
         else if(result.status === 200) {
             const token = generateJwtToken({ userId: result.userId });
-            return res.status(200).send(response('SUCCESS', result.message, {jwtToken: token, userId: result.userId}));
+            return res.status(200).send(response('SUCCESS', result.message, { jwtToken: token, userId: result.userId }));
         }
     }
     catch(err) {
@@ -112,3 +112,19 @@ export const deleteUser = async (req, res) => {
         return res.status(500).send(response('FAILED', err.message, null));
     }
 }
+
+
+export const oauthCallback = async (req, res) => {
+    try {
+        const user = req.user;
+
+        const token = generateJwtToken({ userId: user._id });
+
+        //res.status(200).send(response('SUCCESS', 'Authenticated successfully.', { jwtToken: token, userId: user._id }))
+        res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}&userId=${user._id}`);
+    } 
+    catch (error) {
+        console.error('OAuth callback error:', error);
+        //res.status(500).send(response('FAILED', 'Authenticated failed.', null));
+    }
+};

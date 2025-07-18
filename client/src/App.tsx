@@ -9,6 +9,8 @@ import LoginPage from "./pages/loginPage/LoginPage";
 import PasswordResetPage from './pages/loginPage/PasswordResetPage';
 import MainPage from './pages/mainPage/MainPage';
 
+import OAuthSuccess from './pages/loginPage/OAuthSuccess';
+
 function App() {
 
     return (
@@ -24,6 +26,7 @@ function App() {
                     <Route path="/auth" element={<PublicRoute element={<LoginPage />} />} />
                     <Route path="/auth/reset-password" element={<PublicRoute element={<PasswordResetPage />} />} />
 
+                    <Route path="/oauth-success" element={<OAuthSuccess />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>

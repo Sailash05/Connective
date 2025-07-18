@@ -8,6 +8,8 @@ import ResetLinkLoading from '../../../components/loadingComponent/ResetLinkLoad
 import showPasswordIcon from '../../../assets/loginPageImage/show-password.png'
 import hidePasswordIcon from '../../../assets/loginPageImage/hide-password.png';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const LoginSection = ({
     setLoginSection,
     redirectPath,
@@ -154,12 +156,12 @@ const LoginSection = ({
 
             <p className='text-center mb-4'>————— Or —————</p>
 
-            <button className='bg-white border border-blue-600 hover:bg-gray-100 transition-all w-full py-2 px-2 rounded-lg mb-4 flex items-center'>
+            <button onClick={() => window.location.href = `${BACKEND_URL}/api/auth/google`} className='bg-white border border-blue-600 hover:bg-gray-100 transition-all w-full py-2 px-2 rounded-lg mb-4 flex items-center'>
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google Logo" className="h-8 w-8 bg-white p-1"/>
                 <h4 className='text-blue-600 font-bold flex-grow'>Continue with Google</h4>
             </button>
 
-            <button className='bg-gray-900 hover:bg-gray-950 border border-gray-900 transition-all w-full py-2 px-2 rounded-lg flex items-center'>
+            <button onClick={() => window.location.href = `${BACKEND_URL}/api/auth/github`} className='bg-gray-900 hover:bg-gray-950 border border-gray-900 transition-all w-full py-2 px-2 rounded-lg flex items-center'>
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" className="h-8 w-8 p-0.5 invert"/>
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
