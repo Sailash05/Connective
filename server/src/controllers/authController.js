@@ -1,7 +1,6 @@
 import { response } from '../utils/response.js';
-import { createUserService, loginUserService, sendOtpService, deleteUserService } from '../service/authService.js';
+import { createUserService, loginUserService, sendOtpService, resetRequestService, updatePasswordService, deleteUserService } from '../service/authService.js';
 import { generateJwtToken } from '../utils/jwtToken.js';
-import { isValidEmail } from '../utils/emailValidator.js';
 
 export const createUser = async (req, res) => {
     try {
@@ -49,6 +48,44 @@ export const getOtp = async (req, res) => {
         }
         else if(result.status === 409) {
             return res.status(409).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const resetRequest = async (req, res) => {
+    let { userName, email } = req.body;
+
+    try {
+        const result = await resetRequestService(userName, email);
+
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, null));
+        }
+
+        if(result.status === 404 || result.status === 409) {
+            return res.status(result.status).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const updatePassword = async (req, res) => {
+    let { email, resetToken, newPassword } = req.body;
+
+    try {
+        const result = await updatePasswordService(email, resetToken, newPassword);
+
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, null));
+        }
+        
+        if(result.status === 400 || result.status === 404) {
+            return res.status(result.status).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {

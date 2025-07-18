@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react';
 import type { ClipboardEvent, KeyboardEvent, ChangeEvent } from 'react';
-import emailSecurityIcon from '../../assets/loginPageImage/test/protection.png';
+import emailSecurityIcon from '../../assets/loginPageImage/protection.png';
 
-const OtpForm = ({ handleSignUp, setOtpFormPopup, getOtp }: {
+const OtpForm = ({ handleSignUp, getOtp }: {
     handleSignUp: (otp: number) => void; 
-    setOtpFormPopup: (value: boolean) => void;
     getOtp: () => void
 }) => {
     const length = 6;

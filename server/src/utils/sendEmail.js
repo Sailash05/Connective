@@ -34,3 +34,35 @@ export const sendOtp = async (userName, email, otp) => {
         html: htmlContent
     });
 }
+
+export const passwordResetLink = async (userName, email, resetToken) => {
+
+    const resetLink = process.env.FRONTEND_URL + `/auth/reset-password?email=${email}&token=${resetToken}`;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.APP_PASSWORD
+        }
+    });
+
+    const htmlPath = path.join(__dirname, '../emailTemplates/passwordResetLink.html');
+    let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
+    
+    const currentDate = new Date();
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('en-GB', options);
+
+    htmlContent = htmlContent
+        .replace('{{name}}', userName)
+        .replace('{{date}}', formattedDate)
+        .replace('{{resetLink}}', resetLink);
+
+    await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Reset Your Password',
+        html: htmlContent
+    });
+}

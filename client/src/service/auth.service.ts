@@ -18,9 +18,19 @@ type getOtpType = {
     email: string
 }
 
+type resetRequestType = getOtpType;
+
+type updatePasswordType = {
+    email: string,
+    resetToken: string,
+    newPassword: string
+}
+
 export const AuthService = {
     signup: (data: signupDataType) => publicAxios.post('/api/auth/createuser', data),
     login: (data: loginDataType) => publicAxios.post('/api/auth/loginuser', data),
     getOtp: (data: getOtpType) => publicAxios.post('/api/auth/getotp', data),
+    resetRequest: (data: resetRequestType) => publicAxios.post('/api/auth/resetrequest', data),
+    updatePassword: (data: updatePasswordType) => publicAxios.put('/api/auth/update-password', data),
     verifyToken: () => authAxios.get('/api/auth/verifytoken')
 }

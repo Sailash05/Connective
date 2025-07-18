@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import SignUpSection from './section/SignUpSection'
 import LoginSection from './section/LoginSection';
 import FailMessage from "../../components/message/FailMessage";
+import SuccessMessage from '../../components/message/SuccessMessage';
 
 import loginPageImage from '../../assets/loginPageImage/image.png';
 import rightArrow from '../../assets/loginPageImage/right-arrow.png'
@@ -15,6 +16,7 @@ const LoginPage = () => {
     const [loginSection, setLoginSection] = useState(true);
 
     const [failMessage, setFailMessage] = useState<boolean>(false);
+    const [successMessage, setSuccessMessage] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>("");
     const [msg, setMsg] = useState<string[]>([]);
@@ -24,7 +26,16 @@ const LoginPage = () => {
         setTitle(title);
         setMsg(msg);
         setButtonTxt(buttonTxt);
+        setSuccessMessage(false);
         setFailMessage(true);
+    }
+
+    const showSuccessMessage = (title: string, msg: string[], buttonTxt: string): void => {
+        setTitle(title);
+        setMsg(msg);
+        setButtonTxt(buttonTxt);
+        setFailMessage(false);
+        setSuccessMessage(true);
     }
 
     return(
@@ -59,14 +70,16 @@ const LoginPage = () => {
                     <h2 className='text-2xl md:text-3xl font-extrabold text-black'>Welcome to Connective</h2>
                     <p className='text-sm text-black'>Unlock your team potential</p>
                     {
-                        loginSection ? <LoginSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage}/> : <SignUpSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage}/>
+                        loginSection ? <LoginSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage} showSuccessMessage={showSuccessMessage} /> : <SignUpSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage}/>
                     }
                 </section>
              </div>
             {
                 failMessage && <FailMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => setFailMessage(false)} />
             }
-
+            {
+                successMessage && <SuccessMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => setSuccessMessage(false)} />
+            }
         </div>
     );
 }

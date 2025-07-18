@@ -1,7 +1,9 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcrypt';
-import { sendOtp } from '../utils/sendEmail.js';
+import crypto from 'crypto';
 import redisClient from '../config/redisClient.js';
+
+import { sendOtp, passwordResetLink } from '../utils/sendEmail.js';
 
 export const createUserService = async ({ userName, email, password, otp }) => {
 
@@ -10,7 +12,6 @@ export const createUserService = async ({ userName, email, password, otp }) => {
     if (!storedOtp) {
         return { status: 400, message: 'OTP expired.' };
     }
-    
     if (Number(storedOtp) !== otp) {
         return { status: 400, message: 'Invalid OTP.' };
     }
@@ -58,6 +59,52 @@ export const sendOtpService = async (userName, email) => {
         await redisClient.set(`otp:${email}`, otp.toString(), { EX: 300 });
         await sendOtp(userName, email, otp);
         return { status: 200, message: 'OPT successfully sent to your email.' };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const resetRequestService = async (userName, email) => {
+
+    const user = await User.findOne({ userName }).exec();
+
+    if(!user) return { status: 404, message: 'User not found.' };
+
+    if(email !== user.email) return { status: 409, message: 'Email not match' };
+
+    try {
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        await redisClient.set(`reset:${email}`, resetToken, { EX: 900 });
+        await passwordResetLink(userName, email, resetToken);
+
+        return { status: 200, message: 'Reset link sent to your email.' };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updatePasswordService = async (email, resetToken, newPassword) => {
+
+    const user = await User.findOne({ email }).exec();
+    if(!user) return { status: 404, message: 'User not found.' };
+
+    const storedResetToken = await redisClient.get(`reset:${email}`);
+
+    if(!storedResetToken) {
+        return { status: 400, message: 'Reset Token expired.' };
+    } 
+    if(storedResetToken !== resetToken) {
+        return { status: 400, message: 'Invalid Reset Token.' };
+    }
+    await redisClient.del(`reset:${email}`);
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+        user.password = hashedPassword;
+        await user.save();
+        return { status: 200, message: 'Password updated successfully.' };
     }
     catch(err) {
         return { status: 500, message: err.message };

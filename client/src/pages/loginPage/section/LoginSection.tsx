@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { AuthService } from '../../../service/auth.service';
 import { useNavigate } from 'react-router-dom';
 
+import ResetRequestForm from '../../../components/loginPageComponent/ResetRequestForm';
+import ResetLinkLoading from '../../../components/loadingComponent/ResetLinkLoading';
+
 import showPasswordIcon from '../../../assets/loginPageImage/show-password.png'
 import hidePasswordIcon from '../../../assets/loginPageImage/hide-password.png';
 
@@ -9,10 +12,16 @@ const LoginSection = ({
     setLoginSection,
     redirectPath,
     showFailMessage,
+    showSuccessMessage
 }: {
     setLoginSection: (value: boolean) => void;
     redirectPath: string;
     showFailMessage: (
+        title: string,
+        msg: string[],
+        buttonTxt: string
+    ) => void;
+    showSuccessMessage: (
         title: string,
         msg: string[],
         buttonTxt: string
@@ -24,6 +33,52 @@ const LoginSection = ({
     const [password, setPassword] = useState<string>("");
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [resetRequestForm, setResetRequestForm] = useState<boolean>(false);
+
+    const [resetLinkLoading, setResetLinkLoading] = useState<boolean>(false);
+
+    const resetRequest = async (userName: string, email: string) => {
+        const trimmedUserName: string = userName.trim();
+        const trimmedEmail: string = email.trim();
+
+        if (!trimmedUserName) {
+            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again');
+            return;
+        }
+
+        const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmedEmail)) {
+            showFailMessage('Failed!', ['Please enter a valid email address', 'and try again'], 'Try again');
+            return;
+        }
+
+        try {
+            setResetLinkLoading(true);
+            const response = await AuthService.resetRequest({
+                userName: trimmedUserName,
+                email: trimmedEmail
+            });
+
+            setResetLinkLoading(false);
+
+            const data = response.data;
+
+            if(response.status === 200) {
+                setResetRequestForm(false);
+                showSuccessMessage('Success', [data.message], 'Okay');
+            }
+        }
+        catch(error: any) {
+            setResetLinkLoading(false);
+            if (error.response?.status === 404 || error.response?.status === 409) {
+                const data = error.response.data;
+                showFailMessage("Failed!", [data.message], "Try again");
+            }
+            else {
+                showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
+            }
+        }
+    }
 
     const handleLogin = async () => {
         const trimmedUserName: string = userName.trim();
@@ -44,11 +99,12 @@ const LoginSection = ({
                 userName: trimmedUserName,
                 password: trimmedPassword,
             });
+
             const data = response.data;
+
             if(response.status === 200) {
                 localStorage.setItem('Token', data.data.jwtToken);
                 localStorage.setItem('UserId', data.data.userId);
-                //showSuccessMessage('Success!', [data.message], 'Okay', (() => { navigate(redirectPath);}));
                 navigate(redirectPath);
             }
         }
@@ -85,11 +141,16 @@ const LoginSection = ({
                     <img src={showPassword ? hidePasswordIcon : showPasswordIcon} alt="" width={30} onClick={() => setShowPassword(!showPassword)} className='absolute right-5 p-1 cursor-pointer' />
                 </div>
             </div>
-            <p className="text-blue-700 font-bold mb-4 text-end text-sm mt-1"><span className="cursor-pointer">Forgot Password?</span></p>
+            <p className="text-blue-700 font-bold mb-4 text-end text-sm mt-1">
+                <span onClick={() => setResetRequestForm(true)} className="cursor-pointer underline-offset-2 hover:underline">Forgot Password?</span>
+            </p>
 
             <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all' onClick={() => handleLogin()}>Log In</button>
 
-            <p className='mb-4'>Don't have an account? <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(false)}>Sign Up</span></p>
+            <p className='mb-4'>
+                Don't have an account? 
+                <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(false)}> Sign Up</span>
+            </p>
 
             <p className='text-center mb-4'>————— Or —————</p>
 
@@ -102,6 +163,13 @@ const LoginSection = ({
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" className="h-8 w-8 p-0.5 invert"/>
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
+            
+            {
+                resetRequestForm && <ResetRequestForm setResetRequestForm={setResetRequestForm} resetRequest={resetRequest} />
+            }
+            {
+                resetLinkLoading && <ResetLinkLoading />
+            }
         </div>
     );
 }

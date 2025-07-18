@@ -117,8 +117,6 @@ const SignUpSection = ({
             else {
                 showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
             }
-
-            
         }
     };
 
@@ -161,7 +159,7 @@ const SignUpSection = ({
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
             {
-                OtpFormPopup && <OtpForm handleSignUp={handleSignUp} setOtpFormPopup={setOtpFormPopup} getOtp={getOtp} />
+                OtpFormPopup && <OtpForm handleSignUp={handleSignUp} getOtp={getOtp} />
             }
             {
                 gettingOtp && <OtpLoading />

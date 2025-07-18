@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import StatsDataCard from "../../../components/landingPageComponent/StatsDataCard.tsx";
-import socialMediaImage from '../../../assets/landingPageImage/sample3.png';
+import socialMediaImage from '../../../assets/landingPageImage/social-media-image.png';
 import rightArrowIcon from '../../../assets/landingPageImage/right-arrow.png';
 
 import { statsData } from '../../../constants/landingPageConstants.ts';

@@ -6,6 +6,7 @@ import PublicRoute from './routes/PublicRoute';
 import ThemeProvider from './context/ThemeContext';
 import HomePage from "./pages/homePage/HomePage";
 import LoginPage from "./pages/loginPage/LoginPage";
+import PasswordResetPage from './pages/loginPage/PasswordResetPage';
 import MainPage from './pages/mainPage/MainPage';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
 
                     <Route path="/" element={<PublicRoute element={<HomePage />} />} />
                     <Route path="/auth" element={<PublicRoute element={<LoginPage />} />} />
+                    <Route path="/auth/reset-password" element={<PublicRoute element={<PasswordResetPage />} />} />
 
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>

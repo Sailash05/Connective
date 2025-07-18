@@ -64,6 +64,28 @@ export const validateForOtp = (req, res, next) => {
     next();
 }
 
+export const validateForUpdatePassword = (req, res, next) => {
+    let { email, resetToken, newPassword } = req.body;
+
+    // Sanitize input
+    email = email?.trim();
+    resetToken = resetToken?.trim();
+    newPassword = newPassword?.trim();
+
+    // Input validation
+    if (!email || !isValidEmail(email)) return res.status(400).send(response('FAILED', 'Enter valid email.', null));
+    if (!resetToken) return res.status(400).send(response('FAILED', 'Reset token required', null));
+    if (!newPassword) return res.status(400).send(response('FAILED', 'Enter your new password!', null));
+    if (!isStrongPassword(newPassword)) return res.status(400).send(response('FAILED', 'Enter a strong password!', null));
+
+    // Replace trimmed inputs
+    req.body.email = email;
+    req.body.resetToken = resetToken;
+    req.body.newPassword = newPassword;
+    
+    next();
+}
+
 export const verifyToken = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
