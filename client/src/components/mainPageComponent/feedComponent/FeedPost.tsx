@@ -1,4 +1,6 @@
-import profileIcon from '../../../assets/icons/profile.png';
+import { useState, useEffect } from 'react';
+import { userService } from '../../../service/user.service';
+
 import addImageIcon from '../../../assets/mainPageImages/feedSectionIcons/add-image.png';
 import addVideoIcon from '../../../assets/mainPageImages/feedSectionIcons/add-video.png';
 import addFileIcon from '../../../assets/mainPageImages/feedSectionIcons/add-file.png';
@@ -6,11 +8,32 @@ import addLinkIcon from '../../../assets/mainPageImages/feedSectionIcons/add-lin
 
 const FeedPost = ({ setCreatePost }: { setCreatePost: (value: boolean) => void}) => {
 
+    const [profilePicture, setProfilePicture] = useState<string>("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+
+    useEffect(() => {
+        const getProfilePicture = async () => {
+            try {
+                const response = await userService.getProfilePicture();
+                if(response.status === 200) {
+                    setProfilePicture(response.data.data.profilePictureUrl);
+                }
+                else if(response.status === 404) {
+                    setProfilePicture("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+                }
+            }
+            catch(err) {
+                setProfilePicture("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+            }
+        }
+
+        getProfilePicture();
+    }, []);
+
     return(
         <div className="bg-white rounded-2xl py-4 px-8 dark:bg-slate-950 shadow-md shadow-blue-100 dark:shadow-slate-800">
             <div className='flex gap-4'>
-                <img src={profileIcon} alt="" width={45} className='dark:invert' />
-                <input type="text" placeholder={`What's on your mind?`} onClick={() => setCreatePost(true)} defaultValue="" className='bg-gray-100 dark:bg-white w-[18rem] flex-grow py-2 px-6 rounded-full outline-none placeholder:text-black dark:hover:bg-gray-100 hover:bg-gray-50 transition-all' />
+                <img src={profilePicture} alt="" className="h-10 w-10 rounded-full object-cover" />
+                <input type="text" placeholder={`What's on your mind?`} onClick={() => setCreatePost(true)} defaultValue="" readOnly className='bg-gray-100 dark:bg-white w-[18rem] flex-grow py-2 px-6 rounded-full outline-none placeholder:text-black dark:hover:bg-gray-100 hover:bg-gray-50 transition-all' />
             </div>
 
             <div className='mt-4 pl-4 flex gap-4'>

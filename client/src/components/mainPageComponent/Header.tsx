@@ -1,11 +1,12 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ThemeContext } from '../../context/ThemeContext';
+import { userService } from '../../service/user.service';
 
 import upgradeIcon from '../../assets/mainPageImages/upgrade.png';
 import createPostIcon from '../../assets/mainPageImages/createPost.png';
 import { IoMdNotifications } from "react-icons/io";
-import profileIcon from '../../assets/icons/profile.png'
 import { MdOutlineMessage } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
 import darkModeIcon from '../../assets/icons/light-mode.png';
@@ -15,10 +16,31 @@ const Header = ({ setCreatePost }: {setCreatePost: (value: boolean) => void}) =>
 
     const { darkMode, setDarkMode } = useContext(ThemeContext);
 
+    const [profilePicture, setProfilePicture] = useState<string>("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+
+    useEffect(() => {
+        const getProfilePicture = async () => {
+            try {
+                const response = await userService.getProfilePicture();
+                if(response.status === 200) {
+                    setProfilePicture(response.data.data.profilePictureUrl);
+                }
+                else if(response.status === 404) {
+                    setProfilePicture("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+                }
+            }
+            catch(err) {
+                setProfilePicture("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
+            }
+        }
+
+        getProfilePicture();
+    }, []);
+
     return(
          <header className="flex justify-between py-3 px-16 border-b border-gray-300 dark:border-gray-600">
             <div className='basis-1/3'>
-                <h1 className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer'>Connective</h1>
+                <Link to='/home' className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective</Link>
             </div>
             
             <div className='flex justify-center items-center basis-1/3'>
@@ -43,7 +65,14 @@ const Header = ({ setCreatePost }: {setCreatePost: (value: boolean) => void}) =>
 
                 <button onClick={() => setDarkMode(!darkMode)} className='p-1'><img src={darkMode?lightModeIcon:darkModeIcon} alt="" width={25} className='dark:invert' /></button>
 
-                <button className='pl-2'><img src={profileIcon} alt="" width={35} className='dark:invert' /></button>
+                <button className="pl-2 h-full">
+                    <img
+                        src={profilePicture} 
+                        alt="User Avatar"
+                        className="h-10 w-10 rounded-full object-cover"
+                    />
+                </button>
+
             </div>
         </header> 
     );

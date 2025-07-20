@@ -2,25 +2,9 @@ import { useState, useEffect } from "react";
 import { postService } from '../../../service/post.service.ts';
 
 import FeedPost from "../../../components/mainPageComponent/feedComponent/FeedPost";
-import PostContainer from "../../../components/mainPageComponent/feedComponent/PostContainer";
+import Post from "../../../components/mainPageComponent/feedComponent/Post.tsx";
 
-export type PostType = {
-    _id: string;
-    __v: number;
-    userId: string;
-    userName: string;
-    views: number;
-    content: string;
-    fileData: any[];
-    tags: string[];
-    visibility: string;
-    likes: string[];
-    comments: string[];
-    shares: string[];
-    createdAt: string;
-    postedAt: string;
-    updatedAt: string;
-};
+import { type PostType } from "../../../types/postType.ts";
 
 
 const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => void}) => {
@@ -34,8 +18,8 @@ const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => voi
                 const data = response.data;
                 setPostList(data.data);
             }
-            catch(error) {
-                // show fail message
+            catch(error: any) {
+
             }
         }
         getFeed();
@@ -44,9 +28,8 @@ const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => voi
     return(
         <section className="bg-gray-100 dark:bg-slate-900 px-8 py-4 space-y-5">
             <FeedPost setCreatePost={setCreatePost} /> 
-            {/* <PostContainer /> */}
             {
-                postList.map((post) => <PostContainer key={post._id} post={post} /> )
+                postList.map((post) => <Post key={post._id} post={post} /> )
             }
         </section>
     );

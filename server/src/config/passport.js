@@ -29,7 +29,6 @@ const generateUniqueUsername = async (baseName) => {
  */
 const findOrCreateUser = async (profile, emailOverride = null) => {
     const email = emailOverride || profile.emails?.[0]?.value;
-    console.log(profile);
 
     // Fallback email if none is provided
     const finalEmail = email || `${profile.username || 'user'}@oauth.local`;
@@ -59,10 +58,12 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/api/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
+    
     try {
         const user = await findOrCreateUser(profile);
         done(null, user);
-    } catch (err) {
+    }
+    catch (err) {
         done(err, null);
     }
 }));
@@ -74,6 +75,7 @@ passport.use(new GitHubStrategy({
     callbackURL: '/api/auth/github/callback',
     scope: ['user:email']
 }, async (accessToken, refreshToken, profile, done) => {
+    
     try {
         let email = profile.emails?.[0]?.value;
 
@@ -92,7 +94,8 @@ passport.use(new GitHubStrategy({
 
         const user = await findOrCreateUser(profile, email);
         done(null, user);
-    } catch (err) {
+    }
+    catch (err) {
         done(err, null);
     }
 }));

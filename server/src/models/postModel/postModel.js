@@ -17,7 +17,6 @@ const postSchema = mongoose.Schema({
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     shares: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    postedAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postSchema);

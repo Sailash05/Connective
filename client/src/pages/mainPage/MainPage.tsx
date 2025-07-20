@@ -4,6 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import Header from "../../components/mainPageComponent/Header";
 import SideNavBar from "../../components/mainPageComponent/SideNavBar";
 import RightSidebar from "../../components/mainPageComponent/RightSideBar";
+
+import PostSection from "./Section/PostSection";
+
 import FeedSection from "./Section/FeedSection";
 import CreatePostForm from "../../components/mainPageComponent/feedComponent/CreatePostForm";
 
@@ -37,6 +40,7 @@ const MainPage = () => {
         setFailMessage(false);
         setSuccessMessage(true);
     }
+
     return(
         <div className="h-[100dvh] grid grid-cols-[20%_55%_25%] grid-rows-[auto_1fr] dark:bg-slate-950">
             
@@ -49,6 +53,7 @@ const MainPage = () => {
             <div className="overflow-y-scroll hide-scrollbar">
                 <Routes>
                     <Route path="/" element={<FeedSection setCreatePost={setCreatePost} />} />
+                    <Route path='/post/:postId' element={<PostSection />} />
                     <Route path="/friends" element={<div>Friends Page</div>} />
                 </Routes>
             </div>

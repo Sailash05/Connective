@@ -13,7 +13,7 @@ const LoginPage = () => {
     const location = useLocation();
     const redirectPath = location.state?.from?.pathname || '/home';
 
-    const [loginSection, setLoginSection] = useState(false);
+    const [loginSection, setLoginSection] = useState(true);
 
     const [failMessage, setFailMessage] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<boolean>(false);

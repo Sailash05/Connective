@@ -49,6 +49,11 @@ const userSchema = mongoose.Schema({
         type: String
     },
 
+    savedPost: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+        default: []
+    },
+
     location: {
         city: String,
         state: String,
