@@ -12,11 +12,8 @@ const postSchema = mongoose.Schema({
     content: { type: String },
     fileData: [ fileSchema ],
     tags: [{ type: String }],
-    views: { type: Number, default: 0 },
     visibility: { type: String, enum: ['PUBLIC', 'FOLLOWERS_ONLY', 'PRIVATE'], default: 'PUBLIC' },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-    shares: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postSchema);

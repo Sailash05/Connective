@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
 const commentSchema = mongoose.Schema({
-    body: String,
+    text: String,
     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     parentCommentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null },
-    commentedAt: { type: Date, default: Date.now },
-    
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true });
 
 commentSchema.index({ postId: 1, createdAt: -1 });

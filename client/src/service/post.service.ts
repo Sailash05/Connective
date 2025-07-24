@@ -21,5 +21,29 @@ export const postService = {
         else {
             return authAxios.post(`/api/post/${postId}/save`);
         }
-    }
+    },
+
+    addComment: (postId: string, data: { text: string }) => authAxios.post(`/api/post/${postId}/comment`, data),
+    getComment: (postId: string, filter: string, page: number, limit: number) => authAxios.get(`/api/post/${postId}/comment?filter=${filter.toLowerCase()}&page=${page}&limit=${limit}`),
+    toggleCommentLike: (postId: string, isLiked: boolean) => {
+        if(isLiked) {
+            return authAxios.delete(`/api/post/${postId}/comment/like`);
+        }
+        else {
+            return authAxios.post(`/api/post/${postId}/comment/like`);
+        }
+    },
+    deleteComment: (commentId: string) => authAxios.delete(`/api/post/${commentId}/delete-comment`),
+
+    addReply: (postId: string, commentId: string, data: { text: string }) => authAxios.post(`/api/post/${postId}/${commentId}/reply`, data),
+    getReply: (commentId: string, filter: string, page: number, limit: number) => authAxios.get(`/api/post/${commentId}/reply?filter=${filter.toLowerCase()}&page=${page}&limit=${limit}`),
+    toggleReplyLike: (replyId: string, isLiked: boolean) => {
+        if(isLiked) {
+            return authAxios.delete(`api/post/${replyId}/reply/like`);
+        }
+        else {
+            return authAxios.post(`api/post/${replyId}/reply/like`);
+        }
+    },
+    deleteReply: (replyId: string) => authAxios.delete(`/api/post/${replyId}/delete-reply`)
 }

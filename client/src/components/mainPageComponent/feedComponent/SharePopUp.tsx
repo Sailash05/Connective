@@ -31,7 +31,7 @@ const SharePopUp = ({ url, setSharePopUp }: { url: string; setSharePopUp: (share
     };
 
     return (
-        <div className="w-[100dvw] h-[100dvh] bg-black bg-opacity-30 fixed -top-4 left-0 flex justify-center items-center">
+        <div className="w-[100dvw] h-[100dvh] bg-black bg-opacity-30 fixed -top-4 left-0 flex justify-center items-center z-50">
             <div className="bg-white md:p-5 p-10 rounded-xl shadow-md max-sm:w-[90dvw]">
                 <header className="items-center h-10 flex justify-between">
                     <h2 className="text-lg font-bold">Share post</h2>

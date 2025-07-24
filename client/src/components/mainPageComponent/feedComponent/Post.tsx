@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { postService } from '../../../service/post.service';
 import { type PostType } from '../../../types/postType.ts';
 import { timeDifference } from '../../../utils/dateAndTime';
 import SharePopUp from './SharePopUp.tsx';
+import CommentSection from '../commentComponent/CommentSection.tsx';
+
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdReportGmailerrorred } from "react-icons/md";
 
 import followIcon from '../../../assets/mainPageImages/postContainerIcons/follow.png';
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
@@ -16,29 +20,48 @@ import notSaveIcon from '../../../assets/mainPageImages/postContainerIcons/not_s
 
 const Post = ({ post }: { post: PostType}) => {
 
-    const userId: string = localStorage.getItem('UserId') || "";
+    //const userId: string = localStorage.getItem('UserId') || "";
+
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isMenuOpen]);
 
     const [isContentExpanded, setIsContentExpanded] = useState<boolean>(false);
-    const [sharePopUp, setSharePopUp] = useState<boolean>(false);
-
+    
     const amountOfWords = 25;
-
+    
     const splittedText = post.content.split(' ')
     const itCanOverflow = splittedText.length > amountOfWords
     const beginText = itCanOverflow
         ? splittedText.slice(0, amountOfWords - 1).join(' ')
         : post.content;
-    const endText = splittedText.slice(amountOfWords - 1).join(' ')
+        const endText = splittedText.slice(amountOfWords - 1).join(' ');
 
-    const [likeCount, setLikeCount] = useState<number>(post.likes.length);
-    const [isLiked, setIsLiked] = useState<boolean>(
-        post.likes.some((id: any) => id.toString() === userId)
-    );
-
-    const [comment, setComment] = useState<number>(post.comments.length);
-    const [share, setShare] = useState<number>(post.shares.length);
+    
+    const [likeCount, setLikeCount] = useState<number>(post.noOfLikes);
+    const [isLiked, setIsLiked] = useState<boolean>(post.isLiked);
+    
+    const [sharePopUp, setSharePopUp] = useState<boolean>(false);
 
     const [isSaved, setIsSaved] = useState<boolean>(post.isPostSaved);
+
+    const [commentSection, setCommentSection] = useState<boolean>(false);
 
     const likeBtnHandle = async () => {
         try {
@@ -52,7 +75,7 @@ const Post = ({ post }: { post: PostType}) => {
     }
     const saveBtnHandle = async () => {
         try {
-            const response = await postService.toggleSave(post._id, isSaved);
+            await postService.toggleSave(post._id, isSaved);
             setIsSaved(!isSaved);
         }
         catch(error) {
@@ -64,7 +87,7 @@ const Post = ({ post }: { post: PostType}) => {
         <div className='bg-white rounded-2xl py-4 px-12 dark:bg-slate-950 shadow-md shadow-blue-100 dark:shadow-slate-800 space-y-4'>
 
             {/* Profile */}
-            <div className='flex gap-4 justify-start items-center'>
+            <div className='flex gap-4 justify-start items-center relative'>
                 <img src={post.profilePicture} alt="" className='h-10 w-10 rounded-full object-cover' />
                 <div>
                     <h3 className='font-bold hover:underline cursor-pointer dark:text-white'>{post.userName}</h3>
@@ -74,11 +97,19 @@ const Post = ({ post }: { post: PostType}) => {
                     <img src={followIcon} alt="" className="w-4 h-4 object-contain invert mr-2" />
                     Follow
                 </button>
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className='p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all dark:text-white'>
+                    <BsThreeDotsVertical />
+                </button>
+                {
+                    isMenuOpen && (
+                        <div ref={menuRef} className="absolute top-full right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-lg w-40 overflow-hidden z-10" >
+                            <button className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <MdReportGmailerrorred className="text-lg text-red-500" />
+                                Report
+                            </button>
+                        </div>
+                )}
             </div>
-
-            {/* {
-                if(post.content.length)
-            } */}
 
             <pre className='font-sans dark:text-white whitespace-pre-wrap break-words'>
                 {beginText}
@@ -109,35 +140,37 @@ const Post = ({ post }: { post: PostType}) => {
             </div>
 
             {/* Post meta data */}
-            <div className="flex gap-6 text-sm text-gray-600 dark:text-gray-300 font-medium">
+            <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-400 font-medium">
                 <p>{likeCount} Likes</p>
-                <p>{comment} Comments</p>
-                <p>{share} Share</p>
+                <p>{post.noOfComments} Comments</p>
             </div>
 
 
             <div className='flex justify-between dark:text-white'>
-                <button onClick={() => likeBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-800'>
+                <button onClick={() => likeBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
                     <img src={isLiked ? likeIcon : notLikeIcon} alt="" className='w-5 h-5 dark:invert' />
                     &nbsp;Like
                 </button>
-                <button className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-800'>
+                <button onClick={() => setCommentSection(!commentSection)} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
                     <img src={commentIcon} alt="" className='w-5 h-5 dark:invert' />
                     &nbsp;Comments
                 </button>
-                <button className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-800'>
+                <button className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
                     <img src={sendIcon} alt="" className='w-5 h-5 dark:invert' />
                     &nbsp;send
                 </button>
-                <button onClick={() => setSharePopUp(true)} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-800'>
+                <button onClick={() => setSharePopUp(true)} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
                     <img src={shareIcon} alt="" className='w-5 h-5 dark:invert' />
                     &nbsp;Share
                 </button>
-                <button onClick={() => saveBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-800'>
+                <button onClick={() => saveBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
                     <img src={isSaved ? saveIcon : notSaveIcon} alt="" className='w-5 h-5 dark:invert' />
                     &nbsp;Save
                 </button>
             </div>
+            {
+                commentSection && <CommentSection postId={post._id} noOfComments={post.noOfComments} />
+            }
             {
                 sharePopUp && <SharePopUp url={`${import.meta.env.VITE_FRONTEND_URL}/home/post/${post._id}`} setSharePopUp={setSharePopUp} />
             }

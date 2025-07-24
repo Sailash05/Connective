@@ -4,15 +4,14 @@ export type PostType = {
     userId: string;
     userName: string;
     profilePicture: string;
-    views: number;
     content: string;
     fileData: any[];
     tags: string[];
     visibility: string;
+    noOfLikes: number;
+    noOfComments: number;
+    isLiked: boolean;
     isPostSaved: boolean,
-    likes: string[];
-    comments: string[];
-    shares: string[];
     createdAt: Date;
     updatedAt: Date;
 };
