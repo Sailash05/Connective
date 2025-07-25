@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { postService } from '../../../service/post.service.ts';
+import { postService } from '../../service/post.service.ts';
 
-import FeedPost from "../../../components/mainPageComponent/feedComponent/FeedPost";
-import Post from "../../../components/mainPageComponent/feedComponent/Post.tsx";
+import FeedPost from "../../components/feedPageComponent/feedComponent/FeedPost.tsx";
+import Post from "../../components/feedPageComponent/feedComponent/Post.tsx";
 
-import { type PostType } from "../../../types/postType.ts";
+import { type PostType } from "../../types/postType.ts";
 
-
-const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => void}) => {
+const FeedPage = () => {
 
     const [postList, setPostList] = useState<PostType[]>([]);
 
@@ -27,7 +26,7 @@ const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => voi
 
     return(
         <section className="bg-gray-100 dark:bg-slate-900 px-8 py-4 space-y-5">
-            <FeedPost setCreatePost={setCreatePost} /> 
+            <FeedPost /> 
             {
                 postList.map((post) => <Post key={post._id} post={post} /> )
             }
@@ -35,4 +34,4 @@ const FeedSection = ({ setCreatePost }: { setCreatePost: (value: boolean) => voi
     );
 }
 
-export default FeedSection;
+export default FeedPage;

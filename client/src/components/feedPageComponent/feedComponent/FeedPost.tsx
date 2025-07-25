@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { userService } from '../../../service/user.service';
+import { useCreatePost } from '../../../context/CreatePostContext';
 
 import addImageIcon from '../../../assets/mainPageImages/feedSectionIcons/add-image.png';
 import addVideoIcon from '../../../assets/mainPageImages/feedSectionIcons/add-video.png';
 import addFileIcon from '../../../assets/mainPageImages/feedSectionIcons/add-file.png';
 import addLinkIcon from '../../../assets/mainPageImages/feedSectionIcons/add-link.png';
 
-const FeedPost = ({ setCreatePost }: { setCreatePost: (value: boolean) => void}) => {
+const FeedPost = () => {
+    const { setCreatePost } = useCreatePost();
 
     const [profilePicture, setProfilePicture] = useState<string>("https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg");
 

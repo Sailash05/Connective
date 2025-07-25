@@ -1,24 +1,24 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import homeIcon from '../../assets/mainPageImages/sideNavBarIcons/social/home.png';
-import friendsIcon from '../../assets/mainPageImages/sideNavBarIcons/social/friends.png'
-import exploreIcon from '../../assets/mainPageImages/sideNavBarIcons/social/explore.png';
+import homeIcon from '../assets/mainPageImages/sideNavBarIcons/social/home.png';
+import friendsIcon from '../assets/mainPageImages/sideNavBarIcons/social/friends.png'
+import exploreIcon from '../assets/mainPageImages/sideNavBarIcons/social/explore.png';
 
-import communityIcon from '../../assets/mainPageImages/sideNavBarIcons/community/community.png';
-import resourceIcon from '../../assets/mainPageImages/sideNavBarIcons/community/resource.png';
-import discussionForumIcon from '../../assets/mainPageImages/sideNavBarIcons/community/disscussionForum.png';
-import blogIcon from '../../assets/mainPageImages/sideNavBarIcons/community/blog.png';
+import communityIcon from '../assets/mainPageImages/sideNavBarIcons/community/community.png';
+import resourceIcon from '../assets/mainPageImages/sideNavBarIcons/community/resource.png';
+import discussionForumIcon from '../assets/mainPageImages/sideNavBarIcons/community/disscussionForum.png';
+import blogIcon from '../assets/mainPageImages/sideNavBarIcons/community/blog.png';
 
-import careerDasbboardIcon from '../../assets/mainPageImages/sideNavBarIcons/career/careerDashboard.png';
-import learningHubIcon from '../../assets/mainPageImages/sideNavBarIcons/career/learningHub.png';
-import resumeBuilderIcon from '../../assets/mainPageImages/sideNavBarIcons/career/resume.png';
-import personalTrainingIcon from '../../assets/mainPageImages/sideNavBarIcons/career/personalTraining.png';
-import mockTestIcon from '../../assets/mainPageImages/sideNavBarIcons/career/mockTest.png';
-import careerGuidanceIcon from '../../assets/mainPageImages/sideNavBarIcons/career/careerGuidance.png';
+import careerDasbboardIcon from '../assets/mainPageImages/sideNavBarIcons/career/careerDashboard.png';
+import learningHubIcon from '../assets/mainPageImages/sideNavBarIcons/career/learningHub.png';
+import resumeBuilderIcon from '../assets/mainPageImages/sideNavBarIcons/career/resume.png';
+import personalTrainingIcon from '../assets/mainPageImages/sideNavBarIcons/career/personalTraining.png';
+import mockTestIcon from '../assets/mainPageImages/sideNavBarIcons/career/mockTest.png';
+import careerGuidanceIcon from '../assets/mainPageImages/sideNavBarIcons/career/careerGuidance.png';
 
-import settingsIcon from '../../assets/mainPageImages/sideNavBarIcons/settings.png';
-import logoutIcon from '../../assets/mainPageImages/sideNavBarIcons/logout.png';
+import settingsIcon from '../assets/mainPageImages/sideNavBarIcons/settings.png';
+import logoutIcon from '../assets/mainPageImages/sideNavBarIcons/logout.png';
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 
@@ -42,7 +42,7 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                         Home
                     </Link>
 
-                    <Link to='/home/friends' className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/home/friends' && 'bg-blue-50 dark:bg-blue-950'}`}>
+                    <Link to='/friends' className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/home/friends' && 'bg-blue-50 dark:bg-blue-950'}`}>
                         <img src={friendsIcon} alt="" width={20} className='dark:invert' />
                         Friends
                     </Link>

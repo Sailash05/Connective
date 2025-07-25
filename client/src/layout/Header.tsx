@@ -1,18 +1,21 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ThemeContext } from '../../context/ThemeContext';
-import { userService } from '../../service/user.service';
+import { ThemeContext } from '../context/ThemeContext';
+import { userService } from '../service/user.service';
+import { useCreatePost } from '../context/CreatePostContext';
 
-import upgradeIcon from '../../assets/mainPageImages/upgrade.png';
-import createPostIcon from '../../assets/mainPageImages/createPost.png';
+import upgradeIcon from '../assets/mainPageImages/upgrade.png';
+import createPostIcon from '../assets/mainPageImages/createPost.png';
 import { IoMdNotifications } from "react-icons/io";
 import { MdOutlineMessage } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
-import darkModeIcon from '../../assets/icons/light-mode.png';
-import lightModeIcon from '../../assets/icons/dark-mode.png';
+import darkModeIcon from '../assets/icons/light-mode.png';
+import lightModeIcon from '../assets/icons/dark-mode.png';
 
-const Header = ({ setCreatePost }: {setCreatePost: (value: boolean) => void}) => {
+const Header = () => {
+
+    const { setCreatePost } = useCreatePost();
 
     const { darkMode, setDarkMode } = useContext(ThemeContext);
 

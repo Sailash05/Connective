@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { useCreatePost } from "../context/CreatePostContext";
 
-import Header from "../../layout/Header";
-import SideNavBar from "../../layout/SideNavBar";
-import RightSidebar from "../../layout/RightSideBar";
+import Header from "./Header";
+import SideNavBar from "./SideNavBar";
+import RightSidebar from "./RightSideBar";
 
-import CreatePostForm from "../../components/feedPageComponent/feedComponent/CreatePostForm";
+import CreatePostForm from "../components/feedPageComponent/feedComponent/CreatePostForm";
 
-import FailMessage from "../../components/message/FailMessage";
-import SuccessMessage from "../../components/message/SuccessMessage";
-import Logout from "../../components/message/Logout";
+import FailMessage from "../components/message/FailMessage";
+import SuccessMessage from "../components/message/SuccessMessage";
+import Logout from "../components/message/Logout";
 
-const MainPage = () => {
 
-    const [createPost, setCreatePost] = useState<boolean>(false);
+const MainLayout = () => {
+
+    const { createPost } = useCreatePost();
 
     const [failMessage, setFailMessage] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<boolean>(false);
@@ -48,6 +50,7 @@ const MainPage = () => {
                 <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
             <div className="overflow-y-scroll hide-scrollbar">
+                <Outlet />
             </div>
             <div className="overflow-y-hidden">
                 <RightSidebar />
@@ -72,4 +75,4 @@ const MainPage = () => {
     );
 }
 
-export default MainPage;
+export default MainLayout;

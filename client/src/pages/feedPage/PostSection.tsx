@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, type Params } from "react-router-dom";
 
-import { type PostType } from "../../../types/postType.ts";
-import { postService } from "../../../service/post.service";
-import Post from "../../../components/mainPageComponent/feedComponent/Post";
+import { type PostType } from "../../types/postType.ts";
+import { postService } from "../../service/post.service";
+import Post from "../../components/feedPageComponent/feedComponent/Post.tsx";
 
 const PostSection = () => {
 

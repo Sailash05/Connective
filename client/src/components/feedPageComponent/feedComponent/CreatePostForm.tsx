@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
+import { useCreatePost } from "../../../context/CreatePostContext.tsx";
 import { postService } from '../../../service/post.service.ts';
 
 type VisibilityOption = 'PUBLIC' | 'PRIVATE' | 'FOLLOWERS_ONLY';
 
 type ParameterType = {
-    setCreatePost: (value: boolean) => void,
     showFailMessage: (
         title: string,
         msg: string[],
@@ -18,7 +18,9 @@ type ParameterType = {
     ) => void
 }
 
-const CreatePostForm = ({ setCreatePost, showFailMessage, showSuccessMessage }: ParameterType) => {
+const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) => {
+
+    const { setCreatePost } = useCreatePost();
     
     const [content, setContent] = useState<string>("");
     const [files, setFiles] = useState<File[]>([]);

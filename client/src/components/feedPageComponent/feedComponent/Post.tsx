@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { postService } from '../../../service/post.service';
+import { postService } from '../../../service/post.service.ts';
 import { type PostType } from '../../../types/postType.ts';
-import { timeDifference } from '../../../utils/dateAndTime';
+import { timeDifference } from '../../../utils/dateAndTime.ts';
 import SharePopUp from './SharePopUp.tsx';
 import CommentSection from '../commentComponent/CommentSection.tsx';
 
@@ -20,8 +20,6 @@ import notSaveIcon from '../../../assets/mainPageImages/postContainerIcons/not_s
 
 const Post = ({ post }: { post: PostType}) => {
 
-    //const userId: string = localStorage.getItem('UserId') || "";
-
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
@@ -33,7 +31,8 @@ const Post = ({ post }: { post: PostType}) => {
 
         if (isMenuOpen) {
             document.addEventListener('mousedown', handleClickOutside);
-        } else {
+        } 
+        else {
             document.removeEventListener('mousedown', handleClickOutside);
         }
 
@@ -172,7 +171,7 @@ const Post = ({ post }: { post: PostType}) => {
                 commentSection && <CommentSection postId={post._id} noOfComments={post.noOfComments} />
             }
             {
-                sharePopUp && <SharePopUp url={`${import.meta.env.VITE_FRONTEND_URL}/home/post/${post._id}`} setSharePopUp={setSharePopUp} />
+                sharePopUp && <SharePopUp url={`${import.meta.env.VITE_FRONTEND_URL}/post/${post._id}`} setSharePopUp={setSharePopUp} />
             }
         </div>
     );
