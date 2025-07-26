@@ -6,7 +6,11 @@ export const getProfilePictureService = async (userId) => {
         if(!user.profilePicture) {
             return { status: 404, message: 'Profile picture not found.' };
         }
-        return { status: 200, message: 'Get your profile picture', profilePictureUrl: user.profilePicture };
+        return { status: 200, message: 'Get your profile picture', data: {
+            userName: user.userName,
+            email: user.email,
+            profilePicture: user.profilePicture 
+        }};
     }
     catch(err) {
         return { status: 500, message: err.message };

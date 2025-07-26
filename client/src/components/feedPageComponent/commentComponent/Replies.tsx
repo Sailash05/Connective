@@ -57,11 +57,11 @@ const Replies = ({ reply }: { reply: ReplyType }) => {
     }
 
     return(
-        <div className="mx-10 py-3 border-b border-gray-200 dark:border-gray-700 relative">
+        <div className="mx-2 md:mx-10 py-2 border-b border-gray-200 dark:border-gray-700 relative">
 
             {/* Profile & Menu */}
             <div className="flex gap-3 items-center relative">
-                <img src={reply.profilePicture} alt="Profile" className="h-9 w-9 rounded-full object-cover"/>
+                <img src={reply.profilePicture} alt="Profile" className="h-7 w-7 md:h-9 md:w-9 rounded-full object-cover"/>
                 <div className="flex flex-col">
                     <h4 className="font-semibold hover:underline cursor-pointer dark:text-white text-sm">{reply.userName}</h4>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">{timeDifference(reply.createdAt)}</p>
@@ -93,18 +93,18 @@ const Replies = ({ reply }: { reply: ReplyType }) => {
             </div>
 
             {/* Comment Content */}
-            <div className="ml-12 mt-3">
+            <div className="ml-12 mt-1 md:mt-3">
                 <pre className="font-sans dark:text-white whitespace-pre-wrap break-words text-sm">
                     {reply.text}
                 </pre>
 
                 {/* Meta Info */}
-                <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mt-2 ml-1">
+                <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mt-1 md:mt-2 ml-1">
                 <span>{noOfLikes} Likes</span>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3 mt-2 ml-1">
+                <div className="flex gap-3 mt-1 md:mt-2 ml-1">
                     <button onClick={() => likeReply()} className="flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                         <img src={isLiked ? likeIcon : notLikeIcon} alt="" className="w-4 h-4 dark:invert" />
                         Like

@@ -32,14 +32,14 @@ const SharePopUp = ({ url, setSharePopUp }: { url: string; setSharePopUp: (share
 
     return (
         <div className="w-[100dvw] h-[100dvh] bg-black bg-opacity-30 fixed -top-4 left-0 flex justify-center items-center z-50">
-            <div className="bg-white md:p-5 p-10 rounded-xl shadow-md max-sm:w-[90dvw]">
+            <div className="bg-white p-5 rounded-xl shadow-md max-sm:w-[90dvw]">
                 <header className="items-center h-10 flex justify-between">
                     <h2 className="text-lg font-bold">Share post</h2>
                     <button
                         onClick={() => setSharePopUp(false)}
                         className="bg-gray-200 hover:bg-gray-300 transition-all p-1 rounded-full"
                     >
-                        <IoClose className="text-lg text-gray-600" />
+                        <IoClose className="text-xl text-gray-600" />
                     </button>
                 </header>
 
@@ -59,7 +59,7 @@ const SharePopUp = ({ url, setSharePopUp }: { url: string; setSharePopUp: (share
                 <p className="mt-5 font-medium">Or copy link</p>
                 <div className="border border-black flex mt-2 mb-2 p-1 items-center">
                     <img src={addLinkIcon} alt="" className="ml-2 mr-4 w-5 h-5" />
-                    <input type="text" value={url} className="w-[18rem] focus:outline-none" readOnly />
+                    <input type="text" value={url} className="w-[12rem] md:w-[18rem] focus:outline-none" readOnly />
                     <button onClick={() => copyToClipboard()} className="bg-blue-600 py-1 px-4 font-bold text-white rounded-md hover:bg-blue-800 transition-all relative">
                         Copy
                         {copied && (

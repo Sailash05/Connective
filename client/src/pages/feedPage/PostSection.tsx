@@ -23,7 +23,7 @@ const PostSection = () => {
     }, []);
 
     return(
-        <div className="bg-gray-100 dark:bg-slate-900 px-8 py-4 space-y-5">
+        <div className="bg-gray-100 dark:bg-slate-900 px-2 md:px-8 py-4 space-y-5">
             {
                 post && <Post post={post} />
             }

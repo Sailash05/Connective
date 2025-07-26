@@ -4,6 +4,7 @@ import { type PostType } from '../../../types/postType.ts';
 import { timeDifference } from '../../../utils/dateAndTime.ts';
 import SharePopUp from './SharePopUp.tsx';
 import CommentSection from '../commentComponent/CommentSection.tsx';
+import ImageContainer from './ImageContainer.tsx';
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdReportGmailerrorred } from "react-icons/md";
@@ -28,18 +29,23 @@ const Post = ({ post }: { post: PostType}) => {
                 setIsMenuOpen(false);
             }
         };
-
         if (isMenuOpen) {
             document.addEventListener('mousedown', handleClickOutside);
         } 
         else {
             document.removeEventListener('mousedown', handleClickOutside);
         }
-
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isMenuOpen]);
+
+    const [isImageOpen, setIsImageOpen] = useState<boolean>(false);
+    const [currentImage, setCurrentImage] = useState<number>(0);
+    const openImage = (index: number) => {
+        setCurrentImage(index);
+        setIsImageOpen(true);
+    }
 
     const [isContentExpanded, setIsContentExpanded] = useState<boolean>(false);
     
@@ -83,17 +89,17 @@ const Post = ({ post }: { post: PostType}) => {
     }
 
     return(
-        <div className='bg-white rounded-2xl py-4 px-12 dark:bg-slate-950 shadow-md shadow-blue-100 dark:shadow-slate-800 space-y-4'>
+        <div className='bg-white rounded-xl py-2 md:py-4 px-4 md:px-12 dark:bg-slate-950 shadow-sm shadow-blue-100 dark:shadow-slate-800 space-y-4'>
 
             {/* Profile */}
-            <div className='flex gap-4 justify-start items-center relative'>
-                <img src={post.profilePicture} alt="" className='h-10 w-10 rounded-full object-cover' />
+            <div className='flex gap-2 md:gap-4 justify-start items-center relative'>
+                <img src={post.profilePicture} alt="" className='h-8 w-8 md:h-10 md:w-10 rounded-full object-cover' />
                 <div>
-                    <h3 className='font-bold hover:underline cursor-pointer dark:text-white'>{post.userName}</h3>
-                    <p className='text-zinc-600 dark:text-zinc-400'>{timeDifference(post.createdAt)}</p>
+                    <h3 className='font-bold hover:underline cursor-pointer dark:text-white max-md:text-sm'>{post.userName}</h3>
+                    <p className='text-zinc-600 dark:text-zinc-400 max-md:text-xs text-sm'>{timeDifference(post.createdAt)}</p>
                 </div>
-                <button className="flex items-center h-fit ml-auto bg-blue-600 px-4 py-2 rounded-full text-white font-bold hover:bg-blue-800 transition-all">
-                    <img src={followIcon} alt="" className="w-4 h-4 object-contain invert mr-2" />
+                <button className="flex items-center h-fit ml-auto bg-blue-600 px-2 md:px-4 py-1 md:py-2 rounded-full text-white font-bold hover:bg-blue-800 transition-all max-sm:text-sm">
+                    <img src={followIcon} alt="" className="w-3 h-3 md:w-4 md:h-4 object-contain invert mr-2" />
                     Follow
                 </button>
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className='p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all dark:text-white'>
@@ -132,41 +138,77 @@ const Post = ({ post }: { post: PostType}) => {
             </p>
 
             {/* Image container */}
-            <div className="grid grid-cols-2 gap-2 rounded overflow-hidden">
-                {
-                    post.fileData.map((file, index) => <img src={file.url} alt="Post Image" key={index} className="w-full h-48 object-cover rounded" />)
-                }
-            </div>
+            <div
+  className={`grid gap-2 rounded overflow-hidden ${
+    post.fileData.length === 1
+      ? "grid-cols-1"
+      : post.fileData.length === 2
+      ? "grid-cols-2"
+      : post.fileData.length === 3
+      ? "grid-cols-2 grid-rows-2"
+      : "grid-cols-2"
+  }`}
+>
+  {post.fileData.slice(0, 4).map((file, index) => (
+    <div
+      key={index}
+      onClick={() => openImage(index)}
+      className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded 
+        w-full h-40 sm:h-48 md:h-56 overflow-hidden relative cursor-pointer"
+    >
+      <img
+        src={file.url}
+        alt={`Post Image ${index}`}
+        className={`max-w-full max-h-full object-contain ${
+          index === 3 && post.fileData.length > 4 ? "opacity-40" : ""
+        }`}
+      />
+
+      {/* Overlay for extra images */}
+      {index === 3 && post.fileData.length > 4 && (
+        <p className="absolute text-gray-700 dark:text-white text-4xl sm:text-5xl font-extrabold">
+          +{post.fileData.length - 4}
+        </p>
+      )}
+    </div>
+  ))}
+</div>
+
+
+
 
             {/* Post meta data */}
-            <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-400 font-medium">
+            <div className="flex gap-3 md:gap-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">
                 <p>{likeCount} Likes</p>
                 <p>{post.noOfComments} Comments</p>
             </div>
 
 
             <div className='flex justify-between dark:text-white'>
-                <button onClick={() => likeBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
-                    <img src={isLiked ? likeIcon : notLikeIcon} alt="" className='w-5 h-5 dark:invert' />
+                <button onClick={() => likeBtnHandle()} className='flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm'>
+                    <img src={isLiked ? likeIcon : notLikeIcon} alt="" className='w-4 h-4 md:w-5 md:h-5 dark:invert' />
                     &nbsp;Like
                 </button>
-                <button onClick={() => setCommentSection(!commentSection)} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
-                    <img src={commentIcon} alt="" className='w-5 h-5 dark:invert' />
+                <button onClick={() => setCommentSection(!commentSection)} className='flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm'>
+                    <img src={commentIcon} alt="" className='w-4 h-4 md:w-5 md:h-5 dark:invert' />
                     &nbsp;Comments
                 </button>
-                <button className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
-                    <img src={sendIcon} alt="" className='w-5 h-5 dark:invert' />
+                <button className='flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm'>
+                    <img src={sendIcon} alt="" className='w-4 h-4 md:w-5 md:h-5 dark:invert' />
                     &nbsp;send
                 </button>
-                <button onClick={() => setSharePopUp(true)} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
-                    <img src={shareIcon} alt="" className='w-5 h-5 dark:invert' />
+                <button onClick={() => setSharePopUp(true)} className='flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm'>
+                    <img src={shareIcon} alt="" className='w-4 h-4 md:w-5 md:h-5 dark:invert' />
                     &nbsp;Share
                 </button>
-                <button onClick={() => saveBtnHandle()} className='flex justify-center items-center h-fit px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg'>
-                    <img src={isSaved ? saveIcon : notSaveIcon} alt="" className='w-5 h-5 dark:invert' />
+                <button onClick={() => saveBtnHandle()} className='flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm'>
+                    <img src={isSaved ? saveIcon : notSaveIcon} alt="" className='w-4 h-4 md:w-5 md:h-5 dark:invert' />
                     &nbsp;Save
                 </button>
             </div>
+            {
+                isImageOpen && <ImageContainer fileData={post.fileData} index={currentImage} setIsImageOpen={setIsImageOpen} />
+            }
             {
                 commentSection && <CommentSection postId={post._id} noOfComments={post.noOfComments} />
             }

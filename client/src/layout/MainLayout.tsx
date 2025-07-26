@@ -20,6 +20,7 @@ const MainLayout = () => {
     const [failMessage, setFailMessage] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<boolean>(false);
     const [logoutPopup, setLogoutPopup] = useState<Boolean>(false);
+    const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>("");
     const [msg, setMsg] = useState<string[]>([]);
@@ -41,18 +42,18 @@ const MainLayout = () => {
     }
 
     return(
-        <div className="h-[100dvh] grid grid-cols-[20%_55%_25%] grid-rows-[auto_1fr] dark:bg-slate-950">
+        <div className="h-[100dvh] grid grid-cols-1 md:grid-cols-[20%_55%_25%] grid-rows-[auto_1fr] dark:bg-slate-950 max-md:relative">
             
-            <div className="col-span-3">
-                <Header/>
+            <div className="col-span-1 md:col-span-3">
+                <Header setLogoutPopup={setLogoutPopup} isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
             </div>
-            <div className="overflow-y-hidden">
+            <div className={`max-md:z-20 md:block overflow-y-hidden bg-white dark:bg-slate-950 ${isSideBarOpen ? 'max-md:fixed' : 'max-md:hidden'} max-md:h-[calc(100dvh-3.5rem)] max-md:bottom-0`}>
                 <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
             <div className="overflow-y-scroll hide-scrollbar">
                 <Outlet />
             </div>
-            <div className="overflow-y-hidden">
+            <div className="hidden md:block overflow-y-hidden">
                 <RightSidebar />
             </div>
 

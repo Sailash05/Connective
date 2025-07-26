@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useCreatePost } from "../../../context/CreatePostContext.tsx";
 import { postService } from '../../../service/post.service.ts';
 
+import { IoClose } from "react-icons/io5";
+
 type VisibilityOption = 'PUBLIC' | 'PRIVATE' | 'FOLLOWERS_ONLY';
 
 type ParameterType = {
@@ -64,6 +66,10 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
             return;
         }
 
+        if(files.length > 10) {
+            showFailMessage('Failed!', ['You can only able to upload 10 images'], 'Try again');
+        }
+
         const formData: FormData = new FormData();
         formData.append('content', content);
         files.forEach(file => formData.append('media', file));
@@ -84,10 +90,12 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
 
     return(
         <div className="bg-black bg-opacity-25 dark:bg-opacity-30 w-[100dvw] h-[100dvh] fixed flex justify-center items-center">
-            <div className="bg-white dark:bg-slate-800 w-[35dvw] h-[90dvh] p-6 rounded-2xl flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-800 max-md:min-w-[90dvw] max-md:overflow-y-scroll max-md:space-y-2 md:w-[35dvw] h-[90dvh] p-6 rounded-2xl flex flex-col justify-between">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-blue-600 dark:text-blue-500 font-bold text-2xl">New Post</h2>
-                    <span className="py-1 px-2 hover:scale-125 transition-all cursor-pointer font-bold dark:text-white" onClick={() => setCreatePost(false)}>X</span>
+                    <h2 className="text-blue-600 dark:text-white font-bold text-2xl">New Post</h2>
+                    <button onClick={() => setCreatePost(false)} className="bg-gray-200 hover:bg-gray-300 transition-all p-1 rounded-full ">
+                        <IoClose className="text-2xl text-gray-600" />
+                    </button>
                 </div>
 
                 <form className="flex-grow flex flex-col justify-evenly">
@@ -120,6 +128,10 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
                                 }
                                 </div>
                             )
+                        }
+                        {
+                            files.length > 10 &&
+                            <p className="text-red-500 font-bold">You can only able to upload 10 images</p>
                         }
 
                         <div onDrop={handleDrop} onDragOver={preventDefaults} onDragEnter={preventDefaults} onDragLeave={preventDefaults} className="w-full p-3 border-2 border-dashed rounded-lg text-center cursor-pointer transition duration-200 ease-in-out hover:border-blue-600 bg-gray-50">

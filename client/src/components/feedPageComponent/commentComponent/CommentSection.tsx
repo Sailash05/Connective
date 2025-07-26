@@ -97,7 +97,7 @@ const CommentSection = ({ postId, noOfComments }: { postId: string, noOfComments
 
     return (
         <div className="border-t-2 border-gray-300 dark:border-gray-600 pt-2">
-            <div className="flex gap-3 mx-10">
+            <div className="flex gap-3 md:mx-10">
                 <h3 className="font-bold text-md dark:text-white pt-3">Comment: </h3>
                 <div className="border border-black dark:border-white rounded-3xl flex-grow p-1 flex items-end">
                     <textarea
@@ -112,7 +112,7 @@ const CommentSection = ({ postId, noOfComments }: { postId: string, noOfComments
                     />
                     <button
                         onClick={addComment}
-                        className="bg-blue-600 hover:bg-blue-800 text-white font-bold rounded-full px-4 py-1 ml-3 h-10 relative"
+                        className="bg-blue-600 hover:bg-blue-800 text-white font-bold rounded-full px-4 py-1 ml-3 md:h-10 relative"
                     >
                         Post
                         {successState && (
@@ -125,12 +125,12 @@ const CommentSection = ({ postId, noOfComments }: { postId: string, noOfComments
             </div>
 
             {
-                noOfComments === 0 && <p className="text-center mt-4 dark:text-white">No comments yet</p>
+                noOfComments === 0 && <p className="text-center mt-3 md:mt-4 dark:text-white max-md:text-sm">No comments yet</p>
             }
 
             {
                 noOfComments !== 0 && (
-                    <div className="mx-10 mt-2">
+                    <div className="mx-2 md:mx-10 mt-3 max-md:text-sm">
                         <button onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)} className="flex gap-2 items-center relative dark:text-white">
                             Most {commentFilter.toLowerCase()}
                             <FaChevronDown />
@@ -151,7 +151,7 @@ const CommentSection = ({ postId, noOfComments }: { postId: string, noOfComments
 
             {
                 noOfComments !== 0 && (
-                    <div className="py-5 space-y-4">
+                    <div className="md:py-5 space-y-4">
                         {comments?.map((comment) => (
                             <Comments key={comment._id} comment={comment} />
                         ))}
@@ -162,10 +162,10 @@ const CommentSection = ({ postId, noOfComments }: { postId: string, noOfComments
             {
                 noOfComments !== 0 && (
                     <div className="text-center">
-                        <button onClick={loadMoreComments} className="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-full font-bold transition-all relative">
+                        <button onClick={loadMoreComments} className="bg-blue-600 hover:bg-blue-800 text-white max-md:mt-1 px-2 py-1 md:px-4 md:py-2 rounded-full font-bold transition-all relative">
                             Load more comments
                             {isMaxCommentReached && (
-                                <div className="absolute font-medium bg-gray-500 p-2 -top-12 left-1 rounded-md">
+                                <div className="absolute font-medium max-md:text-sm bg-gray-500 p-2 -top-12 left-1 rounded-md">
                                     Max comment reached.
                                 </div>
                             )}

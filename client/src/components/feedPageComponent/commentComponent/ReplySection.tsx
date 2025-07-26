@@ -80,8 +80,8 @@ const ReplySection = ({ postId, commentId, noOfReplies }: { postId: string, comm
     }, []);
 
     return(
-        <div className="border-l-2 border-gray-300 dark:border-gray-600 mt-3 pt-5 ml-16">
-            <div className="flex gap-3 mx-10">
+        <div className="border-l-2 border-gray-300 dark:border-gray-600 mt-3 md:pt-5 ml-8 md:ml-16">
+            <div className="flex gap-3 mx-2 md:mx-10">
                 <h3 className="font-bold text-sm dark:text-white pt-3">Reply: </h3>
                 <div className="border border-black dark:border-white rounded-3xl flex-grow p-1 flex items-end">
                     <textarea
@@ -96,7 +96,7 @@ const ReplySection = ({ postId, commentId, noOfReplies }: { postId: string, comm
                     />
                     <button
                         onClick={addReply}
-                        className="bg-blue-600 hover:bg-blue-800 text-white font-bold rounded-full px-4 py-1 ml-3 h-10 relative"
+                        className="bg-blue-600 hover:bg-blue-800 text-white font-bold rounded-full px-4 py-1 ml-3 md:h-10 relative"
                     >
                         Post
                         {successState && (
@@ -109,12 +109,12 @@ const ReplySection = ({ postId, commentId, noOfReplies }: { postId: string, comm
             </div>
 
             {
-                noOfReplies === 0 && <p className="text-center mt-4 dark:text-white">No replies yet</p>
+                noOfReplies === 0 && <p className="text-center mt-3 md:mt-4 dark:text-white max-md:text-sm">No replies yet</p>
             }
 
             {
                 noOfReplies !== 0 && (
-                    <div className="mx-10 mt-2">
+                    <div className="mx-2 md:mx-10 mt-2">
                         <button onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)} className="flex gap-2 items-center relative dark:text-white text-sm">
                             Most {replyFilter.toLowerCase()}
                             <FaChevronDown />
@@ -135,7 +135,7 @@ const ReplySection = ({ postId, commentId, noOfReplies }: { postId: string, comm
 
             {
                 noOfReplies !== 0 && (
-                    <div className="py-5 space-y-4">
+                    <div className="py-2 md:py-5 space-y-2 md:space-y-4">
                         {replies?.map((reply) => (
                             <Replies key={reply._id} reply={reply} />
                         ))}
@@ -149,7 +149,7 @@ const ReplySection = ({ postId, commentId, noOfReplies }: { postId: string, comm
                         <button onClick={loadMoreComments} className="bg-blue-600 hover:bg-blue-800 text-white px-2 py-1 text-sm rounded-full font-bold transition-all relative">
                             Load more replies
                             {isMaxCommentReached && (
-                                <div className="absolute font-medium bg-gray-500 p-2 -top-12 left-1 rounded-md">
+                                <div className="absolute font-medium max-md:text-sm bg-gray-500 p-2 -top-12 left-1 rounded-md">
                                     Max reply reached.
                                 </div>
                             )}
