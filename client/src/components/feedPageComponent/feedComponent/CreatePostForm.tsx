@@ -66,8 +66,40 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
             return;
         }
 
-        if(files.length > 10) {
-            showFailMessage('Failed!', ['You can only able to upload 10 images'], 'Try again');
+        const allowedImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+        const allowedVideoTypes = ["video/mp4", "video/quicktime"];
+
+        const invalidFiles = files.filter(
+            (file) =>
+                !allowedImageTypes.includes(file.type) &&
+                !allowedVideoTypes.includes(file.type)
+        );
+
+        if (invalidFiles.length > 0) {
+            showFailMessage(
+                'Failed!',
+                ['Some files are not supported (only JPG, PNG, MP4, MOV allowed)'],
+                'Try again'
+            );
+            return;
+        }
+
+        const images = files.filter(file => file.type.startsWith("image/"));
+        const videos = files.filter(file => file.type.startsWith("video/"));
+
+        if (videos.length > 1) {
+            showFailMessage('Failed!', ['You can only upload 1 video per post'], 'Try again');
+            return;
+        }
+
+        if (images.length > 10) {
+            showFailMessage('Failed!', ['You can upload up to 10 images per post'], 'Try again');
+            return;
+        }
+
+        if (videos.length > 0 && images.length > 0) {
+            showFailMessage('Failed!', ['You cannot upload images and videos in the same post'], 'Try again');
+            return;
         }
 
         const formData: FormData = new FormData();

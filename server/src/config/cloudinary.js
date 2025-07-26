@@ -11,19 +11,22 @@ cloudinary.config({
 });
 
 const postStorage = new CloudinaryStorage({
-    cloudinary: cloudinary,
+    cloudinary,
     params: (req, file) => ({
         folder: `connective_posts/${req.user.userId}`,
+        resource_type: 'auto',
         allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov'],
+        public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
     }),
 });
 
-
 const profileStorage = new CloudinaryStorage({
-    cloudinary: cloudinary,
+    cloudinary,
     params: {
         folder: 'connective_users/profile',
         allowed_formats: ['jpg', 'png', 'jpeg'],
+        resource_type: 'image',
     }
-})
+});
+
 export { cloudinary, postStorage, profileStorage };

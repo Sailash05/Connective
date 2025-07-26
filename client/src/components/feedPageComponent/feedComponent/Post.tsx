@@ -137,43 +137,54 @@ const Post = ({ post }: { post: PostType}) => {
                 }
             </p>
 
-            {/* Image container */}
-            <div
-  className={`grid gap-2 rounded overflow-hidden ${
-    post.fileData.length === 1
-      ? "grid-cols-1"
-      : post.fileData.length === 2
-      ? "grid-cols-2"
-      : post.fileData.length === 3
-      ? "grid-cols-2 grid-rows-2"
-      : "grid-cols-2"
-  }`}
->
-  {post.fileData.slice(0, 4).map((file, index) => (
+           {/* Media container */}
+<div className="rounded overflow-hidden">
+  {/* If the post contains a video */}
+  {post.fileData.length === 1 && post.fileData[0].type.startsWith("video") ? (
+    <video
+      src={post.fileData[0].url}
+      controls
+      className="w-full max-h-[500px] object-contain rounded"
+    />
+  ) : (
+    /* Otherwise, render image grid */
     <div
-      key={index}
-      onClick={() => openImage(index)}
-      className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded 
-        w-full h-40 sm:h-48 md:h-56 overflow-hidden relative cursor-pointer"
+      className={`grid gap-2 rounded overflow-hidden ${
+        post.fileData.length === 1
+          ? "grid-cols-1"
+          : post.fileData.length === 2
+          ? "grid-cols-2"
+          : post.fileData.length === 3
+          ? "grid-cols-2 grid-rows-2"
+          : "grid-cols-2"
+      }`}
     >
-      <img
-        src={file.url}
-        alt={`Post Image ${index}`}
-        className={`max-w-full max-h-full object-contain ${
-          index === 3 && post.fileData.length > 4 ? "opacity-40" : ""
-        }`}
-      />
+      {post.fileData.slice(0, 4).map((file, index) => (
+        <div
+          key={index}
+          onClick={() => openImage(index)}
+          className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded 
+            w-full h-40 sm:h-48 md:h-56 overflow-hidden relative cursor-pointer"
+        >
+          <img
+            src={file.url}
+            alt={`Post Image ${index}`}
+            className={`max-w-full max-h-full object-contain ${
+              index === 3 && post.fileData.length > 4 ? "opacity-40" : ""
+            }`}
+          />
 
-      {/* Overlay for extra images */}
-      {index === 3 && post.fileData.length > 4 && (
-        <p className="absolute text-gray-700 dark:text-white text-4xl sm:text-5xl font-extrabold">
-          +{post.fileData.length - 4}
-        </p>
-      )}
+          {/* Overlay for extra images */}
+          {index === 3 && post.fileData.length > 4 && (
+            <p className="absolute text-gray-700 dark:text-white text-4xl sm:text-5xl font-extrabold">
+              +{post.fileData.length - 4}
+            </p>
+          )}
+        </div>
+      ))}
     </div>
-  ))}
+  )}
 </div>
-
 
 
 
