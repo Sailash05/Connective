@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from './routers/authRoutes.js';
 import userRoutes from './routers/userRoutes.js';
 import postRouter from './routers/postRoutes.js';
+import interactionRouter from './routers/interactionRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -26,5 +27,6 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRouter);
+app.use('/api/interaction', interactionRouter);
 
 app.listen(PORT, () => console.log(`🚀 Port running on ${PORT}`))

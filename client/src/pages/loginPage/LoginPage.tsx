@@ -6,7 +6,8 @@ import LoginSection from './section/LoginSection';
 import FailMessage from "../../components/message/FailMessage";
 import SuccessMessage from '../../components/message/SuccessMessage';
 
-import loginPageImage from '../../assets/loginPageImage/image.png';
+// import loginPageImage from '../../assets/loginPageImage/image.png';
+import loginPageImage from '../../assets/loginPageImage/image-removebg-preview.png'
 import rightArrow from '../../assets/loginPageImage/right-arrow.png'
 
 const LoginPage = () => {
@@ -61,7 +62,7 @@ const LoginPage = () => {
                     <h1 className='px-8 text-3xl font-extrabold dark:text-white'>Build a world class</h1>
                     <h1 className='px-8 text-3xl font-extrabold dark:text-white'>connection with <span className='text-blue-600 dark:text-blue-500'>Connective</span></h1>
                     <p className='text-slate-700 px-8 mt-4 dark:text-slate-200'>Join a growing community and take the next step in your personal and professional growth.</p>
-                    <img src={loginPageImage} alt="" width={400} className='bg-red-200 mx-auto mt-8' />
+                    <img src={loginPageImage} alt="" width={400} className='mx-auto mt-8' />
                     
                 </section>
 

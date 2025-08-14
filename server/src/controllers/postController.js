@@ -27,10 +27,21 @@ export const createPost = async (req, res) => {
 
 export const getFeed = async (req, res) => {
 
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+
+    if (isNaN(page) || isNaN(limit)) {
+        return res.status(400).json(response('SUCESS', 'Invalid page or limit.', null));
+    }
+
     try {
-        const result = await getFeedService(req.user.userId);
+        const result = await getFeedService(req.user.userId, page, limit);
         if(result.status === 200) {
-            return res.status(200).send(response('SUCCESS', result.message, result.data));
+            return res.status(200).send(response('SUCCESS', result.message, {
+                posts: result.data,
+                currentPage: result.currentPage,
+                totalPages: result.totalPages
+            }));
         }
         if (result.status === 500) {
             return res.status(500).send(response('FAILED', result.message, null));

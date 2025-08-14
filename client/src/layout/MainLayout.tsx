@@ -50,7 +50,7 @@ const MainLayout = () => {
             <div className={`max-md:z-20 md:block overflow-y-hidden bg-white dark:bg-slate-950 ${isSideBarOpen ? 'max-md:fixed' : 'max-md:hidden'} max-md:h-[calc(100dvh-3.5rem)] max-md:bottom-0`}>
                 <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
-            <div className="overflow-y-scroll hide-scrollbar">
+            <div className="overflow-y-scroll ">  {/* hide-scrollbar */}
                 <Outlet />
             </div>
             <div className="hidden md:block overflow-y-hidden">

@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import addLinkIcon from '../../../assets/mainPageImages/feedSectionIcons/add-link.png';
+import { interactionService } from "../../../service/interaction.service";
 
-const SharePopUp = ({ url, setSharePopUp }: { url: string; setSharePopUp: (sharePopUp: boolean) => void }) => {
+const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: string; setSharePopUp: (sharePopUp: boolean) => void }) => {
     const [copied, setCopied] = useState(false);
+
+    const postSharedInteraction = async () => {
+        try {
+            await interactionService.postShared(postId);
+        }
+        catch(err) {
+        }
+    }
 
     const copyToClipboard = async () => {
         try {
@@ -22,6 +31,7 @@ const SharePopUp = ({ url, setSharePopUp }: { url: string; setSharePopUp: (share
                 document.body.removeChild(textArea);
             }
             setCopied(true);
+            await postSharedInteraction();
 
             // Hide message after 2 seconds
             setTimeout(() => setCopied(false), 2000);

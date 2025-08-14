@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
 import User from '../models/userModel.js';
+import { storeProfilePicture } from '../service/userService.js';
 
 dotenv.config();
 
@@ -45,8 +46,14 @@ const findOrCreateUser = async (profile, emailOverride = null) => {
             userName,
             email: finalEmail,
             authProvider: profile.provider,   // 'google' or 'github'
-            profilePicture: profile.photos?.[0]?.value || ''
+            // profilePicture: profile.photos?.[0]?.value || ''
         });
+
+        if (profile.photos?.[0]?.value) {
+            var profileUrl = await storeProfilePicture(profile.photos[0].value, user._id);
+            user.profilePicture = profileUrl;
+            await user.save();
+        }
     }
 
     return user;

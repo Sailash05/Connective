@@ -2,6 +2,9 @@ import Post from '../models/postModel/postModel.js';
 import User from '../models/userModel.js';
 import Comment from '../models/postModel/commentModel.js';
 import mongoose from 'mongoose';
+import PostInteraction from '../models/interaction/postInteractionModel.js';
+import { postInteraction } from './interactionService/postInteractionService.js';
+import axios from "axios";
 
 export const createPostService = async (userId, { content, tags, visibility }, fileData) => {
     
@@ -23,18 +26,141 @@ export const createPostService = async (userId, { content, tags, visibility }, f
     }
 }
 
-export const getFeedService = async (userId) => {
+export const getFeedService = async (userId, page = 1, limit = 10) => {
     try {
-        // Get current user's saved posts (for isPostSaved flag)
+        const skip = (page - 1) * limit;
+
+        const interactions = await PostInteraction.find({ userId }).lean();
         const currentUser = await User.findById(userId)
-            .select('savedPost')
+            .select("savedPost")
             .lean();
+        const savedPosts = currentUser?.savedPost || [];
 
-        const feeds = await Post.aggregate([
-            // Sort newest posts first
+        // --- CASE 1: New user (no interactions) ---
+        if (!interactions || interactions.length === 0 || true) {
+            const totalPosts = await Post.countDocuments(); // For pagination metadata
+
+            const feeds = await Post.aggregate([
+                { $sort: { createdAt: -1 } },
+                { $skip: skip },                 // Pagination
+                { $limit: limit },               // Pagination
+
+                // Lookup post owner info
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userId",
+                        foreignField: "_id",
+                        as: "userInfo"
+                    }
+                },
+                { $unwind: "$userInfo" },
+
+                // Count comments (only top-level)
+                {
+                    $lookup: {
+                        from: "comments",
+                        let: { postId: "$_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$postId", "$$postId"] },
+                                            { $eq: ["$parentCommentId", null] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $count: "count" }
+                        ],
+                        as: "commentData"
+                    }
+                },
+                {
+                    $addFields: {
+                        noOfComments: {
+                            $ifNull: [{ $arrayElemAt: ["$commentData.count", 0] }, 0]
+                        }
+                    }
+                },
+                { $project: { commentData: 0 } },
+
+                // Count likes + user info
+                {
+                    $addFields: {
+                        noOfLikes: { $size: "$likes" },
+                        userName: "$userInfo.userName",
+                        profilePicture: {
+                            $ifNull: [
+                                "$userInfo.profilePicture",
+                                "https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg"
+                            ]
+                        }
+                    }
+                },
+                { $project: { userInfo: 0 } }
+            ]);
+
+            const updatedFeeds = feeds.map(feed => {
+                const feedId = feed._id.toString();
+                return {
+                    ...feed,
+                    isPostSaved: savedPosts.some(id => id.toString() === feedId),
+                    isLiked: feed.likes?.some(id => id.toString() === userId.toString()) || false
+                };
+            }).map(feed => {
+                const { likes, ...rest } = feed;
+                return rest;
+            });
+
+            return {
+                status: 200,
+                message: "Feed received successfully (new user)",
+                totalPosts,         // Total for frontend pagination
+                currentPage: page,
+                totalPages: Math.ceil(totalPosts / limit),
+                data: updatedFeeds
+            };
+        }
+
+        // --- CASE 2: Returning user (with interactions) ---
+        const userRatings = interactions.map(i => ({
+            postId: i.postId.toString(),
+            rating: i.rating
+        }));
+
+        const posts = await Post.find(
+            { userId: { $ne: userId } },
+            { _id: 1, content: 1, tags: 1 }
+        ).lean();
+
+        const formattedPosts = posts.map(p => ({
+            postId: p._id.toString(),
+            content: p.content || "",
+            tags: p.tags || []
+        }));
+
+        const feedData = {
+            ratings: userRatings,
+            posts: formattedPosts
+        };
+
+        const { data } = await axios.post(`${process.env.ML_API_URL}/recommend`, feedData);
+        const recommendedPostIds = data.recommendations || [];
+
+        if (recommendedPostIds.length === 0) {
+            return { status: 200, message: "No recommendations available", data: [] };
+        }
+
+        const totalPosts = recommendedPostIds.length;
+
+        const recommendedPosts = await Post.aggregate([
+            { $match: { _id: { $in: recommendedPostIds.map(id => new ObjectId(id)) } } },
             { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limit },
 
-            // Lookup user info (userName, profilePicture)
             {
                 $lookup: {
                     from: "users",
@@ -44,17 +170,21 @@ export const getFeedService = async (userId) => {
                 }
             },
             { $unwind: "$userInfo" },
-
-            // Count number of comments (only top-level)
             {
                 $lookup: {
                     from: "comments",
                     let: { postId: "$_id" },
                     pipeline: [
-                        { $match: { $expr: { $and: [
-                            { $eq: ["$postId", "$$postId"] },
-                            { $eq: ["$parentCommentId", null] }
-                        ]}}},
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$postId", "$$postId"] },
+                                        { $eq: ["$parentCommentId", null] }
+                                    ]
+                                }
+                            }
+                        },
                         { $count: "count" }
                     ],
                     as: "commentData"
@@ -62,14 +192,9 @@ export const getFeedService = async (userId) => {
             },
             {
                 $addFields: {
-                    noOfComments: { $ifNull: [{ $arrayElemAt: ["$commentData.count", 0] }, 0] }
-                }
-            },
-            { $project: { commentData: 0 } },
-
-            // Calculate noOfLikes and prepare fields
-            {
-                $addFields: {
+                    noOfComments: {
+                        $ifNull: [{ $arrayElemAt: ["$commentData.count", 0] }, 0]
+                    },
                     noOfLikes: { $size: "$likes" },
                     userName: "$userInfo.userName",
                     profilePicture: {
@@ -80,17 +205,10 @@ export const getFeedService = async (userId) => {
                     }
                 }
             },
-            {
-                $project: {
-                    userInfo: 0
-                }
-            }
+            { $project: { userInfo: 0, commentData: 0 } }
         ]);
 
-        const savedPosts = currentUser?.savedPost || [];
-
-        // Attach isPostSaved and isLiked in JS (after aggregation)
-        const updatedFeeds = feeds.map(feed => {
+        const finalFeeds = recommendedPosts.map(feed => {
             const feedId = feed._id.toString();
             return {
                 ...feed,
@@ -98,16 +216,25 @@ export const getFeedService = async (userId) => {
                 isLiked: feed.likes?.some(id => id.toString() === userId.toString()) || false
             };
         }).map(feed => {
-            // Remove likes array (since we only need isLiked + noOfLikes)
             const { likes, ...rest } = feed;
             return rest;
         });
 
-        return { status: 200, message: 'Feed received successfully', data: updatedFeeds };
+        return {
+            status: 200,
+            message: "Feed received successfully (recommended)",
+            totalPosts,
+            currentPage: page,
+            totalPages: Math.ceil(totalPosts / limit),
+            data: finalFeeds
+        };
+
     } catch (err) {
         return { status: 500, message: err.message };
     }
 };
+
+
 
 export const getPostService = async (postId) => {
     try {
@@ -128,6 +255,9 @@ export const getPostService = async (postId) => {
 }
 
 export const likePostService = async (userId, postId, isLike) => {
+
+    await postInteraction(userId, postId, isLike ? 'LIKED' : 'UNLIKED');
+    
     try {
         const update = isLike 
             ? { $addToSet: { likes: userId } }
@@ -241,6 +371,8 @@ export const getCommentService = async (userId, postId, filter, page = 1, limit 
 };
 
 export const commentPostService = async (userId, postId, text) => {
+    
+    await postInteraction(userId, postId, 'COMMENTED');
     try {
         const post = await Post.findById(postId).exec();
         if(!post) {
@@ -268,6 +400,7 @@ export const deleteCommentService = async (userId, commentId) => {
             userId: userId,
             parentCommentId: null
         });
+        await postInteraction(userId, comment.postId, 'UNCOMMENTED');
         if(!comment) {
             return { status: 404, message: "Comment not found or unauthorized" };
         }
@@ -428,6 +561,7 @@ export const likeReplySevice = async (userId, replyId, isLike) => {
 
 
 export const savePostService = async (userId, postId, isSave) => {
+    await postInteraction(userId, postId, isSave ? 'SAVED' : 'UNSAVED');
     try {
         const update = isSave 
             ? { $addToSet: { savedPost: postId } }

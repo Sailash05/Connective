@@ -5,20 +5,22 @@ const postInteractionSchema = mongoose.Schema({
     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true },
 
     isLiked: { type: Boolean, default: false },
-    isCommented: { type: Boolean, default: false },
+    noOfComments: { type: Number, default: 0 },
     isShared: { type: Boolean, default: false },
     isSent: { type: Boolean, default: false },
     isSaved: { type: Boolean, default: false }
 }, { timestamps: true });
 
-// Virtual rating field (not stored, calculated on the fly)
 postInteractionSchema.virtual('rating').get(function () {
     return (this.isLiked ? 1 : 0) +
-        (this.isCommented ? 2 : 0) +
+        (this.noOfComments ? 2 : 0) +
         (this.isShared ? 3 : 0) +
         (this.isSent ? 3 : 0) +
         (this.isSaved ? 4 : 0);
 });
+
+postInteractionSchema.set('toObject', { virtuals: true });
+postInteractionSchema.set('toJSON', { virtuals: true });
 
 postInteractionSchema.index({ userId: 1, postId: 1 }, { unique: true });
 

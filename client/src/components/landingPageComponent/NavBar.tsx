@@ -27,7 +27,7 @@ const NavBar = () => {
                     <li><a href='#features' className="py-2 px-4">Features</a></li>
                     <li><a href='#reviews' className="py-2 px-4">Reviews</a></li>
                     <li><a href='#blogs' className="py-2 px-4">Blogs</a></li>
-                    <li><a href='#faq' className="py-2 px-4">Faq</a></li>
+                    <li><a href='#faq' className="py-2 px-4">FAQ</a></li>
                 </ul>
                 <button className="cursor-pointer dark:invert" onClick={() => setDarkMode(!darkMode)}>
                     {

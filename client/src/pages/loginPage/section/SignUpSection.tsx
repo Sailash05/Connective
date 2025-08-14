@@ -125,7 +125,7 @@ const SignUpSection = ({
 
     return(
         <div className='mt-2'>
-            <h3 className='text-xl md:text-2xl font-bold underline mb-4'>Sign Up</h3>
+            <h3 className='text-xl md:text-2xl font-bold mb-4'>Sign Up</h3>
 
             <div>
                 <h5 className='font-bold text-sm'>User Name</h5>

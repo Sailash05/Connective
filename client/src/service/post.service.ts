@@ -2,7 +2,7 @@ import authAxios from "../api/authAxios";
 
 export const postService = {
     createPost: (data: FormData) => authAxios.post('/api/post', data),
-    getFeed: () => authAxios.get('/api/post'),
+    getFeed: (page: number, limit: number) => authAxios.get(`/api/post?page=${page}&limit=${limit}`),
     getPost: (postId: string) => authAxios.get(`/api/post/${postId}`),
 
     toggleLike: (postId: string, isLiked: boolean) => {
