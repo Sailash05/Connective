@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import usePostLoad from "../../hooks/usePostLoad";
 import FeedPost from "../../components/feedPageComponent/feedComponent/FeedPost";
 import Post from "../../components/feedPageComponent/feedComponent/Post";
+
 import StaticPostLoading from "../../components/loadingComponent/postLoading/StaticPostLoading";
 
 const FeedPage = () => {
@@ -26,6 +27,9 @@ const FeedPage = () => {
         if (node) observer.current.observe(node);
     }, [loading, hasMore]);
 
+
+    
+
     return (
         <section className="bg-gray-100 dark:bg-slate-900 px-2 md:px-8 py-4 space-y-2 md:space-y-5">
             <FeedPost />
@@ -33,7 +37,8 @@ const FeedPage = () => {
                 postList.map((post, index) => {
                     if (postList.length === index + 1) {
                         return <Post ref={lastPostRef} key={post._id} post={post} />;
-                    } else {
+                    }
+                    else {
                         return <Post key={post._id} post={post} />;
                     }
                 })
@@ -46,6 +51,8 @@ const FeedPage = () => {
                     <p className="bg-red-500 w-fit mx-auto font-bold text-white px-4 py-2 rounded-md">Post failed to load!</p>
                 </div>
             )}
+
+            
         </section>
     );
 };

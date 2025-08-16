@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import PostInteraction from '../models/interaction/postInteractionModel.js';
 import { postInteraction } from './interactionService/postInteractionService.js';
 import axios from "axios";
+import Follow from '../models/followModel.js';
 
 export const createPostService = async (userId, { content, tags, visibility }, fileData) => {
     
@@ -42,10 +43,8 @@ export const getFeedService = async (userId, page = 1, limit = 10) => {
 
             const feeds = await Post.aggregate([
                 { $sort: { createdAt: -1 } },
-                { $skip: skip },                 // Pagination
-                { $limit: limit },               // Pagination
-
-                // Lookup post owner info
+                { $skip: skip },
+                { $limit: limit },
                 {
                     $lookup: {
                         from: "users",
@@ -101,13 +100,18 @@ export const getFeedService = async (userId, page = 1, limit = 10) => {
                 },
                 { $project: { userInfo: 0 } }
             ]);
+            
+            const followingIds = new Set(
+                (await Follow.find({ follower: userId }).distinct("following")).map(id => id.toString())
+            );
 
             const updatedFeeds = feeds.map(feed => {
                 const feedId = feed._id.toString();
                 return {
                     ...feed,
                     isPostSaved: savedPosts.some(id => id.toString() === feedId),
-                    isLiked: feed.likes?.some(id => id.toString() === userId.toString()) || false
+                    isLiked: feed.likes?.some(id => id.toString() === userId.toString()) || false,
+                    isFollowed: followingIds.has(feed.userId.toString())
                 };
             }).map(feed => {
                 const { likes, ...rest } = feed;

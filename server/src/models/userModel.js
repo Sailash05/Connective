@@ -6,14 +6,20 @@ const experienceSchema = mongoose.Schema({
     role: String,
     from: Date,
     to: Date
-}, {_id: false});
+}, { _id: false });
 
 const paymentSchema = mongoose.Schema({
     amount: Number,
     method: String,   // stripe, paypal
     status: String,   // success, failed
     date: Date
-}, {_id: false});
+}, { _id: false });
+
+const badgeSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    icon: { type: String },
+    awardedAt: { type: Date, default: Date.now }
+}, { _id: false });
 
 const userSchema = mongoose.Schema({
     userName: {
@@ -68,15 +74,16 @@ const userSchema = mongoose.Schema({
         type: [String],
         default: []
     },
-
-    experience: {
-        type: [experienceSchema],
-        default: []
-    },
+    interest: { type: [String], default: [] },
+    experience: { type: [experienceSchema], default: [] },
+    badges: { type: [badgeSchema], default: [] },
 
     resume: {
         type: String
     },
+    
+    followerCount: { type: Number, default: 0 },
+    followingCount: { type: Number, default: 0 },
 
     recentProfileViewers: [
         {

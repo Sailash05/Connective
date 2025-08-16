@@ -12,6 +12,7 @@ export type PostType = {
     noOfComments: number;
     isLiked: boolean;
     isPostSaved: boolean,
+    isFollowed: boolean,
     createdAt: Date;
     updatedAt: Date;
 };
