@@ -46,7 +46,7 @@ const FriendsPage = () => {
             </header>
 
 
-            <div className="flex gap-6 mb-4 border-b">
+            <div className="flex gap-6 mb-6 border-b">
                 {
                     ['Followers', 'Following', 'Suggested'].map((t, index) => (
                         <button onClick={() => setTab(t)} className={`pb-2 font-medium -mb-px transition-colors ${
