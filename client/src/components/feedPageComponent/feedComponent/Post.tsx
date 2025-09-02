@@ -12,7 +12,6 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdReportGmailerrorred } from "react-icons/md";
 
 import followIcon from '../../../assets/mainPageImages/postContainerIcons/follow.png';
-import unfollowIcon from '../../../assets/mainPageImages/postContainerIcons/unfollow.png';
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
 import likeIcon from '../../../assets/mainPageImages/postContainerIcons/like.png';
 import commentIcon from '../../../assets/mainPageImages/postContainerIcons/comment.png';
@@ -92,14 +91,8 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
     const handleFollow = async () => {
         try {
             setFollowingLoading(true);
-            if(isFollowed) {
-                await userService.unFollow(post.userId);
-                setIsFollowed(false);
-            }
-            else {
-                await userService.addFollower(post.userId);
-                setIsFollowed(true);
-            }
+            await userService.addFollower(post.userId);
+            setIsFollowed(true);
             setFollowingLoading(false);
         }
         catch(err) {
@@ -120,22 +113,27 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
                     {timeDifference(post.createdAt)}
                 </p>
             </div>
-            <button onClick={() => handleFollow()} className={`flex items-center h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full text-white font-bold transition-all max-sm:text-sm ${isFollowed ? 'bg-red-600 hover:bg-red-800' : 'bg-blue-600 hover:bg-blue-800'}`}>
-                <img src={isFollowed ? unfollowIcon : followIcon} alt="" className="w-3 h-3 md:w-4 md:h-4 object-contain invert mr-2"/>
-                {
-                    followLoading ? (
-                        <span className='flex items-center'>
-                            {isFollowed ? 'Unfollowing' : 'Following'}
-                            &nbsp;&nbsp;
-                            <ButtonLoader />
-                        </span>
-                    ) : (
-                        <span className='flex items-center'>
-                            {isFollowed ? 'Unfollow' : 'Follow'}
-                        </span>
-                    )
-                }
-            </button>
+            {
+                !isFollowed ? (
+                    <button onClick={() => handleFollow()} className={`flex items-center h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full text-white font-bold transition-all max-sm:text-sm bg-blue-600 hover:bg-blue-800`}>
+                        <img src={followIcon} alt="" className="w-3 h-3 md:w-4 md:h-4 object-contain invert mr-2"/>
+                        {
+                            followLoading ? (
+                                <span className='flex items-center'>
+                                    Following&nbsp;&nbsp;
+                                    <ButtonLoader />
+                                </span>
+                            ) : (
+                                <span className='flex items-center'>
+                                    Follow
+                                </span>
+                            )
+                        }
+                    </button>
+                ) : (
+                    <button disabled className="bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-gray-300 cursor-not-allowed h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full font-bold max-sm:text-sm">Following</button>
+                )
+            }
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all dark:text-white">
                 <BsThreeDotsVertical />
             </button>

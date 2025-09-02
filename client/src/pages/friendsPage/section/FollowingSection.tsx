@@ -47,15 +47,15 @@ const FollowingSection = () => {
     return (
         <div>
             {/* Search & Sort */}
-            <div className="flex gap-6 mb-6 items-center">
-                <div className="w-[20rem] flex items-center border border-gray-400 rounded-xl px-3 py-2">
+            <div className="flex flex-wrap md:gap-6 gap-3 md:mb-6 mb-3 items-center">
+                <div className="w-[20rem] flex items-center border border-gray-400 rounded-xl px-3 py-2 bg-white">
                     <span className="mr-2">🔍</span>
                     <input
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search username or email"
-                        className="outline-none flex-1"
+                        className="outline-none flex-1 bg-white"
                     />
                 </div>
 
@@ -65,13 +65,13 @@ const FollowingSection = () => {
                     <option value="recent">Sort: Recent Follower</option>
                 </select>
 
-                <button onClick={() => setIsMutual((prev) => !prev)} className={`px-3 py-1 h-fit rounded-full border border-gray-400 text-sm transition-all ${isMutual ? "bg-indigo-50 border-indigo-300 text-indigo-700" : ""}`}>
+                <button onClick={() => setIsMutual((prev) => !prev)} className={`px-3 py-1 h-fit rounded-full border border-gray-400 text-sm transition-all bg-white ${isMutual ? "bg-indigo-50 border-indigo-300 text-indigo-700 scale-105" : ""}`}>
                     🤝 Mutuals only
                 </button>
             </div>
 
             {/* Profiles */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                 {userList.map((profile, index) => {
                     if (index === userList.length - 1) {
                         return <UserProfileCard user={profile} ref={lastUserProfileRef} key={index} />;

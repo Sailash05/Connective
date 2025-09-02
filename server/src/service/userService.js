@@ -54,6 +54,100 @@ export const getConnectionStatsService = async (userId) => {
     }
 }
 
+export const getUsersService = async (userId, limit, query) => {
+    try {
+        const userList = await User.aggregate([
+            {$limit: Number(limit)},
+            {$sort: { followerCount: -1 }},
+            {$match: { $or: [
+                {
+                    "userName": {
+                    $regex: query.trim(),
+                    $options: "i",
+                    },
+                },
+                {
+                    "email": {
+                    $regex: query.trim(),
+                    $options: "i",
+                    },
+                }]}
+            },
+            {$match: {
+                _id: { $ne: new mongoose.Types.ObjectId(userId) }
+            }},
+            {
+                $lookup: {
+                    from: 'follows',
+                    localField: '_id',
+                    foreignField: 'following',
+                    as: 'theirFollowers'
+                }
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    let: { myId: new mongoose.Types.ObjectId(userId) },
+                    pipeline: [
+                        { $match: { $expr: { $eq: ["$following", "$$myId"] } } }
+                    ],
+                    as: "myFollowers"
+                }
+            },
+            {
+                $addFields: {
+                mutualFollowers: {
+                    $setIntersection: [
+                        { $map: { input: "$theirFollowers", as: "f", in: "$$f.follower" } },
+                        { $map: { input: "$myFollowers", as: "f", in: "$$f.follower" } }
+                    ]
+                }
+                }
+            },
+            {
+                $addFields: {
+                mutualFollowersCount: { $size: "$mutualFollowers" }
+                }
+            },
+            {
+                $lookup: {
+                from: "follows",
+                let: { me: new mongoose.Types.ObjectId(userId), other: "$_id" },
+                pipeline: [
+                    {
+                    $match: {
+                        $expr: {
+                        $and: [
+                            { $eq: ["$follower", "$$me"] },
+                            { $eq: ["$following", "$$other"] }
+                        ]
+                        }
+                    }
+                    }
+                ],
+                as: "isFollowedDoc"
+                }
+            },
+            {
+                $addFields: {
+                isFollowed: { $gt: [{ $size: "$isFollowedDoc" }, 0] }
+                }
+            },
+            {$project: {
+                userName: 1,
+                email: 1,
+                bio: 1,
+                mutualFollowersCount: 1,
+                isFollowed: 1
+            }}
+        ])
+        return { status: 200, message: 'Get the user list', userList: userList };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
 export const addFollowerService = async (followerId, followingId) => {
     try {
         const followingUser = await User.findById(followingId).exec();
@@ -129,230 +223,229 @@ export const unFollowService = async (followerId, followingId) => {
 };
 
 export const getUserProfileListService = async (userId, query) => {
-  const { page = 1, limit = 10, search, sortBy, isMutual, type } = query;
+    const { page = 1, limit = 10, search, sortBy, isMutual, type } = query;
 
-  const matchAttribute =
-    type === "followers"
-      ? { following: new mongoose.Types.ObjectId(userId.trim()) }
-      : { follower: new mongoose.Types.ObjectId(userId.trim()) };
+    const matchAttribute =
+        type === "followers"
+        ? { following: new mongoose.Types.ObjectId(userId.trim()) }
+        : { follower: new mongoose.Types.ObjectId(userId.trim()) };
 
-  const localField = type === "followers" ? "follower" : "following";
+    const localField = type === "followers" ? "follower" : "following";
 
-  try {
-    // ---------------- MAIN QUERY ----------------
-    const userProfileList = await Follow.aggregate([
-      { $match: matchAttribute },
-      {
-        $lookup: {
-          from: "users",
-          let: { userId: `$${localField}` },
-          pipeline: [
-            { $match: { $expr: { $eq: ["$_id", "$$userId"] } } },
-            {
-              $project: {
-                userName: 1,
-                email: 1,
-                profilePicture: 1,
-                followerCount: 1,
-                skill: 1,
-                bio: 1,
-                badges: 1,
-                website: 1,
-              },
-            },
-          ],
-          as: "userProfile",
-        },
-      },
-      { $unwind: "$userProfile" },
-
-      // Mutual check
-      {
-        $lookup: {
-          from: "follows",
-          let: {
-            followerId: "$follower",
-            followingId: "$following",
-          },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$follower", "$$followingId"] },
-                    { $eq: ["$following", "$$followerId"] },
-                  ],
+    try {
+        // ---------------- MAIN QUERY ----------------
+        const userProfileList = await Follow.aggregate([
+        { $match: matchAttribute },
+        {
+            $lookup: {
+            from: "users",
+            let: { userId: `$${localField}` },
+            pipeline: [
+                { $match: { $expr: { $eq: ["$_id", "$$userId"] } } },
+                {
+                $project: {
+                    userName: 1,
+                    email: 1,
+                    profilePicture: 1,
+                    followerCount: 1,
+                    skill: 1,
+                    bio: 1,
+                    badges: 1,
+                    website: 1,
                 },
-              },
+                },
+            ],
+            as: "userProfile",
             },
-          ],
-          as: "mutualFollow",
         },
-      },
-      { $addFields: { isMutual: { $gt: [{ $size: "$mutualFollow" }, 0] } } },
-      { $project: { mutualFollow: 0 } },
+        { $unwind: "$userProfile" },
 
-      // Search filter
-      ...(search && search.trim().length > 0
-        ? [
-            {
-              $match: {
-                $or: [
-                  {
-                    "userProfile.userName": {
-                      $regex: search.trim(),
-                      $options: "i",
-                    },
-                  },
-                  {
-                    "userProfile.email": {
-                      $regex: search.trim(),
-                      $options: "i",
-                    },
-                  },
-                ],
-              },
+        // Mutual check
+        {
+            $lookup: {
+            from: "follows",
+            let: {
+                followerId: "$follower",
+                followingId: "$following",
             },
-          ]
-        : []),
+            pipeline: [
+                {
+                $match: {
+                    $expr: {
+                    $and: [
+                        { $eq: ["$follower", "$$followingId"] },
+                        { $eq: ["$following", "$$followerId"] },
+                    ],
+                    },
+                },
+                },
+            ],
+            as: "mutualFollow",
+            },
+        },
+        { $addFields: { isMutual: { $gt: [{ $size: "$mutualFollow" }, 0] } } },
+        { $project: { mutualFollow: 0 } },
 
-      // Mutual-only filter
-      ...(isMutual === "true" ? [{ $match: { isMutual: true } }] : []),
-
-      // Sorting
-      ...(sortBy === "recent"
-        ? [{ $sort: { createdAt: -1 } }]
-        : sortBy === "name"
-        ? [{ $sort: { "userProfile.userName": 1 } }]
-        : sortBy === "popular"
-        ? [{ $sort: { "userProfile.followerCount": -1 } }]
-        : []),
-
-      // isFollowed (current user follows them back)
-      {
-        $lookup: {
-          from: "follows",
-          let: { targetUserId: `$${localField}` },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
+        // Search filter
+        ...(search && search.trim().length > 0
+            ? [
+                {
+                $match: {
+                    $or: [
                     {
-                      $eq: [
-                        "$follower",
-                        new mongoose.Types.ObjectId(userId),
-                      ],
+                        "userProfile.userName": {
+                        $regex: search.trim(),
+                        $options: "i",
+                        },
                     },
-                    { $eq: ["$following", "$$targetUserId"] },
-                  ],
+                    {
+                        "userProfile.email": {
+                        $regex: search.trim(),
+                        $options: "i",
+                        },
+                    },
+                    ],
                 },
-              },
-            },
-          ],
-          as: "followedBack",
-        },
-      },
-      { $addFields: { isFollowed: { $gt: [{ $size: "$followedBack" }, 0] } } },
-      { $project: { followedBack: 0 } },
-
-      // Pagination
-      { $skip: (Number(page) - 1) * Number(limit) },
-      { $limit: Number(limit) },
-    ]);
-
-    const updatedProfileList = userProfileList.map((profile) => {
-      profile.isOnline = true; // add online flag
-      return profile;
-    });
-
-    // ---------------- COUNT QUERY ----------------
-    const totalDocumentResult = await Follow.aggregate([
-      { $match: matchAttribute },
-      {
-        $lookup: {
-          from: "users",
-          let: { userId: `$${localField}` },
-          pipeline: [
-            { $match: { $expr: { $eq: ["$_id", "$$userId"] } } },
-          ],
-          as: "userProfile",
-        },
-      },
-      { $unwind: "$userProfile" },
-
-      ...(search && search.trim().length > 0
-        ? [
-            {
-              $match: {
-                $or: [
-                  {
-                    "userProfile.userName": {
-                      $regex: search.trim(),
-                      $options: "i",
-                    },
-                  },
-                  {
-                    "userProfile.email": {
-                      $regex: search.trim(),
-                      $options: "i",
-                    },
-                  },
-                ],
-              },
-            },
-          ]
-        : []),
-
-      ...(isMutual === "true"
-        ? [
-            {
-              $lookup: {
-                from: "follows",
-                let: {
-                  followerId: "$follower",
-                  followingId: "$following",
                 },
-                pipeline: [
-                  {
-                    $match: {
-                      $expr: {
-                        $and: [
-                          { $eq: ["$follower", "$$followingId"] },
-                          { $eq: ["$following", "$$followerId"] },
+            ]
+            : []),
+
+        // Mutual-only filter
+        ...(isMutual === "true" ? [{ $match: { isMutual: true } }] : []),
+
+        // Sorting
+        ...(sortBy === "recent"
+            ? [{ $sort: { createdAt: -1 } }]
+            : sortBy === "name"
+            ? [{ $sort: { "userProfile.userName": 1 } }]
+            : sortBy === "popular"
+            ? [{ $sort: { "userProfile.followerCount": -1 } }]
+            : []),
+
+        // isFollowed (current user follows them back)
+        {
+            $lookup: {
+            from: "follows",
+            let: { targetUserId: `$${localField}` },
+            pipeline: [
+                {
+                $match: {
+                    $expr: {
+                    $and: [
+                        {
+                        $eq: [
+                            "$follower",
+                            new mongoose.Types.ObjectId(userId),
                         ],
-                      },
+                        },
+                        { $eq: ["$following", "$$targetUserId"] },
+                    ],
                     },
-                  },
-                ],
-                as: "mutualFollow",
-              },
+                },
+                },
+            ],
+            as: "followedBack",
             },
-            { $addFields: { isMutual: { $gt: [{ $size: "$mutualFollow" }, 0] } } },
-            { $match: { isMutual: true } },
-          ]
-        : []),
+        },
+        { $addFields: { isFollowed: { $gt: [{ $size: "$followedBack" }, 0] } } },
+        { $project: { followedBack: 0 } },
 
-      { $count: "total" },
-    ]);
+        // Pagination
+        { $skip: (Number(page) - 1) * Number(limit) },
+        { $limit: Number(limit) },
+        ]);
 
-    const totalDocument =
-      totalDocumentResult.length === 0 ? 0 : totalDocumentResult[0].total;
+        const updatedProfileList = userProfileList.map((profile) => {
+        profile.isOnline = true; // add online flag
+        return profile;
+        });
 
-    const paging = {
-      totalDocument,
-      currentPage: Number(page),
-      totalPage: Math.ceil(totalDocument / Number(limit)),
-    };
+        // ---------------- COUNT QUERY ----------------
+        const totalDocumentResult = await Follow.aggregate([
+        { $match: matchAttribute },
+        {
+            $lookup: {
+            from: "users",
+            let: { userId: `$${localField}` },
+            pipeline: [
+                { $match: { $expr: { $eq: ["$_id", "$$userId"] } } },
+            ],
+            as: "userProfile",
+            },
+        },
+        { $unwind: "$userProfile" },
 
-    return {
-      status: 200,
-      message: "Get profile list.",
-      userProfile: updatedProfileList,
-      paging,
-    };
-  } catch (err) {
-    console.log(err.message);
-    return { status: 500, message: err.message };
-  }
+        ...(search && search.trim().length > 0
+            ? [
+                {
+                $match: {
+                    $or: [
+                    {
+                        "userProfile.userName": {
+                        $regex: search.trim(),
+                        $options: "i",
+                        },
+                    },
+                    {
+                        "userProfile.email": {
+                        $regex: search.trim(),
+                        $options: "i",
+                        },
+                    },
+                    ],
+                },
+                },
+            ]
+            : []),
+
+        ...(isMutual === "true"
+            ? [
+                {
+                $lookup: {
+                    from: "follows",
+                    let: {
+                    followerId: "$follower",
+                    followingId: "$following",
+                    },
+                    pipeline: [
+                    {
+                        $match: {
+                        $expr: {
+                            $and: [
+                            { $eq: ["$follower", "$$followingId"] },
+                            { $eq: ["$following", "$$followerId"] },
+                            ],
+                        },
+                        },
+                    },
+                    ],
+                    as: "mutualFollow",
+                },
+                },
+                { $addFields: { isMutual: { $gt: [{ $size: "$mutualFollow" }, 0] } } },
+                { $match: { isMutual: true } },
+            ]
+            : []),
+
+        { $count: "total" },
+        ]);
+
+        const totalDocument =
+        totalDocumentResult.length === 0 ? 0 : totalDocumentResult[0].total;
+
+        const paging = {
+        totalDocument,
+        currentPage: Number(page),
+        totalPage: Math.ceil(totalDocument / Number(limit)),
+        };
+
+        return {
+        status: 200,
+        message: "Get profile list.",
+        userProfile: updatedProfileList,
+        paging,
+        };
+    } catch (err) {
+        return { status: 500, message: err.message };
+    }
 };
