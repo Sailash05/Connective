@@ -1,6 +1,6 @@
 import { response } from "../utils/response.js";
 
-import { getProfilePictureService, getUsersService, getConnectionStatsService, addFollowerService, unFollowService, getUserProfileListService } from "../service/userService.js";
+import { getProfilePictureService, getOverviewService, getUsersService, getConnectionStatsService, addFollowerService, unFollowService, getUserProfileListService } from "../service/userService.js";
 
 export const getProfilePicture = async (req, res) => {
     try {
@@ -10,6 +10,26 @@ export const getProfilePicture = async (req, res) => {
         }
         else if(result.status === 404) {
             return res.status(404).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const getOverview = async (req, res) => {
+    const userId = req.user.userId;
+    try {
+        const result = await getOverviewService(userId);
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, {
+                suggestedUser: result.suggestedUser,
+                topProfessionals: result.topProfessionals,
+                recentlyJoined: result.recentlyJoinedWithFollow
+            }));
+        }
+        else {
+            return res.status(result.status).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {

@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import Follow from '../models/followModel.js';
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { cloudinary } from "../config/cloudinary.js";
 
 export const storeProfilePicture = async (profileUrl, userId) => {
@@ -48,6 +48,95 @@ export const getConnectionStatsService = async (userId) => {
         });
 
         return { status: 200, message: 'Get the connection stats.', followersCount: user.followerCount, followingCount: user.followingCount, mutualCount: mutualCount };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const getOverviewService = async (userId) => {
+    try {
+        const userFollowing = await Follow.find({ follower: new mongoose.Types.ObjectId(userId)}).select({
+            _id: 0,
+            following: 1
+        });
+        const userFollowingArray = userFollowing.map(f => new mongoose.Types.ObjectId(f.following));
+        
+
+        const suggestedUser = await User.aggregate([
+            {$match: {
+                _id: {$nin: [...userFollowingArray, new mongoose.Types.ObjectId(userId)]}
+            }},
+            { $sample: { size: 3 } },
+            {
+                $lookup: {
+                from: "follows",
+                localField: "_id",
+                foreignField: "following",
+                as: "theirFollowers"
+                }
+            },
+            {
+                $lookup: {
+                from: "follows",
+                let: { myId: new mongoose.Types.ObjectId(userId)},
+                pipeline: [
+                    {$match: { $expr: {$eq: ['$following', '$$myId']}}}
+                ],
+                as: "myFollowers"
+                }
+            },
+            {
+                $addFields: {
+                mutualFollowers: {
+                    $setIntersection: [
+                        { $map: { input: "$theirFollowers", as: "f", in: "$$f.follower" } },
+                        { $map: { input: "$myFollowers", as: "f", in: "$$f.follower" } }
+                    ]
+                }
+                }
+            },
+            {
+                $addFields: {
+                mutualFollowersCount: { $size: "$mutualFollowers" }
+                }
+            },
+            { $project: {
+                userName: 1,
+                bio: 1,
+                profilePicture: 1,
+                mutualFollowersCount: 1
+            }}
+        ]);
+
+        const topProfessionals = await User.find({
+            _id: {$ne: new mongoose.Types.ObjectId(userId)},
+            followerCount: {$gte: 0}
+        }).sort({ followerCount: -1 }).limit(3).select({
+            userName: 1,
+            bio: 1,
+            followerCount: 1
+        });
+
+        const recentlyJoined = await User.find({_id: { $ne: new mongoose.Types.ObjectId(userId) }})
+        .sort({ createdAt: -1 })
+        .limit(3)
+        .select({ userName: 1, profilePicture: 1, bio: 1, createdAt: 1 });
+
+        const recentlyJoinedWithFollow = await Promise.all(
+            recentlyJoined.map(async (user) => {
+                const isFollowed = await Follow.exists({
+                    follower: new mongoose.Types.ObjectId(userId),
+                    following: user._id
+                });
+                return {
+                    ...user.toObject(), // convert Mongoose doc to plain object
+                    isFollowed: !!isFollowed
+                };
+            })
+        );
+
+        return { status: 200, message: 'Get the user overview', suggestedUser, topProfessionals, recentlyJoinedWithFollow };
     }
     catch(err) {
         return { status: 500, message: err.message };
@@ -136,6 +225,7 @@ export const getUsersService = async (userId, limit, query) => {
             {$project: {
                 userName: 1,
                 email: 1,
+                profilePicture: 1,
                 bio: 1,
                 mutualFollowersCount: 1,
                 isFollowed: 1
