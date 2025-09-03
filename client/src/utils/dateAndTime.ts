@@ -1,4 +1,3 @@
-
 export const timeDifference = (date: string | Date): string => {
     const givenDate: Date = new Date(date);  // Ensure it’s a Date
     const diffTime = Math.abs(new Date().getTime() - givenDate.getTime());  // Use .getTime() for numbers
@@ -20,3 +19,14 @@ export const timeDifference = (date: string | Date): string => {
 
     return 'just now';
 };
+
+export const istDateFormat = (utcDateString: string) => {
+    const date = new Date(utcDateString);
+
+    return date.toLocaleDateString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+}

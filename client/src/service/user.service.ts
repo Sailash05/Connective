@@ -6,6 +6,7 @@ export const userService = {
     addFollower: (userId: string) => authAxios.post(`api/user/connection/follow/${userId}`),
     unFollow: (userId: string) => authAxios.delete(`api/user/connection/follow/${userId}`),
 
+    getUserOverview: () => authAxios.get('/api/user/overview'),
     getUserSearchList: (query: string, limit: number) => authAxios.get(`api/user/get-user-list?query=${query}&limit=${limit}`),
 
     getUserProileList: (page: number, limit: number, search: string, sortBy: string, isMutual: boolean, type: string) => authAxios.get(`/api/user/connection/get-userprofile-list?page=${page}&limit=${limit}&search=${search}&sortBy=${sortBy}&isMutual=${isMutual}&type=${type}`)

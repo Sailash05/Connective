@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import SearchUserLoading from "../loadingComponent/userLoading/SearchUserLoading";
+import NoUserFound from "./NoUserFound";
 import { userService } from "../../service/user.service";
-import { type UserSearchListType } from "../../types/userSearchListType";
+import { type UserSearchListType } from "../../types/userType";
 import { IoClose } from "react-icons/io5";
 
 const UserCard = ({user}: {user: UserSearchListType}) => {
@@ -19,7 +21,7 @@ const UserCard = ({user}: {user: UserSearchListType}) => {
         <div key={user._id} className="flex max-sm:flex-col max-sm:gap-2 items-center justify-between border border-gray-200 dark:border-gray-700 rounded-xl p-2 md:p-4 shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-slate-800 transition" >
             {/* Left - User Info with Avatar */}
             <div className="flex items-center gap-2 md:gap-4 w-full">
-                <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg" alt="" className="h-10 w-10 rounded-full object-cover" />
+                <img src={user.profilePicture ? user.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'} alt="" className="h-10 w-10 rounded-full object-cover" />
                 <div>
                     <div className="text-md font-semibold text-gray-900 dark:text-white flex items-center">
                         <h3 className="hover:underline cursor-pointer">{user.userName}</h3>
@@ -61,6 +63,7 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
     setQuery: (value: string) => void
 }) => {
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [userList, setUserList] = useState<UserSearchListType[]>([]);
     
     const handleCloseBtn = () => {
@@ -71,13 +74,15 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
     const getUserList = async () => {
         const limit: number = 30;
         try {
+            setLoading(true);
             const response = await userService.getUserSearchList(query, limit);
             const data = response.data;
-            // console.log(data.data);
             setUserList(data.data);
         }
         catch(err) {
-            console.log(err);
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -88,7 +93,7 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
     return (
         <div className="bg-black bg-opacity-25 dark:bg-opacity-30 w-[100dvw] h-[100dvh] fixed inset-0 flex justify-center items-center">
             <div className="bg-white dark:bg-slate-800 max-md:min-w-[90dvw] max-md:overflow-y-scroll max-md:space-y-2 md:w-[35dvw] w-[95dvw] h-[90dvh] p-3 max-sm:py-6 md:p-6 rounded-2xl flex flex-col">
-                <div className="flex justify-between items-center md:mb-8 mb-4">
+                <div className="flex justify-between items-center md:mb-8 mb-4 max-md:px-2">
                     <h2 className="text-blue-600 dark:text-white font-bold text-2xl">Search User</h2>
                     <button onClick={() => handleCloseBtn()} className="bg-gray-200 hover:bg-gray-300 transition-all p-1 rounded-full">
                         <IoClose className="text-2xl text-gray-600" />
@@ -104,9 +109,20 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
 
                 {/* Results */}
                 <div className="flex-1 overflow-y-auto space-y-3 pr-1">
-                {userList.map((user) => (
-                    <UserCard user={user} key={user._id} />
-                ))}
+                {
+                    loading && <SearchUserLoading />
+                }
+                {
+                    !loading && (
+                        userList.length > 0 ? (
+                            userList.map((user) => (
+                                <UserCard user={user} key={user._id} />
+                            ))
+                        ) : (
+                            <NoUserFound />
+                        )
+                    )
+                }
                 </div>
             </div>
         </div>

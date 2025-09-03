@@ -1,7 +1,7 @@
 import express from 'express';
 import { verifyToken } from '../middleware/authMiddleware.js';
 
-import { getProfilePicture, getUsers, getConnectionStats, addFollower, unFollow, getUserProfileList } from '../controllers/userController.js';
+import { getProfilePicture, getOverview, getUsers, getConnectionStats, addFollower, unFollow, getUserProfileList } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -9,6 +9,7 @@ router.use(verifyToken);
 
 router.get('/profilepicture', getProfilePicture);
 
+router.get('/overview', getOverview);
 router.get('/get-user-list', getUsers)
 
 router.get('/connection/stats', getConnectionStats);

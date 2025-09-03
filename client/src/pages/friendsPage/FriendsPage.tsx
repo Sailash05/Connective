@@ -8,7 +8,7 @@ import { userService } from "../../service/user.service";
 
 const FriendsPage = () => {
     
-    const [tab, setTab] = useState<'Followers'|'Following'|'Search'>('Search');
+    const [tab, setTab] = useState<'Followers'|'Following'|'Search'>('Followers');
 
     const [followersCount, setFollowersCount] = useState<number>(0);
     const [followingCount, setFollowingCount] = useState<number>(0);
@@ -64,7 +64,7 @@ const FriendsPage = () => {
                 tab === 'Followers' && <FollowersSections />
             }
             {
-                tab === 'Following' && <FollowingSection />
+                tab === 'Following' && <FollowingSection setTab={setTab}/>
             }
             {
                 tab === 'Search' && <SearchFriendSection />

@@ -2,9 +2,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import useUserLoad from "../../../hooks/useUserLoad";
 
 import UserProfileCard from "../../../components/friendsPageComponent/UserProfileCard";
+import NoFollowingsCard from "../../../components/friendsPageComponent/NoFollowingsCard";
 import StaticUserLoading from "../../../components/loadingComponent/userLoading/StaticUserLoading";
 
-const FollowingSection = () => {
+const FollowingSection = ({ setTab }: { setTab: (tab: 'Followers'|'Following'|'Search') => void}) => {
     const [pageNumber, setPageNumber] = useState<number>(1);
     const limit = 4;
 
@@ -72,14 +73,21 @@ const FollowingSection = () => {
 
             {/* Profiles */}
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                {userList.map((profile, index) => {
-                    if (index === userList.length - 1) {
-                        return <UserProfileCard user={profile} ref={lastUserProfileRef} key={index} />;
-                    }
-                    else {
-                        return <UserProfileCard user={profile} key={index} />;
-                    }
-                })}
+                {
+                    userList.length > 0 ? (
+                        userList.map((profile, index) => {
+                            if (index === userList.length - 1) {
+                                return <UserProfileCard user={profile} ref={lastUserProfileRef} key={index} />;
+                            }
+                            else {
+                                return <UserProfileCard user={profile} key={index} />;
+                            }
+                        })
+                    ) : (
+                        !loading && <NoFollowingsCard setTab={setTab} />
+                    )
+                }
+                
 
                 {loading && <StaticUserLoading />}
                 {error && (
