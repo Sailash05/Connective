@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../../service/auth.service";
 
+import CreatingAccountLoading from "../../../components/loadingComponent/authLoading/CreatingAccountLoading";
 import OtpForm from "../../../components/loginPageComponent/OtpForm";
 import OtpLoading from "../../../components/loadingComponent/OtpLoading";
 
@@ -32,6 +33,7 @@ const SignUpSection = ({
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
+    const [creatingAccountLoading, setCreatingAccountLoading] = useState<boolean>(false);
     const [OtpFormPopup, setOtpFormPopup] = useState<boolean>(false);
     const [gettingOtp, setGettingOtp] = useState<boolean>(false);
 
@@ -91,7 +93,7 @@ const SignUpSection = ({
         const trimmedPassword: string = password.trim();
 
         try {
-            // signup loading true
+            setCreatingAccountLoading(true);
             const response = await AuthService.signup({
                 userName: trimmedUserName,
                 email: trimmedEmail,
@@ -99,7 +101,7 @@ const SignUpSection = ({
                 otp: otp
             });
 
-            // signup loading false
+            setCreatingAccountLoading(false);
 
             const data = response.data;
             if(response.status === 201) {
@@ -109,7 +111,7 @@ const SignUpSection = ({
             }
         } 
         catch (error: any) {
-            // signup loading false
+            setCreatingAccountLoading(false);
 
             if (error.response?.status === 400) {
                 const data = error.response.data;
@@ -160,6 +162,9 @@ const SignUpSection = ({
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" className="h-8 w-8 p-0.5 invert"/>
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
+            {
+                creatingAccountLoading && <CreatingAccountLoading />
+            }
             {
                 OtpFormPopup && <OtpForm handleSignUp={handleSignUp} getOtp={getOtp} />
             }

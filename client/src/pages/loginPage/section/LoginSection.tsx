@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AuthService } from '../../../service/auth.service';
 import { useNavigate } from 'react-router-dom';
 
+import LoggingInLoading from '../../../components/loadingComponent/authLoading/LoggingInLoading';
 import ResetRequestForm from '../../../components/loginPageComponent/ResetRequestForm';
 import ResetLinkLoading from '../../../components/loadingComponent/ResetLinkLoading';
 
@@ -33,6 +34,8 @@ const LoginSection = ({
 
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [loggingInLoading, setLoggingInLoading] = useState<boolean>(false);
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [resetRequestForm, setResetRequestForm] = useState<boolean>(false);
@@ -97,11 +100,12 @@ const LoginSection = ({
         }
         
         try {
+            setLoggingInLoading(true);
             const response = await AuthService.login({
                 userName: trimmedUserName,
                 password: trimmedPassword,
             });
-
+            setLoggingInLoading(false);
             const data = response.data;
 
             if(response.status === 200) {
@@ -111,6 +115,7 @@ const LoginSection = ({
             }
         }
         catch(error: any) {
+            setLoggingInLoading(false)
             if (error.response?.status === 404) {
                 const data = error.response.data;
                 showFailMessage("Failed!", [data.message], "Try again");
@@ -166,6 +171,9 @@ const LoginSection = ({
                 <h4 className='text-white font-bold flex-grow'>Continue with GitHub</h4>
             </button>
             
+            {
+                loggingInLoading && <LoggingInLoading />
+            }
             {
                 resetRequestForm && <ResetRequestForm setResetRequestForm={setResetRequestForm} resetRequest={resetRequest} />
             }

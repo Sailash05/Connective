@@ -120,11 +120,9 @@ export const oauthCallback = async (req, res) => {
 
         const token = generateJwtToken({ userId: user._id });
 
-        //res.status(200).send(response('SUCCESS', 'Authenticated successfully.', { jwtToken: token, userId: user._id }))
         res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}&userId=${user._id}`);
     } 
     catch (error) {
         console.error('OAuth callback error:', error);
-        //res.status(500).send(response('FAILED', 'Authenticated failed.', null));
     }
 };

@@ -66,3 +66,30 @@ export const passwordResetLink = async (userName, email, resetToken) => {
         html: htmlContent
     });
 }
+
+export const sendWelcomeTemplate = async (userName, email) => {
+
+    // Need PROFILE LINK
+    // const resetLink = process.env.FRONTEND_URL + `/auth/reset-password?email=${email}&token=${resetToken}`;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.APP_PASSWORD
+        }
+    });
+
+    const htmlPath = path.join(__dirname, '../emailTemplates/welcomeUser.html');
+    let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
+
+    htmlContent = htmlContent
+        .replace('{{name}}', userName);
+
+    await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Welcome to Connective',
+        html: htmlContent
+    });
+}

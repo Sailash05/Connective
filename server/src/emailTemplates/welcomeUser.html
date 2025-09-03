@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Connective</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f7f9fc;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: #111827;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .header {
+      padding: 24px 20px 14px;
+      text-align: center;
+      /* background: linear-gradient(135deg, #155dfc, #3b82f6); */
+      background: url('https://res.cloudinary.com/djbmyn0fw/image/upload/v1752597369/cover-image_w4cykg.jpg');
+      color: white;
+    }
+    .logo-circle {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.12);
+    }
+    .logo-circle span {
+      font-size: 24px;
+      font-weight: bold;
+      color: #155dfc;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .header p {
+      font-size: 14px;
+      margin-top: 6px;
+      opacity: 0.9;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      margin: 12px 0 8px;
+      background: #155dfc;
+      color: #fff !important;
+      font-weight: bold;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .section {
+      padding: 18px 22px;
+      border-top: 1px solid #f0f0f0;
+      text-align: center;
+    }
+    .section h2 {
+      font-size: 17px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #111827;
+    }
+    .section p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #444;
+      margin: 0 auto 8px;
+      max-width: 440px;
+    }
+    .highlight-card {
+      margin: 14px auto;
+      padding: 14px 18px;
+      background: #f3f6ff;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #333;
+      text-align: left;
+    }
+    .highlight-card strong {
+      color: #155dfc;
+    }
+    .footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: #777;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+    }
+    .social img {
+      width: 22px;
+      margin: 0 5px;
+      vertical-align: middle;
+    }
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+      
+      <!-- Header -->
+      <div class="header">
+        <div class="logo-circle">
+          <span>C</span>
+        </div>
+        <h1>Welcome to Connective 🎉</h1>
+        <p>Hi {{name}}, you're officially in! Let's get started.</p>
+        <a href="{{loginLink}}" class="btn">Complete Your Profile</a>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="section">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="#155dfc">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          Build Connections
+        </h2>
+        <p>Find and connect with people who share your passions and professional interests.</p>
+        <div class="highlight-card">
+          <strong>✨ Suggestion:</strong> Follow 3 profiles today to get started.
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="section">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="#155dfc">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/>
+          </svg>
+          Share Ideas
+        </h2>
+        <p>Join conversations, post thoughts, and get feedback from your network instantly.</p>
+        <div class="highlight-card">
+          <strong>🔥 Tip:</strong> Your first post gets you noticed faster!
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="section">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="#155dfc">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          Grow Together
+        </h2>
+        <p>Endorse others, gain visibility, and create opportunities within the community.</p>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="section">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="#155dfc">
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 8h14v-2H7v2zm0-4h14v-2H7v2zm0-6v2h14V7H7z"/>
+          </svg>
+          Explore Features
+        </h2>
+        <p>Discover tools, analytics, and resources to make the most of your Connective journey.</p>
+        <div class="highlight-card">
+          <strong>💡 Did you know?</strong> You can customize notifications for each connection.
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="section">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="#155dfc">
+            <path d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm1 13h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+          </svg>
+          Support & Tips
+        </h2>
+        <p>Get guidance, FAQs, and support to help you navigate Connective smoothly.</p>
+        <div class="highlight-card">
+          <strong>🛠️ Tip:</strong> Visit our Help Center to learn hidden features.
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="social">
+          <a href="#"><img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596149/instagram_z7hjqs.png" alt="Instagram"></a>
+          <a href="#"><img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596148/x_u4vyjq.png" alt="X"></a>
+          <a href="#"><img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596109/linked_rwu28l.png" alt="LinkedIn"></a>
+        </div>
+        <p>© 2025 Connective. All rights reserved.</p>
+      </div>
+  </div>
+</body>
+</html>

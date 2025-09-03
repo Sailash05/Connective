@@ -1,6 +1,7 @@
 import { useEffect, useState, type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthService } from '../service/auth.service';
+import CheckingAccessLoading from '../components/loadingComponent/authLoading/CheckingAccessLoading';
 
 const PublicRoute = ({ element }: { element: JSX.Element }) => {
     const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -21,7 +22,7 @@ const PublicRoute = ({ element }: { element: JSX.Element }) => {
         verifyToken();
     }, []);
 
-    if (isValid === null) return <div className="p-4 text-center">Checking access...</div>;   // Entry loading - need to change it later
+    if (isValid === null) return <CheckingAccessLoading />;
 
     return isValid ? <Navigate to="/home" replace /> : element;
 };
