@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import redisClient from '../config/redisClient.js';
 
-import { sendOtp, passwordResetLink } from '../utils/sendEmail.js';
+import { sendOtp, passwordResetLink, sendWelcomeTemplate } from '../utils/sendEmail.js';
 
 export const createUserService = async ({ userName, email, password, otp }) => {
 
@@ -28,6 +28,7 @@ export const createUserService = async ({ userName, email, password, otp }) => {
         createdAt: currentDateAndTime,
         updatedAt: currentDateAndTime
     });
+    await sendWelcomeTemplate(userName, email);
     return { status: 201, message: 'User account created successfully.', userId: newUser._id};
 }
 

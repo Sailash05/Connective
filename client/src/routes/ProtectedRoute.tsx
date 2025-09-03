@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { AuthService } from '../service/auth.service';
+import VerifyTokenLoading from '../components/loadingComponent/authLoading/VerifyTokenLoading';
 
 const ProtectedRoute = () => {
     const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -23,7 +24,7 @@ const ProtectedRoute = () => {
     }, []);
 
     if (isValid === null) {
-        return <div className="p-4 text-center">Verifying session...</div>;
+        return <VerifyTokenLoading />;
     }
 
     return isValid ? <Outlet /> : <Navigate to="/auth" state={{ from: location }} replace />;

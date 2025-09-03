@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import fetch from 'node-fetch';
 import User from '../models/userModel.js';
 import { storeProfilePicture } from '../service/userService.js';
+import { sendWelcomeTemplate } from '../utils/sendEmail.js';
 
 dotenv.config();
 
@@ -45,8 +46,7 @@ const findOrCreateUser = async (profile, emailOverride = null) => {
         user = await User.create({
             userName,
             email: finalEmail,
-            authProvider: profile.provider,   // 'google' or 'github'
-            // profilePicture: profile.photos?.[0]?.value || ''
+            authProvider: profile.provider
         });
 
         if (profile.photos?.[0]?.value) {
@@ -54,6 +54,7 @@ const findOrCreateUser = async (profile, emailOverride = null) => {
             user.profilePicture = profileUrl;
             await user.save();
         }
+        await sendWelcomeTemplate(userName, finalEmail);
     }
 
     return user;
