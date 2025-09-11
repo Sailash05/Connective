@@ -1,7 +1,10 @@
 import authAxios from "../api/authAxios";
+import { type UserProfileType } from "../types/userType";
 
 export const userService = {
     getProfilePicture: () => authAxios.get('/api/user/profilepicture'),
+    getProfile: () => authAxios.get('/api/user/profile'),
+    updateProfile: (updated: UserProfileType) => authAxios.put('/api/user/profile', updated),
     getConnectionStat: () => authAxios.get(`/api/user/connection/stats`),
     addFollower: (userId: string) => authAxios.post(`api/user/connection/follow/${userId}`),
     unFollow: (userId: string) => authAxios.delete(`api/user/connection/follow/${userId}`),

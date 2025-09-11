@@ -31,3 +31,32 @@ export type RecentlyJoinedUserType = {
     profilePicture: string | null,
     isFollowed: boolean
 }
+
+export type UserProfileType = {
+    _id: string,
+    userName: string,
+    email: string,
+    bio: string | null,
+    profilePicture: string | null,
+    bannerPicture: string | null,
+    location?: LocationType | null,
+    website: string | null,
+    resume: string | null,
+    skill: string[],
+    interest: string[],
+    experience: ExperienceType[]
+}
+
+export type LocationType = {
+    city?: string;
+    state?: string;
+    country?: string;
+};
+
+export type ExperienceType = {
+    companyName: string,
+    type: string,
+    role: string,
+    from: Date,
+    to: Date
+}

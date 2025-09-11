@@ -16,6 +16,8 @@ import lightModeIcon from '../assets/icons/dark-mode.png';
 import settingsIcon from '../assets/mainPageImages/sideNavBarIcons/settings.png';
 import { MdLogout } from "react-icons/md";
 
+import { version } from '../constants/metaData';
+
 const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: { 
     setLogoutPopup: (logoutPopup: boolean) => void,
     isSideBarOpen: boolean,
@@ -81,7 +83,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
             </button>
 
             <div className='basis-1/2 md:basis-1/3'>
-                <Link to='/home' className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective</Link>
+                <Link to='/home' className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective <span className='text-xs'>{version}</span></Link>
             </div>
             
             <div className='hidden md:flex justify-center items-center basis-1/3'>
@@ -136,10 +138,10 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
 
                             {/* Menu Items */}
                             <div className="py-2">
-                                <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link to={'/profile'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img src={profilePicture} alt="Profile" className="h-6 w-6 rounded-full object-cover" />
                                     My Profile
-                                </button>
+                                </Link>
 
                                 <button onClick={() => setDarkMode(!darkMode)} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <img src={darkMode?lightModeIcon:darkModeIcon} alt="" width={20} className='dark:invert' />

@@ -40,6 +40,7 @@ const userSchema = mongoose.Schema({
     
     bio: { type: String, maxlength: 500 },
     profilePicture: { type: String },
+    bannerPicture: { type: String },
     location: { city: String, state: String, country: String },
     savedPost: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }], default: [] },
 

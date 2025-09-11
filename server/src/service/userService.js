@@ -35,6 +35,60 @@ export const getProfilePictureService = async (userId) => {
     }
 }
 
+export const getProfileService = async (userId) => {
+    try {
+        const user = await User.findById(userId).select({
+            userName: 1,
+            email: 1,
+            bio: 1,
+            profilePicture: 1,
+            bannerPicture: 1,
+            location: 1,
+            website: 1,
+            resume: 1,
+            skill: 1,
+            interest: 1,
+            experience: 1
+        }).exec();
+        return { status: 200, message: 'Get your profile data.', data: user };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updateProfileService = async (userId, profileData) => {
+    const { _id, userName, email, bio, profilePicture, bannerPicture, location, website, resume, skill, interest, experience } = profileData;
+    try {
+        const updatedUser = await User.findByIdAndUpdate( userId, {
+            $set: {
+                userName,
+                email,
+                bio,
+                profilePicture,
+                bannerPicture,
+                location,
+                website,
+                resume,
+                skill,
+                interest,
+                experience,
+                updatedAt: new Date(),
+            }},
+        { new: true, runValidators: true }
+        ).lean();
+
+        if (!updatedUser) {
+            return { status: 404, message: "User not found" };
+        }
+
+        return { status: 200, message: 'User profile updated successfully', data: updatedUser };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
 export const getConnectionStatsService = async (userId) => {
     try {
         const user = await User.findById(userId).exec();

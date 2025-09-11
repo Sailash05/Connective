@@ -14,6 +14,8 @@ import FeedPage from './pages/feedPage/FeedPage';
 import PostSection from './pages/feedPage/PostSection';
 import FriendsPage from './pages/friendsPage/FriendsPage';
 
+import MyProfilePage from './pages/profilePage/MyProfilePage';
+
 import OAuthSuccess from './pages/loginPage/OAuthSuccess';
 
 function App() {
@@ -25,10 +27,13 @@ function App() {
                     <Routes>
 
                         <Route element={<ProtectedRoute />}>
-                            <Route element={<CreatePostProvider><MainLayout /></CreatePostProvider>}>
+                            <Route element={<CreatePostProvider><MainLayout showRightSidebar={true} /></CreatePostProvider>}>
                                 <Route path="/home" element={<FeedPage />} />
                                 <Route path="/post/:postId" element={<PostSection />} />
                                 <Route path='/friends' element={<FriendsPage />} />
+                            </Route>
+                            <Route element={<MainLayout showRightSidebar={false} />}>
+                                <Route path='/profile' element={<MyProfilePage />} />
                             </Route>
                         </Route>
 
