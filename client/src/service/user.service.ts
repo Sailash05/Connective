@@ -1,7 +1,14 @@
 import authAxios from "../api/authAxios";
+import { type UserProfileUpdateType } from "../types/userType";
 
 export const userService = {
     getProfilePicture: () => authAxios.get('/api/user/profilepicture'),
+    getProfile: () => authAxios.get('/api/user/profile'),
+
+    updateProfile: (updated: UserProfileUpdateType) => authAxios.put('/api/user/profile', updated),
+    updateProfilePicture: (formData: FormData) => authAxios.put('/api/user/profile-picture', formData),
+    updateBannerPicture: (formData: FormData) => authAxios.put('/api/user/banner-picture', formData),
+
     getConnectionStat: () => authAxios.get(`/api/user/connection/stats`),
     addFollower: (userId: string) => authAxios.post(`api/user/connection/follow/${userId}`),
     unFollow: (userId: string) => authAxios.delete(`api/user/connection/follow/${userId}`),

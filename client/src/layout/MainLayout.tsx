@@ -13,7 +13,7 @@ import SuccessMessage from "../components/message/SuccessMessage";
 import Logout from "../components/message/Logout";
 
 
-const MainLayout = () => {
+const MainLayout = ({ showRightSidebar }: { showRightSidebar: boolean }) => {
 
     const { createPost } = useCreatePost();
 
@@ -42,7 +42,7 @@ const MainLayout = () => {
     }
 
     return(
-        <div className="h-[100dvh] grid grid-cols-1 md:grid-cols-[20%_55%_25%] grid-rows-[auto_1fr] dark:bg-slate-950 max-md:relative">
+        <div className={`h-[100dvh] grid grid-cols-1 ${showRightSidebar ? 'md:grid-cols-[20%_55%_25%]' : 'md:grid-cols-[20%_80%]'} grid-rows-[auto_1fr] dark:bg-slate-950 max-md:relative`}>
             
             <div className="col-span-1 md:col-span-3">
                 <Header setLogoutPopup={setLogoutPopup} isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
@@ -50,12 +50,16 @@ const MainLayout = () => {
             <div className={`max-md:z-20 md:block overflow-y-hidden bg-white dark:bg-slate-950 ${isSideBarOpen ? 'max-md:fixed' : 'max-md:hidden'} max-md:h-[calc(100dvh-3.5rem)] max-md:bottom-0`}>
                 <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
-            <div className="overflow-y-scroll ">  {/* hide-scrollbar */}
+            <div className="overflow-y-scroll ">
                 <Outlet />
             </div>
-            <div className="hidden md:block overflow-y-hidden">
-                <RightSidebar />
-            </div>
+            {
+                showRightSidebar && (
+                    <div className="hidden md:block overflow-y-hidden">
+                        <RightSidebar />
+                    </div>
+                )
+            }
 
             {
                 createPost && <CreatePostForm showFailMessage={showFailMessage} showSuccessMessage={showSuccessMessage} />

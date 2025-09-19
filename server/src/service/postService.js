@@ -238,25 +238,57 @@ export const getFeedService = async (userId, page = 1, limit = 10) => {
     }
 };
 
-
-
-export const getPostService = async (postId) => {
+export const getPostService = async (postId, userId) => {
     try {
-        const post = await Post.findById(postId).exec();
-        if(!post) {
+        const post = await Post.findById(postId).lean();
+        if (!post) {
             return { status: 404, message: 'Post not found.' };
         }
 
-        const user = await User.findById(post.userId).select('userName profilePicture');
-        const postObj = post.toObject();
-        postObj.userName = user?.userName || "Unknown";
-        postObj.profilePicture = user?.profilePicture || 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg';
-        return { statsu: 200, message: 'Get your post.', data: { post: postObj } };
+        // Get user info
+        const user = await User.findById(post.userId)
+            .select('userName profilePicture')
+            .lean();
+
+        // Count top-level comments
+        const noOfComments = await Comment.countDocuments({
+            postId,
+            parentCommentId: null
+        });
+
+        // Count likes
+        const noOfLikes = post.likes?.length || 0;
+
+        // Get current user info
+        const currentUser = await User.findById(userId).select("savedPost").lean();
+        const savedPosts = currentUser?.savedPost || [];
+
+        const followingIds = new Set(
+            (await Follow.find({ follower: userId }).distinct("following"))
+                .map(id => id.toString())
+        );
+
+        const postObj = {
+            ...post,
+            userName: user?.userName || "Unknown",
+            profilePicture: user?.profilePicture || 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg',
+            noOfLikes,
+            noOfComments,
+            isPostSaved: savedPosts.some(id => id.toString() === post._id.toString()),
+            isLiked: post.likes?.some(id => id.toString() === userId.toString()) || false,
+            isFollowed: followingIds.has(post.userId.toString())
+        };
+
+        // Remove likes array if you don’t want to send full list
+        delete postObj.likes;
+
+        return { status: 200, message: 'Post fetched successfully.', data: postObj };
     }
-    catch(err) {
+    catch (err) {
         return { status: 500, message: err.message };
     }
-}
+};
+
 
 export const likePostService = async (userId, postId, isLike) => {
 

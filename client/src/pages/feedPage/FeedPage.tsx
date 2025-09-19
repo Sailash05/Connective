@@ -31,7 +31,7 @@ const FeedPage = () => {
     
 
     return (
-        <section className="bg-gray-100 dark:bg-slate-900 px-2 md:px-8 py-4 space-y-2 md:space-y-5">
+        <section className="bg-gray-100 dark:bg-gray-950 px-2 md:px-8 py-4 space-y-2 md:space-y-5">
             <FeedPost />
             {
                 postList.map((post, index) => {

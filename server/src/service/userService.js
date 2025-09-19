@@ -1,25 +1,27 @@
 import User from "../models/userModel.js";
 import Follow from '../models/followModel.js';
+import Post from '../models/postModel/postModel.js'
 import mongoose, { mongo } from "mongoose";
 import { cloudinary } from "../config/cloudinary.js";
 
+import { getPostService } from "./postService.js";
+
 export const storeProfilePicture = async (profileUrl, userId) => {
-    
-    try {
-        const result = await cloudinary.uploader.upload(profileUrl, {
-            folder: `connective_users/profile/${userId}`,
-            resource_type: "image",
-            allowed_formats: ["jpg", "png", "jpeg"],
-            use_filename: true,
-            unique_filename: false,
-            overwrite: true,
-        });
-        return result.secure_url;
-    }
-    catch(err) {
-        return '';
-    }
-}
+  try {
+    const result = await cloudinary.uploader.upload(profileUrl, {
+      folder: "connective_users/profile",
+      resource_type: "image",
+      allowed_formats: ["jpg", "png", "jpeg"],
+      public_id: `${userId}-profile`,
+      overwrite: true,
+    });
+
+    return result.secure_url;
+  } catch (err) {
+    console.error("Cloudinary upload failed:", err);
+    return "";
+  }
+};
 
 export const getProfilePictureService = async (userId) => {
     try {
@@ -29,6 +31,89 @@ export const getProfilePictureService = async (userId) => {
             email: user.email,
             profilePicture: user.profilePicture || 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'
         }};
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const getProfileService = async (userId) => {
+    try {
+        const user = await User.findById(userId).select({
+            userName: 1,
+            email: 1,
+            bio: 1,
+            profilePicture: 1,
+            bannerPicture: 1,
+            location: 1,
+            website: 1,
+            resume: 1,
+            skill: 1,
+            interest: 1,
+            experience: 1,
+            followerCount: 1,
+            followingCount: 1
+        }).exec();
+
+        const { _id } = await Post.findOne({ userId: userId }).sort({ createdAt: -1 }).select({_id: 1}).exec();
+        const userObj = user.toObject();
+        const post = await getPostService(_id, userId);
+        const latestPost = post.data;
+        userObj.post = latestPost;
+
+        return { status: 200, message: 'Get your profile data.', data: userObj };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updateProfileService = async (userId, profileData) => {
+    const { _id, userName, email, bio, profilePicture, bannerPicture, location, website, resume, skill, interest, experience } = profileData;
+    try {
+        const updatedUser = await User.findByIdAndUpdate( userId, {
+            $set: {
+                userName,
+                email,
+                bio,
+                profilePicture,
+                bannerPicture,
+                location,
+                website,
+                resume,
+                skill,
+                interest,
+                experience,
+                updatedAt: new Date(),
+            }},
+        { new: true, runValidators: true }
+        ).lean();
+
+        if (!updatedUser) {
+            return { status: 404, message: "User not found" };
+        }
+
+        return { status: 200, message: 'User profile updated successfully', data: updatedUser };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updateProfilePictureService = async (userId, profilePictureUrl) => {
+    try {
+        await User.updateOne({_id: new mongoose.Types.ObjectId(userId)}, {profilePicture: profilePictureUrl});
+        return { status: 200, message: 'Profile picture updated successfully.', newProfilePicture: profilePictureUrl };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updateBannerPictureService = async (userId, bannerPictureUrl) => {
+    try {
+        await User.updateOne({_id: new mongoose.Types.ObjectId(userId)}, {bannerPicture: bannerPictureUrl});
+        return { status: 200, message: 'Banner picture updated successfully.', newBannerPicture: bannerPictureUrl };
     }
     catch(err) {
         return { status: 500, message: err.message };

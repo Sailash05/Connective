@@ -54,8 +54,9 @@ export const getFeed = async (req, res) => {
 
 export const getPost = async (req, res) => {
     const { postId } = req.params;
+    const userId = req.user.userId;
     try {
-        const result = await getPostService(postId);
+        const result = await getPostService(postId, userId);
         if(result.status === 404) {
             return res.status(404).send(response('FAILED', result.message, null));
         }
