@@ -16,17 +16,30 @@ const postStorage = new CloudinaryStorage({
         folder: `connective_posts/${req.user.userId}`,
         resource_type: 'auto',
         allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov'],
-        public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
+        public_id: `${Date.now()}-${file.originalname.split('.')[0]}`
     }),
 });
 
 const profileStorage = new CloudinaryStorage({
     cloudinary,
-    params: {
+    params: (req, file) => ({
         folder: 'connective_users/profile',
-        allowed_formats: ['jpg', 'png', 'jpeg'],
         resource_type: 'image',
-    }
+        allowed_formats: ['jpg', 'png', 'jpeg'],
+        public_id: `${req.user.userId}-profile`,
+        overwrite: true
+    })
 });
 
-export { cloudinary, postStorage, profileStorage };
+const bannerStorage = new CloudinaryStorage({
+    cloudinary,
+    params: (req, file) => ({
+        folder: 'connective_users/banner',
+        resource_type: 'image',
+        allowed_formats: ['jpg', 'png', 'jpeg'],
+        public_id: `${req.user.userId}-banner`,
+        overwrite: true
+    })
+});
+
+export { cloudinary, postStorage, profileStorage, bannerStorage };

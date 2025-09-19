@@ -14,7 +14,8 @@ import FeedPage from './pages/feedPage/FeedPage';
 import PostSection from './pages/feedPage/PostSection';
 import FriendsPage from './pages/friendsPage/FriendsPage';
 
-import MyProfilePage from './pages/profilePage/MyProfilePage';
+import ProfilePage from './pages/profilePage/ProfilePage';
+import ProfileEditPage from './pages/profilePage/ProfileEditPage';
 
 import OAuthSuccess from './pages/loginPage/OAuthSuccess';
 
@@ -33,7 +34,8 @@ function App() {
                                 <Route path='/friends' element={<FriendsPage />} />
                             </Route>
                             <Route element={<MainLayout showRightSidebar={false} />}>
-                                <Route path='/profile' element={<MyProfilePage />} />
+                                <Route path='/user' element={<ProfilePage />} />
+                                <Route path='/user/edit' element={<ProfileEditPage />} />
                             </Route>
                         </Route>
 

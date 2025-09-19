@@ -83,7 +83,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
             </button>
 
             <div className='basis-1/2 md:basis-1/3'>
-                <Link to='/home' className='text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective <span className='text-xs'>{version}</span></Link>
+                <Link to='/home' className='text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective <span className='text-xs'>{version}</span></Link>
             </div>
             
             <div className='hidden md:flex justify-center items-center basis-1/3'>
@@ -138,7 +138,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
 
                             {/* Menu Items */}
                             <div className="py-2">
-                                <Link to={'/profile'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link to={'/user'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img src={profilePicture} alt="Profile" className="h-6 w-6 rounded-full object-cover" />
                                     My Profile
                                 </Link>

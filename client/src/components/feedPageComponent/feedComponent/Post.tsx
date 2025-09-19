@@ -27,6 +27,9 @@ type PostProps = {
 };
 
 const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
+
+    const ownPost: boolean = localStorage.getItem('UserId')=== post.userId;
+
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -101,7 +104,7 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
     }
 
     return (
-        <div ref={ref} className="bg-white rounded-xl py-2 md:py-4 px-4 md:px-12 dark:bg-slate-950 shadow-sm shadow-blue-100 dark:shadow-slate-800 space-y-4">
+        <div ref={ref} className="bg-white rounded-xl py-2 md:py-4 px-4 md:px-12 dark:bg-gray-900 shadow-sm shadow-blue-100 dark:shadow-slate-800 space-y-4">
         {/* Profile */}
         <div className="flex gap-2 md:gap-4 justify-start items-center relative">
             <img src={post.profilePicture} alt="" className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover"/>
@@ -114,27 +117,32 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
                 </p>
             </div>
             {
-                !isFollowed ? (
-                    <button onClick={() => handleFollow()} className={`flex items-center h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full text-white font-bold transition-all max-sm:text-sm bg-blue-600 hover:bg-blue-800`}>
-                        <img src={followIcon} alt="" className="w-3 h-3 md:w-4 md:h-4 object-contain invert mr-2"/>
-                        {
-                            followLoading ? (
-                                <span className='flex items-center'>
-                                    Following&nbsp;&nbsp;
-                                    <ButtonLoader />
-                                </span>
-                            ) : (
-                                <span className='flex items-center'>
-                                    Follow
-                                </span>
-                            )
-                        }
-                    </button>
-                ) : (
-                    <button disabled className="bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-gray-300 cursor-not-allowed h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full font-bold max-sm:text-sm">Following</button>
+                !ownPost && (
+                    !isFollowed ? (
+                        <button onClick={() => handleFollow()} className={`flex items-center h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full text-white font-bold transition-all max-sm:text-sm bg-blue-600 hover:bg-blue-800`}>
+                            <img src={followIcon} alt="" className="w-3 h-3 md:w-4 md:h-4 object-contain invert mr-2"/>
+                            {
+                                followLoading ? (
+                                    <span className='flex items-center'>
+                                        Following&nbsp;&nbsp;
+                                        <ButtonLoader />
+                                    </span>
+                                ) : (
+                                    <span className='flex items-center'>
+                                        Follow
+                                    </span>
+                                )
+                            }
+                        </button>
+                    ) : (
+                        <button disabled className="bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-gray-300 cursor-not-allowed h-fit ml-auto px-2 md:px-4 py-1 md:py-2 rounded-full font-bold max-sm:text-sm">Following</button>
+                    )
                 )
             }
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all dark:text-white">
+            {
+                
+            }
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all dark:text-white ${ownPost && 'ml-auto'}`}>
                 <BsThreeDotsVertical />
             </button>
             {isMenuOpen && (

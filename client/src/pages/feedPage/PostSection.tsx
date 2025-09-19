@@ -16,7 +16,7 @@ const PostSection = () => {
         const getPost = async () => {
             const response = await postService.getPost(postId);
             const data = response.data;
-            setPost(data.data.post);
+            setPost(data.data);
         }
 
         getPost();
