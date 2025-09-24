@@ -1,5 +1,5 @@
 import { response } from "../utils/response.js";
-import { createPostService, getFeedService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService } from "../service/postService.js";
+import { createPostService, updatePostService, deletePostService, getFeedService, getSavedPostService, getPostListService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService } from "../service/postService.js";
 
 export const createPost = async (req, res) => {
 
@@ -17,7 +17,48 @@ export const createPost = async (req, res) => {
             return res.status(201).send(response('SUCCESS', result.message, null));
         }
         else {
-            return res.status(500).send(response('FAILED', result.message, null));
+            return res.status(result.status).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const updatePost = async (req, res) => {
+    const userId = req.user.userId;
+    const { postId } = req.query;
+    const fileData = req.files.map(file => ({
+        originalName: file.originalname,
+        type: file.mimetype.startsWith('video') ? 'video' : 'image',
+        url: file.path,
+        public_id: file.filename,
+    }));
+
+    try{
+        const result = await updatePostService(userId, postId, req.body, fileData);
+        if(result.status === 200) {
+            return res.status(201).send(response('SUCCESS', result.message, null));
+        }
+        else {
+            return res.status(result.status).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const deletePost = async (req, res) => {
+    const { postId } = req.query;
+
+    try {
+        const result = await deletePostService(postId);
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, null));
+        }
+        else {
+            return res.status(result.status).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {
@@ -45,6 +86,38 @@ export const getFeed = async (req, res) => {
         }
         if (result.status === 500) {
             return res.status(500).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const getSavedPost = async (req, res) => {
+    const userId = req.user.userId;
+    try {
+        const result = await getSavedPostService(userId);
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, result.postList));
+        }
+        else {
+            return res.status(result.status).send(response('FAILED', result.message, null));
+        }
+    }
+    catch(err) {
+        return res.status(500).send(response('FAILED', err.message, null));
+    }
+}
+
+export const getPostList = async (req, res) => {
+    const { userId } = req.query;
+    try {
+        const result = await getPostListService(userId);
+        if(result.status === 200) {
+            return res.status(200).send(response('SUCCESS', result.message, result.data));
+        }
+        else {
+            return res.status(result.status).send(response('FAILED', result.message, null));
         }
     }
     catch(err) {

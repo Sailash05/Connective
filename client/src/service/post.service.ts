@@ -2,8 +2,14 @@ import authAxios from "../api/authAxios";
 
 export const postService = {
     createPost: (data: FormData) => authAxios.post('/api/post', data),
+    updatePost: (postId: string, data: FormData) => authAxios.put(`/api/post/?postId=${postId}`, data),
+    deletePost: (postId: string) => authAxios.delete(`/api/post/?postId=${postId}`),
+
     getFeed: (page: number, limit: number) => authAxios.get(`/api/post?page=${page}&limit=${limit}`),
     getPost: (postId: string) => authAxios.get(`/api/post/${postId}`),
+    getSavedPost: () => authAxios.get('/api/post/saved-post'),
+    getPostList: (userId: string) => authAxios.get(`/api/post/post-list?userId=${userId}`),
+
 
     toggleLike: (postId: string, isLiked: boolean) => {
         if(isLiked) {

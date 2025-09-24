@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { verifyToken } from '../middleware/authMiddleware.js';
-import { createPost, getFeed, getPost, likePost, unlikePost, getComment, postComment, deleteComment, likeComment, unLikeComment, getReply, postReply, deleteReply, likeReply, unLikeReply, savePost, unSavePost } from '../controllers/postController.js';
+import { createPost, updatePost, deletePost, getFeed, getSavedPost, getPostList, getPost, likePost, unlikePost, getComment, postComment, deleteComment, likeComment, unLikeComment, getReply, postReply, deleteReply, likeReply, unLikeReply, savePost, unSavePost } from '../controllers/postController.js';
 
 import { postUpload } from '../middleware/fileUploads.js';
 
@@ -10,7 +10,12 @@ const router = express.Router();
 router.use(verifyToken);
 
 router.post('/', postUpload.array('media', 10), createPost);
+router.put('/', postUpload.array('newMedia', 10), updatePost);
+router.delete('/', deletePost);
+
 router.get('/', getFeed);
+router.get('/saved-post', getSavedPost);
+router.get('/post-list', getPostList);
 router.get('/:postId', getPost);
 
 router.post('/:postId/like', likePost);

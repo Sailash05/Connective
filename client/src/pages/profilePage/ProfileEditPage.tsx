@@ -30,7 +30,8 @@ const ProfileEditPage = () => {
 
     const getProfile = async () => {
         try {
-            const response = await userService.getProfile();
+            const userId = localStorage.getItem('UserId');
+            const response = await userService.getProfile(userId || '');
             const data = response.data;
             const profile = data.data;
             setProfileData(profile);
@@ -155,7 +156,9 @@ const ProfileEditPage = () => {
             <div className="relative">
                 {/* Banner */}
                 <div className="h-28 sm:h-36 md:h-48 lg:h-56 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl shadow-md overflow-hidden">
-                    <img src={bannerPicture} className="h-full w-full object-cover" alt="Banner" />
+                    {
+                        bannerPicture && <img src={bannerPicture} className="h-full w-full object-cover" />
+                    }
                     {/* Banner edit button */}
                     <label className="absolute top-2 right-2 bg-black/50 p-2 rounded-full cursor-pointer hover:bg-black/70">
                         <Camera size={18} className="text-white" />

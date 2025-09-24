@@ -3,7 +3,7 @@ import { type UserProfileUpdateType } from "../types/userType";
 
 export const userService = {
     getProfilePicture: () => authAxios.get('/api/user/profilepicture'),
-    getProfile: () => authAxios.get('/api/user/profile'),
+    getProfile: (userId: string) => authAxios.get(`/api/user/profile?userId=${userId}`),
 
     updateProfile: (updated: UserProfileUpdateType) => authAxios.put('/api/user/profile', updated),
     updateProfilePicture: (formData: FormData) => authAxios.put('/api/user/profile-picture', formData),

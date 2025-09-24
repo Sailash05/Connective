@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { userService } from "../../service/user.service";
 import { type UserProfileType } from "../../types/userType";
 
@@ -9,6 +9,9 @@ import ProfileSidebar from "./section/ProfileSidebar";
 import { Briefcase, MapPin, Globe, Users, FileText } from "lucide-react";
 
 const ProfilePage = () => {
+    
+    // const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false);
+
     const user = {
         userName: "Jean-Luc Picard",
         bio: "Starfleet Captain with years of leadership experience exploring the galaxy.",
@@ -54,22 +57,35 @@ const ProfilePage = () => {
         ],
     };
 
+    const { userId } = useParams<{ userId: string }>();
+
+    const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false);
     const [profileData, setProfileData] = useState<UserProfileType>();
 
     const getProfile = async () => {
         try {
-            const response = await userService.getProfile();
-            const data = response.data;
-            setProfileData(data.data);
-        }
-        catch(err) {
+        const id = userId || localStorage.getItem("UserId");
+        if (!id) throw new Error("No user ID found in URL or localStorage");
 
+        const response = await userService.getProfile(id);
+        const data = response.data;
+        setProfileData(data.data);
+        } catch (err: any) {
+        if (err.response?.status === 404) {
+            console.log("Profile not found");
+        } else if (err.response?.status === 400) {
+            console.warn("Invalid user ID");
+        } else {
+            console.error("API error:", err.response?.status, err.message);
         }
-    }
+        }
+    };
 
     useEffect(() => {
+        const localId = localStorage.getItem("UserId");
+        setIsOwnProfile(userId ? userId === localId : true);
         getProfile();
-    }, []);
+    }, [userId]);
 
     return (
         <div className="bg-gray-100 dark:bg-gray-950 min-h-screen">
@@ -108,15 +124,27 @@ const ProfilePage = () => {
                 <p className="text-gray-600 dark:text-gray-200">{profileData?.bio}</p>
 
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-2 flex-wrap dark:text-white">
-                    <span className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-1" /> {profileData?.location?.city}, {profileData?.location?.country}
-                    </span>
-                    <a href={profileData?.website ? profileData?.website : ''} target="_blank" className="flex items-center text-blue-600 dark:text-blue-500 hover:underline">
-                        <Globe className="w-4 h-4 mr-1" /> Website
-                    </a>
-                    <a href={profileData?.resume ? profileData?.resume : ''} target="_blank" className="flex items-center text-blue-600 dark:text-blue-500 hover:underline">
-                        <FileText className="w-4 h-4 mr-1" /> Resume
-                    </a>
+                    {
+                        (profileData?.location?.city || profileData?.location?.country) && (
+                            <span className="flex items-center">
+                                <MapPin className="w-4 h-4 mr-1" /> {profileData?.location?.city}, {profileData?.location?.country}
+                            </span>
+                        )
+                    }
+                    {
+                        profileData?.website && (
+                            <a href={profileData.website} target="_blank" className="flex items-center text-blue-600 dark:text-blue-500 hover:underline">
+                                <Globe className="w-4 h-4 mr-1" /> Website
+                            </a>
+                        )
+                    }
+                    {
+                        profileData?.resume && (
+                            <a href={profileData.resume} target="_blank" className="flex items-center text-blue-600 dark:text-blue-500 hover:underline">
+                                <FileText className="w-4 h-4 mr-1" /> Resume
+                            </a>
+                        )
+                    }                    
                 </div>
 
                 <div className="flex items-center gap-6 mt-3 text-gray-700 dark:text-gray-200 text-sm">
@@ -129,22 +157,37 @@ const ProfilePage = () => {
                     )} */}
                 </div>
 
-                {/* Edit & Saved Buttons */}
-                <div className="mt-4 flex gap-3">
-                    <Link to={'/user/edit'} className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-800 transition-all">
-                        Edit Profile
-                    </Link>
-                    <button className="px-4 py-2 bg-gray-200 text-gray-700 dark:text-gray-900 rounded-md shadow hover:bg-gray-300 transition-all">
-                        View Saved Posts
-                    </button>
-                </div>
+                {
+                    isOwnProfile && (
+                        <div className="mt-4 flex gap-3">
+                            <Link to={'/user/edit'} className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-800 transition-all">
+                                Edit Profile
+                            </Link>
+                            <Link to={'/saved-post'} className="px-4 py-2 bg-gray-200 text-gray-700 dark:text-gray-900 rounded-md shadow hover:bg-gray-300 transition-all">
+                                View Saved Posts
+                            </Link>
+                        </div>
+                    )
+                }
+                
             </div>
 
 
             {/* About */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                 <h2 className="text-lg dark:text-white font-semibold mb-3">About</h2>
-                <p className="text-gray-700 dark:text-gray-100 leading-relaxed">{profileData?.bio}</p>
+                {
+                    profileData?.bio ? (
+                        <p className="text-gray-700 dark:text-gray-100 leading-relaxed">{profileData.bio}</p>
+                    ) : (
+                        <p className="text-gray-600 dark:text-gray-300 italic">
+                            {
+                                isOwnProfile ? 'No bio yet — add something about yourself!' : 'This user hasn\'t added a bio yet.'
+                            }
+                        </p>
+                    )
+                }
+                
             </div>
 
             {/* Skills & Interests */}
@@ -157,6 +200,11 @@ const ProfilePage = () => {
                                 {s}
                             </span>
                         ))}
+                        {
+                            profileData?.skill.length === 0 && (
+                                <p className="text-gray-600 dark:text-gray-300 italic">No skills yet.</p>
+                            )
+                        }
                     </div>
                 </div>
 
@@ -168,6 +216,11 @@ const ProfilePage = () => {
                             {i}
                         </span>
                         ))}
+                        {
+                            profileData?.interest.length === 0 && (
+                                <p className="text-gray-600 dark:text-gray-300 italic">No interest yet.</p>
+                            )
+                        }
                     </div>
                 </div>
             </div>
@@ -184,6 +237,11 @@ const ProfilePage = () => {
                             <p className="text-gray-500 dark:text-gray-100 text-sm">{exp.type} • {new Date(exp.from).toLocaleDateString()} - {new Date(exp.to).toLocaleDateString()}</p>
                         </div>
                     ))}
+                    {
+                        profileData?.experience.length === 0 && (
+                            <p className="text-gray-600 dark:text-gray-300 italic">No experience.</p>
+                        )
+                    }
                 </div>
             </div>
 
@@ -202,20 +260,24 @@ const ProfilePage = () => {
 
             {/* Your Posts */}
             <div className="bg-white rounded-xl py-4 dark:bg-slate-900 shadow-sm shadow-blue-100 dark:shadow-slate-800 space-y-4">
-                <h2 className="text-lg font-bold mb-4 dark:text-white mx-6">Your Posts</h2>
+                <h2 className="text-lg font-bold mb-4 dark:text-white mx-6">{ isOwnProfile ? 'Your' : 'User' } Posts</h2>
 
                 {profileData?.post ? (
                     <Post post={profileData.post} />
                 ) : (
-                    <p className="text-gray-500 dark:text-gray-400 mx-6">
-                        You haven&apos;t posted anything yet.
+                    <p className="text-gray-600 dark:text-gray-300 italic mx-6">
+                        {
+                            isOwnProfile ? 'You' : 'User'
+                        } haven&apos;t posted anything yet.
                     </p>
                 )}
 
                 {/* Centered Button */}
                 <div className="flex justify-center">
                     <button className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-lg shadow transition-all font-medium text-white">
-                        View or Edit Posts
+                    {
+                        isOwnProfile ? 'View or Edit Posts' : 'View All Posts'
+                    }
                     </button>
                 </div>
             </div>

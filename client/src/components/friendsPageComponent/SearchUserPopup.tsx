@@ -4,6 +4,7 @@ import NoUserFound from "./NoUserFound";
 import { userService } from "../../service/user.service";
 import { type UserSearchListType } from "../../types/userType";
 import { IoClose } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const UserCard = ({user}: {user: UserSearchListType}) => {
     const [isFollowed, setIsFollowed] = useState<boolean>(user.isFollowed);
@@ -42,9 +43,9 @@ const UserCard = ({user}: {user: UserSearchListType}) => {
 
             {/* Right - Actions */}
             <div className="flex gap-2 max-sm:w-full justify-center">
-                <button className="flex-grow border border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-slate-600 dark:text-white dark:hover:bg-slate-700 px-3 py-1 rounded-lg text-sm transition-all">
+                <Link to={`/user/${user._id}`} className="flex-grow border border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-slate-600 dark:text-white dark:hover:bg-slate-700 px-3 py-1 rounded-lg text-sm transition-all">
                     View
-                </button>
+                </Link>
                 {
                     isFollowed ? (
                         <button disabled className="flex-grow bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-gray-300 cursor-not-allowed px-3 py-1 rounded-lg text-sm">Following</button>

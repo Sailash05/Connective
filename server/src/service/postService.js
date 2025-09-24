@@ -1,3 +1,4 @@
+import { v2 as cloudinary } from "cloudinary";
 import Post from '../models/postModel/postModel.js';
 import User from '../models/userModel.js';
 import Comment from '../models/postModel/commentModel.js';
@@ -21,6 +22,74 @@ export const createPostService = async (userId, { content, tags, visibility }, f
             postedAt: new Date()
         });
         return { status: 201, message: 'Posted successfully' };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const updatePostService = async (userId, postId, { content, tags, visibility, deletedMedia }, fileData) => {
+
+    // tags = tags.split(",").map(word => word.trim().toLowerCase()).filter(word => word.length > 0);
+    tags = typeof tags === 'string' ? JSON.parse(tags) : tags || [];
+    deletedMedia = typeof deletedMedia === "string" ? JSON.parse(deletedMedia) : deletedMedia || [];
+    fileData = typeof fileData === "string" ? JSON.parse(fileData) : fileData || [];
+
+    try {
+        if(deletedMedia.length > 0) {
+            for (const file of deletedMedia) {
+                let type = file.endsWith(".mp4") || file.endsWith(".mov") ? "video" : "image";
+                await cloudinary.uploader.destroy(file, { resource_type: type });
+            }
+            for (const public_id of deletedMedia) {
+                const fileType = await Post.findOne({ "fileData.public_id": public_id }).then(post => {
+                    const file = post.fileData.find(f => f.public_id === public_id);
+                    return file?.type || "image";
+                });
+                await cloudinary.uploader.destroy(public_id, { resource_type: fileType });
+            }
+        }
+
+        const post = await Post.findOne({ _id: new mongoose.Types.ObjectId(postId), userId: new mongoose.Types.ObjectId(userId)}).exec();
+
+        if (!post) {
+            return { status: 404, message: "Post not found" };
+        }   
+
+        post.content = content;
+        post.tags = tags;
+        post.visibility = visibility;
+
+        let updatedFileData = post.fileData || [];
+        updatedFileData = updatedFileData.filter(file => !deletedMedia.includes(file.public_id));
+        updatedFileData.push(...fileData);
+
+        post.fileData = updatedFileData;
+        await post.save();
+
+        return { status: 200, message: 'Post updated successfully' };
+    }
+    catch(err) {
+        console.log(err.message);
+        return { status: 500, message: err.message };
+    }
+}
+
+export const deletePostService = async (postId) => {
+    try {
+        const deletedPost = await Post.findByIdAndDelete(new mongoose.Types.ObjectId(postId));
+        if (!deletedPost) {
+            return { status: 404, message: 'Post not found.' };
+        }
+        await Comment.deleteMany({ postId: deletedPost._id });
+        await PostInteraction.deleteMany({ postId: deletedPost._id });
+        const { fileData } = deletedPost;
+        for (const file of fileData) {
+            if (file.public_id) {
+                await cloudinary.uploader.destroy(file.public_id, { resource_type: file.type });
+            }
+        }
+        return { status: 200, message: 'Post deleted successfully.' };
     }
     catch(err) {
         return { status: 500, message: err.message };
@@ -237,6 +306,72 @@ export const getFeedService = async (userId, page = 1, limit = 10) => {
         return { status: 500, message: err.message };
     }
 };
+
+export const getSavedPostService = async (userId) => {
+    try {
+        const { savedPost } = await User.findById(userId).select('savedPost');
+        
+        const postList = await Promise.all(
+            savedPost.map(async (postId) => {
+                const post = await getPostService(postId, userId);
+                return post.data;
+            })
+        );
+        return { status: 200, message: 'Get your saved post.', postList: postList };
+    }
+    catch(err) {
+        return { status: 500, message: err.message };
+    }
+}
+
+export const getPostListService = async (userId) => {
+    try {
+        const posts = await Post.find({ userId }).sort({ createdAt: -1 }).lean();
+
+        const postAuthor = await User.findById(userId)
+            .select("userName profilePicture")
+            .lean();
+
+        const currentUser = await User.findById(userId).select("savedPost").lean();
+        const savedPosts = currentUser?.savedPost || [];
+
+        const followingIds = new Set(
+            (await Follow.find({ follower: userId }).distinct("following"))
+                .map(id => id.toString())
+        );
+
+        const enrichedPosts = await Promise.all(
+            posts.map(async (post) => {
+                const noOfComments = await Comment.countDocuments({
+                    postId: post._id,
+                    parentCommentId: null
+                });
+
+                const noOfLikes = post.likes?.length || 0;
+
+                return {
+                    ...post,
+                    userName: postAuthor?.userName || "Unknown",
+                    profilePicture: postAuthor?.profilePicture ||
+                        "https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg",
+                    noOfLikes,
+                    noOfComments,
+                    isPostSaved: savedPosts.some(id => id.toString() === post._id.toString()),
+                    isLiked: post.likes?.some(id => id.toString() === userId.toString()) || false,
+                    isFollowed: followingIds.has(post.userId.toString())
+                };
+            })
+        );
+
+        enrichedPosts.forEach(post => delete post.likes);
+
+        return { status: 200, message: "Posts fetched successfully.", data: enrichedPosts };
+    }
+    catch (err) {
+        return { status: 500, message: err.message };
+    }
+};
+
 
 export const getPostService = async (postId, userId) => {
     try {
