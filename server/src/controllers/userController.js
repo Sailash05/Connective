@@ -18,7 +18,7 @@ export const getProfilePicture = async (req, res) => {
 }
 
 export const getProfile = async (req, res) => {
-    const userId = req.user.userId;
+    const { userId } = req.query;
     try {
         const result = await getProfileService(userId);
         if(result.status === 200 ) {

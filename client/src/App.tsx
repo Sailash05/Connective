@@ -12,6 +12,9 @@ import PasswordResetPage from './pages/loginPage/PasswordResetPage';
 import MainLayout from './layout/MainLayout';
 import FeedPage from './pages/feedPage/FeedPage';
 import PostSection from './pages/feedPage/PostSection';
+import SavedPostSection from './pages/feedPage/SavedPostSection';
+import ViewPostSection from './pages/feedPage/ViewPostSection';
+
 import FriendsPage from './pages/friendsPage/FriendsPage';
 
 import ProfilePage from './pages/profilePage/ProfilePage';
@@ -32,10 +35,14 @@ function App() {
                                 <Route path="/home" element={<FeedPage />} />
                                 <Route path="/post/:postId" element={<PostSection />} />
                                 <Route path='/friends' element={<FriendsPage />} />
+                                <Route path='/saved-post' element={<SavedPostSection />} />
+                                <Route path='/view-post' element={<ViewPostSection />} />
+                                <Route path='/view-post/:userId' element={<ViewPostSection />} />
                             </Route>
                             <Route element={<MainLayout showRightSidebar={false} />}>
                                 <Route path='/user' element={<ProfilePage />} />
                                 <Route path='/user/edit' element={<ProfileEditPage />} />
+                                <Route path="/user/:userId" element={<ProfilePage />} />
                             </Route>
                         </Route>
 

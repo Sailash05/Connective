@@ -1,3 +1,5 @@
+type VisibilityOption = 'PUBLIC' | 'PRIVATE' | 'FOLLOWERS_ONLY';
+
 export type PostType = {
     _id: string;
     __v: number;
@@ -5,9 +7,9 @@ export type PostType = {
     userName: string;
     profilePicture: string;
     content: string;
-    fileData: any[];
+    fileData: PostFileType[];
     tags: string[];
-    visibility: string;
+    visibility: VisibilityOption;
     noOfLikes: number;
     noOfComments: number;
     isLiked: boolean;
@@ -15,4 +17,11 @@ export type PostType = {
     isFollowed: boolean,
     createdAt: Date;
     updatedAt: Date;
+};
+
+export type PostFileType = {
+    originalName: string,
+    public_id: string,
+    type: string,
+    url: string
 };

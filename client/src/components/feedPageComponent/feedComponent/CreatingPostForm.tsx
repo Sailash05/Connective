@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useCreatePost } from "../../../context/CreatePostContext.tsx";
 import { postService } from '../../../service/post.service.ts';
+import CreatingPostLoading from "../../loadingComponent/postLoading/CreatePostLoading.tsx";
 
 import { IoClose } from "react-icons/io5";
 
@@ -28,6 +29,8 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
     const [files, setFiles] = useState<File[]>([]);
     const [tags, setTags] = useState<string>("");
     const [Visibility, setVisibility] = useState<VisibilityOption>("PUBLIC");
+
+    const [isCreating, setIsCreating] = useState<boolean>(false);
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -109,14 +112,20 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
         formData.append('visibility', Visibility.toUpperCase());
 
         try {
+            setIsCreating(true);
             const response = await postService.createPost(formData);
             if(response.status === 201) {
+                setIsCreating(false);
                 setCreatePost(false);
                 showSuccessMessage('Success!', ['Post created!'], 'Okay');
             }
         }
         catch (err) {
+            setIsCreating(false);
             showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
+        }
+        finally {
+            setIsCreating(false);
         }
     }
 
@@ -200,6 +209,9 @@ const CreatePostForm = ({ showFailMessage, showSuccessMessage }: ParameterType) 
                     <button className="font-bold bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-800 transition-all" onClick={() => handleCreatePost()}>Create Post</button>
                 </div>
             </div>
+            {
+                isCreating && <CreatingPostLoading content={"Creating"}/>
+            }
         </div>
     );
 }

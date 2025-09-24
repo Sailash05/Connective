@@ -1,15 +1,19 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 import { postService } from '../../../service/post.service.ts';
 import { userService } from '../../../service/user.service.ts';
 
 import { type PostType } from '../../../types/postType.ts';
+import EditPostForm from './EditPostForm.tsx';
 import { timeDifference } from '../../../utils/dateAndTime.ts';
 import SharePopUp from './SharePopUp.tsx';
 import CommentSection from '../commentComponent/CommentSection.tsx';
 import ImageContainer from './ImageContainer.tsx';
 
+import DeletingPostLoading from '../../loadingComponent/postLoading/DeletingPostLoading.tsx';
+
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { MdReportGmailerrorred } from "react-icons/md";
+import { MdDelete, MdEdit, MdReportGmailerrorred } from "react-icons/md";
 
 import followIcon from '../../../assets/mainPageImages/postContainerIcons/follow.png';
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
@@ -27,6 +31,8 @@ type PostProps = {
 };
 
 const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
+
+    const [isOwnPost, setIsOwnPost] = useState<boolean>(false);
 
     const ownPost: boolean = localStorage.getItem('UserId')=== post.userId;
 
@@ -75,6 +81,10 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
     const [isFollowed, setIsFollowed] = useState<boolean>(post.isFollowed);
     const [followLoading, setFollowingLoading] = useState<boolean>(false);
 
+    const [isPostDeleted, setIsPostDeleted] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const likeBtnHandle = async () => {
         try {
         const response = await postService.toggleLike(post._id, isLiked);
@@ -103,15 +113,36 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         }
     }
 
+    const handlePostDelete = async () => {
+        try {
+            setIsDeleting(true);
+            await postService.deletePost(post._id);
+            setIsDeleting(false);
+            setIsPostDeleted(true);
+        }
+        catch(err) {
+            setIsDeleting(false);
+        }
+        finally {
+            setIsDeleting(false);
+        }
+    }
+
+    useEffect(() => {
+        const localId = localStorage.getItem("UserId");
+        setIsOwnPost(post.userId === localId);
+    }, []);
+
     return (
+        <div className='relative'>
         <div ref={ref} className="bg-white rounded-xl py-2 md:py-4 px-4 md:px-12 dark:bg-gray-900 shadow-sm shadow-blue-100 dark:shadow-slate-800 space-y-4">
         {/* Profile */}
         <div className="flex gap-2 md:gap-4 justify-start items-center relative">
             <img src={post.profilePicture} alt="" className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover"/>
             <div>
-                <h3 className="font-bold hover:underline cursor-pointer dark:text-white max-md:text-sm">
+                <Link to={`/user/${post.userId}`} className="font-bold hover:underline cursor-pointer dark:text-white max-md:text-sm">
                     {post.userName}
-                </h3>
+                </Link>
                 <p className="text-zinc-600 dark:text-zinc-400 max-md:text-xs text-sm">
                     {timeDifference(post.createdAt)}
                 </p>
@@ -146,13 +177,26 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
                 <BsThreeDotsVertical />
             </button>
             {isMenuOpen && (
-            <div
-                ref={menuRef}
-                className="absolute top-full right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-lg w-40 overflow-hidden z-10"
-            >
+            <div ref={menuRef} className="absolute top-full right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-lg w-40 overflow-hidden z-10" >
+                {
+                    isOwnPost && (
+                        <>
+                            <button onClick={() => setIsEditing(true)} className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <MdEdit className="text-lg text-blue-500" />
+                                Edit
+                            </button>
+
+                            <button onClick={() => handlePostDelete()} className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <MdDelete className="text-lg text-red-500" />
+                                Delete
+                            </button>
+                        </>
+                        
+                    )
+                }
                 <button className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
-                <MdReportGmailerrorred className="text-lg text-red-500" />
-                Report
+                    <MdReportGmailerrorred className="text-lg text-red-500" />
+                    Report
                 </button>
             </div>
             )}
@@ -316,6 +360,40 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
             setSharePopUp={setSharePopUp}
             />
         )}
+        </div>
+        {
+            isEditing && (
+                <EditPostForm post={{
+                    _id: post._id,
+                    content: post.content,
+                    tags: post.tags,
+                    visibility: post.visibility,
+                    mediaUrls: post.fileData
+                }}
+                setIsEditing={setIsEditing} />
+            )
+        }
+        {
+            isPostDeleted && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl z-20">
+                    <div className="flex flex-col items-center gap-3 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-12 w-12 text-red-500" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4" />
+                        </svg>
+                        <p className="text-gray-800 dark:text-gray-200 font-semibold text-lg text-center">This post has been deleted</p>
+                    </div>
+                </div>
+            )
+        }
+        {
+            isDeleting && <DeletingPostLoading />
+        }
         </div>
     );
 });

@@ -6,7 +6,7 @@ import Header from "./Header";
 import SideNavBar from "./SideNavBar";
 import RightSidebar from "./RightSideBar";
 
-import CreatePostForm from "../components/feedPageComponent/feedComponent/CreatePostForm";
+import CreatePostForm from "../components/feedPageComponent/feedComponent/CreatingPostForm";
 
 import FailMessage from "../components/message/FailMessage";
 import SuccessMessage from "../components/message/SuccessMessage";

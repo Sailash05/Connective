@@ -55,11 +55,18 @@ export const getProfileService = async (userId) => {
             followingCount: 1
         }).exec();
 
-        const { _id } = await Post.findOne({ userId: userId }).sort({ createdAt: -1 }).select({_id: 1}).exec();
+        if(!user) {
+            return { status: 404, message: 'User not found' };
+        }
+
+        const lastPost = await Post.findOne({ userId: userId }).sort({ createdAt: -1 }).select({_id: 1}).exec();
         const userObj = user.toObject();
-        const post = await getPostService(_id, userId);
-        const latestPost = post.data;
-        userObj.post = latestPost;
+        if(lastPost) {
+            const { _id } = lastPost;
+            const post = await getPostService(_id, userId);
+            const latestPost = post.data;
+            userObj.post = latestPost;
+        }
 
         return { status: 200, message: 'Get your profile data.', data: userObj };
     }

@@ -5,6 +5,7 @@ import SearchFriendLoading from "../../../components/loadingComponent/userLoadin
 import { userService } from "../../../service/user.service";
 import type { SuggestedUserType, TopProfessionalsType, RecentlyJoinedUserType } from "../../../types/userType";
 import { istDateFormat } from "../../../utils/dateAndTime";
+import { Link } from "react-router-dom";
 
 const SuggestedUserCard = ({ user }: { user: SuggestedUserType}) => {
 
@@ -194,9 +195,9 @@ const SearchFriendSection = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <button className="bg-blue-600 hover:bg-blue-800 transition-all text-white px-3 py-1 rounded-lg">
+                                <Link to={`/user/${user._id}`} className="bg-blue-600 hover:bg-blue-800 transition-all text-white px-3 py-1 rounded-lg">
                                     View
-                                </button>
+                                </Link>
                                 </div>
                             ))}
                             </div>

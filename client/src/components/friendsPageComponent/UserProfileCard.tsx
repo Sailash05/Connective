@@ -2,6 +2,7 @@ import { useState, forwardRef } from "react";
 import { userService } from "../../service/user.service";
 import { type UserProfileCardType } from "../../types/UserProfileCardType";
 import { MdOutlineMessage } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 type UserProfileProps = {
     user: UserProfileCardType;
@@ -51,9 +52,9 @@ const UserProfileCard = forwardRef<HTMLDivElement, UserProfileProps>(({ user }, 
             className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border"
             />
             <div className="ml-3 md:ml-4 flex-1">
-            <h3 className="font-semibold text-sm md:text-lg text-gray-900 hover:underline cursor-pointer w-fit dark:text-white">
+            <Link to={`/user/${user.userProfile._id}`} className="font-semibold text-sm md:text-lg text-gray-900 hover:underline cursor-pointer w-fit dark:text-white">
                 {user.userProfile.userName}
-            </h3>
+            </Link>
             <p className="text-xs md:text-sm text-gray-500 dark:text-gray-200">
                 {user.userProfile.email}
             </p>
