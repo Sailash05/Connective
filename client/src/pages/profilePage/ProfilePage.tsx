@@ -116,7 +116,7 @@ const ProfilePage = () => {
 
       <div className="max-w-5xl mx-auto px-4 pt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Main Content */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-3 space-y-6">
 
             {/* Profile Header */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6 relative">
@@ -274,11 +274,11 @@ const ProfilePage = () => {
 
                 {/* Centered Button */}
                 <div className="flex justify-center">
-                    <button className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-lg shadow transition-all font-medium text-white">
+                    <Link to={isOwnProfile ? '/view-post' : `/view-post/${profileData?._id}`} className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-lg shadow transition-all font-medium text-white">
                     {
                         isOwnProfile ? 'View or Edit Posts' : 'View All Posts'
                     }
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -309,7 +309,7 @@ const ProfilePage = () => {
 
         </div>
 
-        <ProfileSidebar user={user} />
+        {/* <ProfileSidebar user={user} /> */}
       </div>
     </div>
   );

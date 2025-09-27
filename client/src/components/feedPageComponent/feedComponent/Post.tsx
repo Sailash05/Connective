@@ -306,14 +306,14 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
             />
             &nbsp;Comments
             </button>
-            <button className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm">
+            {/* <button className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm">
             <img
                 src={sendIcon}
                 alt=""
                 className="w-4 h-4 md:w-5 md:h-5 dark:invert"
             />
             &nbsp;Send
-            </button>
+            </button> */}
             <button
             onClick={() => setSharePopUp(true)}
             className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm"

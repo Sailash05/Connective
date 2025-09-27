@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import homeIcon from '../assets/mainPageImages/sideNavBarIcons/social/home.png';
 import friendsIcon from '../assets/mainPageImages/sideNavBarIcons/social/friends.png'
 import exploreIcon from '../assets/mainPageImages/sideNavBarIcons/social/explore.png';
+import profileIcon from '../assets/icons/profile.png';
 
 import communityIcon from '../assets/mainPageImages/sideNavBarIcons/community/community.png';
 import resourceIcon from '../assets/mainPageImages/sideNavBarIcons/community/resource.png';
@@ -47,10 +48,10 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                         Friends
                     </Link>
 
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    {/* <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={exploreIcon} alt="" width={20} className='dark:invert' />
                         Explore
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -59,12 +60,12 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                 <h2 className='font-extrabold text-md pl-2'>Community</h2>
 
                 <div className='pt-2'>
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    <Link to={'/comming-soon'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={communityIcon} alt="" width={25} className='dark:invert' />
                         Communities
-                    </button>
+                    </Link>
 
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    {/* <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={resourceIcon} alt="" width={25} className='dark:invert' />
                         Resources
                     </button>
@@ -72,7 +73,7 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                     <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={discussionForumIcon} alt="" width={25} className='dark:invert' />
                         Discussion Forums
-                    </button>
+                    </button> */}
 
                     <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={blogIcon} alt="" width={20} className='dark:invert' />
@@ -86,15 +87,15 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                 <h2 className='font-extrabold text-md pl-2'>Career</h2>
 
                 <div className='pt-2'>
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    <Link to={'/comming-soon'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={careerDasbboardIcon} alt="" width={25} className='dark:invert' />
                         Career Dashboard
-                    </button>
+                    </Link>
 
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    <Link to={'/comming-soon'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={learningHubIcon} alt="" width={25} className='dark:invert' />
                         Learning Hub
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Sub menu */}
@@ -107,22 +108,22 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                     <div className={`border-l-2 ml-6 overflow-hidden transform transition-all duration-300 ease-in-out ${subMenu ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'}`}>
                         <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                             <img src={resumeBuilderIcon} alt="" width={25} className='dark:invert' />
-                            Resume Builder
+                            Resume Builder (soon)
                         </button>
 
                         <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                             <img src={personalTrainingIcon} alt="" width={25} className='dark:invert' />
-                            Personal Training
+                            Personal Training (soon)
                         </button>
 
                         <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                             <img src={mockTestIcon} alt="" width={25} className='dark:invert' />
-                            Mock Test Zone
+                            Mock Test Zone (soon)
                         </button>
 
                         <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                             <img src={careerGuidanceIcon} alt="" width={25} className='dark:invert' />
-                            Career Guidance
+                            Career Guidance (soon)
                         </button>
                     </div>
                 </div>
@@ -135,10 +136,10 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                 <h2 className='font-extrabold text-md pl-2'>Settings & Privacy</h2>
 
                 <div className='pt-2'>
-                    <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
-                        <img src={settingsIcon} alt="" width={20} className='dark:invert' />
-                        Settings
-                    </button>
+                    <Link to={'/user'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                        <img src={profileIcon} alt="" width={20} className='dark:invert' />
+                        Profile
+                    </Link>
 
                     <button onClick={() => setLogoutPopup(true)} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={logoutIcon} alt="" width={25} className='dark:invert' />

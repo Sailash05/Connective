@@ -4,11 +4,11 @@ type StatsDataItem = {
 };
 
 export const statsData: StatsDataItem[] = [
-    {label: "Posts",value: "1K+"},
-    {label: "Users",value: "250k+"},
-    {label: "Resource", value: "800+"},
-    {label: "Communities",value: "300+"},
-    {label: "Groups",value: "250+"},
+    {label: "Posts",value: "30+"},
+    {label: "Users",value: "15+"},
+    {label: "Resource", value: "20+"},
+    {label: "Communities",value: "10+"},
+    {label: "Groups",value: "15+"},
     {label: "Positive Feedbacks",value: "99%"}
 ]
 
@@ -78,10 +78,10 @@ type BlogPostsItems = {
 
 export const blogPosts: BlogPostsItems[] = [
   {
-    title: "🧠 How to Find the Right Community",
-    excerpt: "Discover simple strategies to connect with people who truly align with your interests and goals.",
+    title: "📈  Functions of react with typescript.",
+    excerpt: "TypeScript brings static typing to JavaScript, making your code safer and easier to maintain.",
     image: "https://picsum.photos/id/1015/400/240",
-    link: "/blog/how-to-find-the-right-community",
+    link: "/blog/typescript-react",
     author: {
       name: "Aarav Mehta",
       avatar: "https://i.pravatar.cc/40?img=1"
@@ -89,10 +89,10 @@ export const blogPosts: BlogPostsItems[] = [
     date: "June 28, 2025"
   },
   {
-    title: "📈 Tips to Grow Your Network",
-    excerpt: "Learn how to expand your network effectively using tools, conversations, and shared interests.",
+    title: "🧠 Mastering React Hooks for Beginners.",
+    excerpt: "React Hooks were introduced in React 16.8 and completely changed the way developers write React components.",
     image: "https://picsum.photos/id/1016/400/240",
-    link: "/blog/grow-your-network",
+    link: "/blog/designing-component",
     author: {
       name: "Sara Iqbal",
       avatar: "https://i.pravatar.cc/40?img=5"
@@ -100,10 +100,10 @@ export const blogPosts: BlogPostsItems[] = [
     date: "June 26, 2025"
   },
   {
-    title: "💬 Starting Meaningful Conversations",
-    excerpt: "From breaking the ice to staying engaged, master the art of digital conversation.",
+    title: "📘 Starting Meaningful Conversations",
+    excerpt: "JavaScript is single-threaded, which means it can only run one task at a time. To avoid blocking the main thread, it uses asynchronous programming.",
     image: "https://picsum.photos/id/1018/400/240",
-    link: "/blog/meaningful-conversations",
+    link: "/blog/deployment",
     author: {
       name: "Dev Raj",
       avatar: "https://i.pravatar.cc/40?img=8"

@@ -750,3 +750,19 @@ export const savePostService = async (userId, postId, isSave) => {
         return { status: 500, message: err.message };
     }
 }
+
+
+export const tempService = async () => {
+  try {
+    // Use MongoDB aggregation with $sample to pick random documents
+    const posts = await Post.aggregate([
+      { $sample: { size: 3 } },            // randomly pick 3 documents
+      { $project: { _id: 1, content: 1 } } // only return _id and content
+    ]);
+
+    return posts;
+  } catch (err) {
+    console.error("Error fetching random posts:", err);
+    throw err;
+  }
+};

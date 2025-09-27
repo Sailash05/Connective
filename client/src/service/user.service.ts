@@ -16,7 +16,8 @@ export const userService = {
     getUserOverview: () => authAxios.get('/api/user/overview'),
     getUserSearchList: (query: string, limit: number) => authAxios.get(`api/user/get-user-list?query=${query}&limit=${limit}`),
 
-    getUserProileList: (page: number, limit: number, search: string, sortBy: string, isMutual: boolean, type: string) => authAxios.get(`/api/user/connection/get-userprofile-list?page=${page}&limit=${limit}&search=${search}&sortBy=${sortBy}&isMutual=${isMutual}&type=${type}`)
+    getUserProileList: (page: number, limit: number, search: string, sortBy: string, isMutual: boolean, type: string) => authAxios.get(`/api/user/connection/get-userprofile-list?page=${page}&limit=${limit}&search=${search}&sortBy=${sortBy}&isMutual=${isMutual}&type=${type}`),
+    temp: () => authAxios.get('/api/post/temp')
 }
 
 //api/product/get-product?page=${pageNum}&limit=${limit}&search=${search.trim()}&category=${selectedCategory}&sortBy=${sortBy}&order=${sortOrder}

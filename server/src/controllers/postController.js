@@ -1,5 +1,5 @@
 import { response } from "../utils/response.js";
-import { createPostService, updatePostService, deletePostService, getFeedService, getSavedPostService, getPostListService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService } from "../service/postService.js";
+import { createPostService, updatePostService, deletePostService, getFeedService, getSavedPostService, getPostListService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService, tempService } from "../service/postService.js";
 
 export const createPost = async (req, res) => {
 
@@ -412,3 +412,8 @@ export const unSavePost = async (req, res) => {
     }
 }
 
+
+export const temp = async (req, res) => {
+    const post = await tempService();
+    return res.status(200).send(response('SUCCESS', 'temp', post));
+}

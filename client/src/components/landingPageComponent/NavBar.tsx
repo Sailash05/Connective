@@ -6,6 +6,9 @@ import { IoMenu, IoClose } from "react-icons/io5";
 
 import lightModeIcon from '../../assets/icons/light-mode.png';
 import darkModeIcon from '../../assets/icons/dark-mode.png';
+import connectiveLogo from '../../assets/icons/connective_logo.png';
+
+import { version } from '../../constants/metaData';
 
 const NavBar = () => {
 
@@ -20,7 +23,18 @@ const NavBar = () => {
         <nav className="w-full fixed top-0 left-0 right-0 z-40 shadow-sm dark:shadow-slate-800 bg-white dark:bg-slate-950">
             <div className="w-[90%] md:w-[70%] mx-auto flex justify-between items-center gap-10 py-3 md:py-4 h-full">
                 <h1 className="mr-auto text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-white cursor-pointer">
-                    <a href="#home">Connective</a>
+                    <div className="basis-1/2 md:basis-1/3">
+  <a
+    href="#home"
+    className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit"
+  >
+    <img src={connectiveLogo} alt="Connective logo" className="w-10" />
+    <span>
+      Connective <span className="text-xs font-normal">{version}</span>
+    </span>
+  </a>
+</div>
+
                 </h1>
                 <ul className="hidden md:flex text-lg font-medium dark:text-white">
                     <li><a href='#home' className="py-2 px-4">Home</a></li>

@@ -53,7 +53,7 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
                     </button>
                 </header>
 
-                <p className="mt-4 font-medium">Share this link via</p>
+                {/* <p className="mt-4 font-medium">Share this link via</p>
                 <div className="space-x-4 mt-2">
                     <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596109/linked_rwu28l.png" alt="" width={30} />
@@ -64,9 +64,9 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
                     <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596148/x_u4vyjq.png" alt="" width={30} />
                     </button>
-                </div>
+                </div> */}
 
-                <p className="mt-5 font-medium">Or copy link</p>
+                <p className="mt-5 font-medium">Copy link</p>
                 <div className="border border-black flex mt-2 mb-2 p-1 items-center">
                     <img src={addLinkIcon} alt="" className="ml-2 mr-4 w-5 h-5" />
                     <input type="text" value={url} className="w-[12rem] md:w-[18rem] focus:outline-none" readOnly />

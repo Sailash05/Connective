@@ -21,6 +21,11 @@ import ProfilePage from './pages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/profilePage/ProfileEditPage';
 
 import OAuthSuccess from './pages/loginPage/OAuthSuccess';
+import ComingSoonPage from './pages/othersPage/ComingSoonPage';
+
+import BlogApp from './pages/othersPage/BlogApp';
+import SecondBlog from './pages/othersPage/SecondBlog';
+import ThirdBlog from './pages/othersPage/ThirdBlog';
 
 function App() {
 
@@ -43,8 +48,13 @@ function App() {
                                 <Route path='/user' element={<ProfilePage />} />
                                 <Route path='/user/edit' element={<ProfileEditPage />} />
                                 <Route path="/user/:userId" element={<ProfilePage />} />
+                                <Route path="/comming-soon" element={<ComingSoonPage />} />
                             </Route>
                         </Route>
+
+                        <Route path='/blog/typescript-react' element={<BlogApp />} />
+                        <Route path='/blog/designing-component' element={<SecondBlog />} />
+                        <Route path='/blog/deployment' element={<ThirdBlog />} />
 
                         <Route path="/" element={<PublicRoute element={<HomePage />} />} />
                         <Route path="/auth" element={<PublicRoute element={<LoginPage />} />} />
@@ -52,6 +62,7 @@ function App() {
 
                         <Route path="/oauth-success" element={<OAuthSuccess />} />
                         <Route path="*" element={<Navigate to="/" />} />
+                        
                     </Routes>
                 </Router>
             </CreatePostProvider>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { useCreatePost } from "../context/CreatePostContext";
 
 import Header from "./Header";
@@ -14,6 +14,7 @@ import Logout from "../components/message/Logout";
 
 
 const MainLayout = ({ showRightSidebar }: { showRightSidebar: boolean }) => {
+    const location = useLocation();
 
     const { createPost } = useCreatePost();
 
@@ -40,6 +41,10 @@ const MainLayout = ({ showRightSidebar }: { showRightSidebar: boolean }) => {
         setFailMessage(false);
         setSuccessMessage(true);
     }
+
+    useEffect(() => {
+    setIsSideBarOpen(false);
+  }, [location.pathname]);
 
     return(
         <div className={`h-[100dvh] grid grid-cols-1 ${showRightSidebar ? 'md:grid-cols-[20%_55%_25%]' : 'md:grid-cols-[20%_80%]'} grid-rows-[auto_1fr] dark:bg-slate-950 max-md:relative`}>
