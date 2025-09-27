@@ -1,0 +1,32 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.bg-gradient-1 {
+    background: linear-gradient(to right, #ff5cf3, #ff2dcf);
+}
+.bg-gradient-2 {
+    background: linear-gradient(to right, #3fd0ff, #1597ff);
+}
+.bg-gradient-3 {
+    background: linear-gradient(to right, #38f9d7, #00c9a7);
+}
+.bg-gradient-4 {
+    background: linear-gradient(to right, #ffb75e, #ed8f03);
+}
+.bg-gradient-5 {
+    background: linear-gradient(to right, #b1fb17, #7ec700);
+}
+.bg-gradient-6 {
+    background: linear-gradient(to right, #c084fc, #9333ea);
+}
+
+.meta-card {
+    color: white;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.meta-card:hover {
+    transform: translateY(-5px);
+}
