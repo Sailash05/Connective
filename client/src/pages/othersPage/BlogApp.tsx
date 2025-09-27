@@ -101,7 +101,7 @@ export default function BlogPostPage() {
           className="w-full h-64 object-cover rounded-md"
         />
         <h1 className="text-3xl font-extrabold mt-4">Getting started with TypeScript + React</h1>
-        <div className="text-sm text-gray-500 mt-2">By Sailash • 2025-09-25</div>
+        <div className="text-sm text-gray-500 mt-2">By Connective official • 2025-09-27</div>
 
         <p className="mt-6 text-base leading-relaxed">
           TypeScript brings static typing to JavaScript, making your code safer and easier to maintain.

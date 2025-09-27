@@ -102,7 +102,7 @@ export default function BlogPostPage2() {
         <h1 className="text-3xl font-extrabold mt-4">
           Mastering React Hooks for Beginners
         </h1>
-        <div className="text-sm text-gray-500 mt-2">By Sailash • 2025-09-25</div>
+        <div className="text-sm text-gray-500 mt-2">By Sailash • 2025-09-27</div>
 
         <p className="mt-6 text-base leading-relaxed">
           React Hooks were introduced in React 16.8 and completely changed the

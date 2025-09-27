@@ -48,17 +48,17 @@ type TestimonialsItem = {
 
 export const testimonials: TestimonialsItem[] = [
   {
-    name: "Aarav Mehta",
-    avatar: "https://i.pravatar.cc/100?img=1",
+    name: "Connective official",
+    avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg",
     quote: "Connective helped me meet amazing people who think like me!"
   },
   {
-    name: "Sara Iqbal",
-    avatar: "https://i.pravatar.cc/100?img=5",
+    name: "Sailash",
+    avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975326/0f80b7dd-c3f8-4550-a4ef-3e0e59d60c3d_bwspxi.jpg",
     quote: "The communities here are super active and inspiring."
   },
   {
-    name: "Dev Raj",
+    name: "Geetha",
     avatar: "https://i.pravatar.cc/100?img=3",
     quote: "Great platform to collaborate and learn together."
   }
