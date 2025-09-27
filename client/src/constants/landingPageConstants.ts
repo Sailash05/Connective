@@ -59,7 +59,7 @@ export const testimonials: TestimonialsItem[] = [
   },
   {
     name: "Geetha",
-    avatar: "https://i.pravatar.cc/100?img=3",
+    avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975721/43055cca-14f5-47c8-a494-2e1dd74391d8_pvhhk4.jpg",
     quote: "Great platform to collaborate and learn together."
   }
 ];
