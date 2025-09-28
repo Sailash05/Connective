@@ -83,10 +83,10 @@ export const blogPosts: BlogPostsItems[] = [
     image: "https://picsum.photos/id/1015/400/240",
     link: "/blog/typescript-react",
     author: {
-      name: "Aarav Mehta",
-      avatar: "https://i.pravatar.cc/40?img=1"
+      name: "Connective Official",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758797741/connective_logo_xuvh06.png"
     },
-    date: "June 28, 2025"
+    date: "Sep 27, 2025"
   },
   {
     title: "🧠 Mastering React Hooks for Beginners.",
@@ -94,10 +94,10 @@ export const blogPosts: BlogPostsItems[] = [
     image: "https://picsum.photos/id/1016/400/240",
     link: "/blog/designing-component",
     author: {
-      name: "Sara Iqbal",
-      avatar: "https://i.pravatar.cc/40?img=5"
+      name: "Sailash",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975326/0f80b7dd-c3f8-4550-a4ef-3e0e59d60c3d_bwspxi.jpg"
     },
-    date: "June 26, 2025"
+    date: "Sep 28, 2025"
   },
   {
     title: "📘 Starting Meaningful Conversations",
@@ -105,10 +105,10 @@ export const blogPosts: BlogPostsItems[] = [
     image: "https://picsum.photos/id/1018/400/240",
     link: "/blog/deployment",
     author: {
-      name: "Dev Raj",
-      avatar: "https://i.pravatar.cc/40?img=8"
+      name: "Geetha",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975721/43055cca-14f5-47c8-a494-2e1dd74391d8_pvhhk4.jpg"
     },
-    date: "June 22, 2025"
+    date: "Sep 28, 2025"
   }
 ];
 

@@ -84,17 +84,15 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                 }
             </button>
 
-<div className="basis-1/2 md:basis-1/3">
-  <Link
-    to="/home"
-    className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit"
-  >
-    <img src={connectiveLogo} alt="Connective logo" className="w-10" />
-    <span>
-      Connective <span className="text-xs font-normal">{version}</span>
-    </span>
-  </Link>
-</div>
+            <div className="basis-3/4 md:basis-1/3">
+                <Link to="/home" className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit" >
+                    <img src={connectiveLogo} alt="Connective logo" className="w-10" />
+                    <span>
+                        Connective
+                        <span className="text-xs font-normal max-md:ml-2">{version}</span>
+                    </span>
+                </Link>
+            </div>
 
 
             
@@ -105,9 +103,9 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                 </div>
             </div>
 
-            <div className='flex justify-end items-center gap-4 basis-1/2 md:basis-1/3'>
+            <div className='flex justify-end items-center md:gap-4 gap-2 basis-1/2 md:basis-1/3'>
 
-                <button className='md:hidden text-3xl p-1 dark:text-white'><IoMdSearch /></button>
+                {/* <button className='md:hidden text-3xl p-1 dark:text-white'><IoMdSearch /></button> */}
 
                 <button onClick={() => setCreatePost(true)} className='p-2 bg-fuchsia-400 shadow-md bg-gradient-to-r from-[#FF512F] via-[#F09819] to-[#FF512F] bg-[length:200%_auto] transition-all duration-500 hover:bg-right rounded-lg'><img src={createPostIcon} alt="" className='invert w-3 md:w-5' /></button>
 
