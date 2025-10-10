@@ -6,6 +6,7 @@ import { userService } from '../../../service/user.service.ts';
 import { type PostType } from '../../../types/postType.ts';
 import EditPostForm from './EditPostForm.tsx';
 import { timeDifference } from '../../../utils/dateAndTime.ts';
+import PostContent from './PostContent.tsx';
 import SharePopUp from './SharePopUp.tsx';
 import CommentSection from '../commentComponent/CommentSection.tsx';
 import ImageContainer from './ImageContainer.tsx';
@@ -203,31 +204,25 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         </div>
 
         {/* Content */}
-        <pre className="font-sans dark:text-white whitespace-pre-wrap break-words">
+        {/* <pre className="font-sans dark:text-white whitespace-pre-wrap break-words">
             {beginText}
             {itCanOverflow && (
             <>
                 {!isContentExpanded && <span>...</span>}
                 <span className={!isContentExpanded ? 'hidden' : ''}>{endText}</span>
-                <span
-                className="text-blue-600 dark:text-blue-500 font-bold cursor-pointer ml-1"
-                onClick={() => setIsContentExpanded(!isContentExpanded)}
-                >
-                {isContentExpanded ? '(show less)' : '(show more)'}
+                <span className="text-blue-600 dark:text-blue-500 font-bold cursor-pointer ml-1" onClick={() => setIsContentExpanded(!isContentExpanded)} >
+                    {isContentExpanded ? '(show less)' : '(show more)'}
                 </span>
             </>
             )}
-        </pre>
+        </pre> */}
+        <PostContent text={post.content} />
 
-        <p className="flex gap-2">
+        <p className="flex gap-2 flex-wrap break-words whitespace-normal">
             {post.tags.map((tag, index) => (
-            <a
-                href=""
-                key={index}
-                className="text-blue-600 dark:text-blue-500 font-bold hover:underline hover:underline-offset-4"
-            >
-                #{tag}
-            </a>
+                <a href="" key={index} className="text-blue-600 dark:text-blue-500 font-bold hover:underline hover:underline-offset-4" >
+                    #{tag}
+                </a>
             ))}
         </p>
 

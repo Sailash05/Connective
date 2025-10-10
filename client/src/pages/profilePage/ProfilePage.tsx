@@ -9,77 +9,52 @@ import ProfileSidebar from "./section/ProfileSidebar";
 import { Briefcase, MapPin, Globe, Users, FileText } from "lucide-react";
 
 const ProfilePage = () => {
-    
-    // const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false);
-
-    const user = {
-        userName: "Jean-Luc Picard",
-        bio: "Starfleet Captain with years of leadership experience exploring the galaxy.",
-        profilePicture: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1757638626/connective_users/profile/68c36f8a6c854b771f85858d-profile.png",
-        bannerPicture: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1757691596/connective_users/banner/68c377b9cf6670a906a2451d-banner.jpg",
-        location: { city: "Paris", country: "France" },
-        skill: ["Leadership", "Diplomacy", "Exploration", "Strategy"],
-        interest: ["Astronomy", "Starship Engineering", "History"],
-        experience: [
-        {
-            companyName: "Starfleet",
-            role: "Captain",
-            type: "Full-time",
-            from: "2364",
-            to: "Present",
-        },
-        ],
-        badges: [
-        { name: "Leadership Award", icon: "⭐", awardedAt: "2365" },
-        { name: "Explorer", icon: "🌌", awardedAt: "2370" },
-        ],
-        website: "https://starfleet.com",
-        resume: "https://starfleet.com/resume.pdf",
-        followerCount: 2500,
-        followingCount: 180,
-        isPremium: true,
-        premiumData: { premiumPlan: "Gold" },
-        posts: [
-        {
-            content: "Just completed another deep-space mission 🚀",
-            fileData: [],
-            tags: ["#exploration", "#starfleet"],
-            likes: 120,
-            comments: 12,
-        },
-        {
-            content: "Leadership is about making the tough calls.",
-            fileData: [],
-            tags: ["#leadership", "#strategy"],
-            likes: 300,
-            comments: 40,
-        },
-        ],
-    };
-
     const { userId } = useParams<{ userId: string }>();
 
     const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false);
     const [profileData, setProfileData] = useState<UserProfileType>();
 
+    const [isFollowed, setIsFollowed] = useState<boolean>(false);
+    const [followerCount, setFollowerCount] = useState<number>(0);
+
     const getProfile = async () => {
         try {
-        const id = userId || localStorage.getItem("UserId");
-        if (!id) throw new Error("No user ID found in URL or localStorage");
+            const id = userId || localStorage.getItem("UserId");
+            if (!id) throw new Error("No user ID found in URL or localStorage");
 
-        const response = await userService.getProfile(id);
-        const data = response.data;
-        setProfileData(data.data);
-        } catch (err: any) {
-        if (err.response?.status === 404) {
-            console.log("Profile not found");
-        } else if (err.response?.status === 400) {
-            console.warn("Invalid user ID");
-        } else {
-            console.error("API error:", err.response?.status, err.message);
+            const response = await userService.getProfile(id);
+            const data = response.data;
+            setProfileData(data.data);
+            setIsFollowed(data.data.isFollowed);
+            setFollowerCount(data.data.followerCount);
         }
+        catch (err: any) {
+            if (err.response?.status === 404) {
+                console.log("Profile not found");
+            } else if (err.response?.status === 400) {
+                console.warn("Invalid user ID");
+            } else {
+                console.error("API error:", err.response?.status, err.message);
+            }
         }
     };
+
+    const handleFollow = async () => {
+        try {
+            if(isFollowed) {
+                await userService.unFollow(profileData?._id || '');
+                setIsFollowed(false);
+                setFollowerCount(prev => prev - 1);
+            }
+            else {
+                await userService.addFollower(profileData?._id || '');
+                setIsFollowed(true);
+                setFollowerCount(prev => prev + 1);
+            }
+        }
+        catch(err) {
+        }
+    }
 
     useEffect(() => {
         const localId = localStorage.getItem("UserId");
@@ -92,26 +67,18 @@ const ProfilePage = () => {
             {/* Banner + Profile */}
             <div className="relative">
 
-  {/* Banner */}
-  <div className="h-28 sm:h-36 md:h-48 lg:h-56 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl shadow-md overflow-hidden">
-    {profileData?.bannerPicture && (
-      <img
-        src={profileData.bannerPicture}
-        alt="Banner"
-        className="h-full w-full object-cover"
-      />
-    )}
-  </div>
+                {/* Banner */}
+                <div className="h-28 sm:h-36 md:h-48 lg:h-56 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl shadow-md overflow-hidden">
+                    {profileData?.bannerPicture && (
+                        <img src={profileData.bannerPicture} alt="Banner" className="h-full w-full object-cover" />
+                    )}
+                </div>
 
-  {/* Profile Image */}
-  <div className="absolute -bottom-10 left-4 sm:left-6 z-10">
-    <img
-      src={profileData?.profilePicture ? profileData?.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'}
-      alt="Profile"
-      className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-lg hover:shadow-2xl transition"
-    />
-  </div>
-</div>
+                {/* Profile Image */}
+                <div className="absolute -bottom-10 left-4 sm:left-6 z-10">
+                    <img src={profileData?.profilePicture ? profileData?.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'} alt="Profile"className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-lg hover:shadow-2xl transition" />
+                </div>
+            </div>
 
 
       <div className="max-w-5xl mx-auto px-4 pt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -121,7 +88,8 @@ const ProfilePage = () => {
             {/* Profile Header */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6 relative">
                 <h1 className="text-2xl font-bold dark:text-white">{profileData?.userName}</h1>
-                <p className="text-gray-600 dark:text-gray-200">{profileData?.bio}</p>
+                <p className="text-gray-600 dark:text-gray-200 text-sm">{profileData?.email}</p>
+                <p className="dark:text-white mt-2">{profileData?.bio}</p>
 
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-2 flex-wrap dark:text-white">
                     {
@@ -148,7 +116,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="flex items-center gap-6 mt-3 text-gray-700 dark:text-gray-200 text-sm">
-                    <span className="font-semibold"><Users className="w-4 h-4 inline mr-1" /> {profileData?.followerCount} Followers</span>
+                    <span className="font-semibold"><Users className="w-4 h-4 inline mr-1" /> {followerCount} Followers</span>
                     <span>{profileData?.followingCount} Following</span>
                     {/* {user.isPremium && (
                         <span className="flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
@@ -166,6 +134,15 @@ const ProfilePage = () => {
                             <Link to={'/saved-post'} className="px-4 py-2 bg-gray-200 text-gray-700 dark:text-gray-900 rounded-md shadow hover:bg-gray-300 transition-all">
                                 View Saved Posts
                             </Link>
+                        </div>
+                    )
+                }
+                {
+                    !isOwnProfile && (
+                        <div className="mt-4 flex gap-3">
+                            <button onClick={() => handleFollow()} className={`px-4 py-2 text-white rounded-md shadow transition-all ${isFollowed ? 'bg-red-600 hover:bg-red-800' : 'bg-blue-600 hover:bg-blue-800'}`}>
+                                {isFollowed ? "Unfollow" : "Follow"}
+                            </button>
                         </div>
                     )
                 }
@@ -272,13 +249,12 @@ const ProfilePage = () => {
                     </p>
                 )}
 
-                {/* Centered Button */}
                 <div className="flex justify-center">
-                    <button className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-lg shadow transition-all font-medium text-white">
+                    <Link to={isOwnProfile ? '/view-post' : `/view-post/${profileData?._id}`} className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-800 rounded-lg shadow transition-all font-medium text-white">
                     {
                         isOwnProfile ? 'View or Edit Posts' : 'View All Posts'
                     }
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -309,7 +285,7 @@ const ProfilePage = () => {
 
         </div>
 
-        <ProfileSidebar user={user} />
+        {/* <ProfileSidebar user={user} /> */}
       </div>
     </div>
   );

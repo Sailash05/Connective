@@ -111,8 +111,9 @@ export const getSavedPost = async (req, res) => {
 
 export const getPostList = async (req, res) => {
     const { userId } = req.query;
+    const ownUserId = req.user.userId;
     try {
-        const result = await getPostListService(userId);
+        const result = await getPostListService(userId, ownUserId);
         if(result.status === 200) {
             return res.status(200).send(response('SUCCESS', result.message, result.data));
         }

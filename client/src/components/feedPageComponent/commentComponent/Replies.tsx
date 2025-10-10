@@ -9,6 +9,7 @@ import { MdReportGmailerrorred } from "react-icons/md";
 
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
 import likeIcon from '../../../assets/mainPageImages/postContainerIcons/like.png';
+import { Link } from "react-router-dom";
 
 const Replies = ({ reply }: { reply: ReplyType }) => {
 
@@ -63,7 +64,7 @@ const Replies = ({ reply }: { reply: ReplyType }) => {
             <div className="flex gap-3 items-center relative">
                 <img src={reply.profilePicture} alt="Profile" className="h-7 w-7 md:h-9 md:w-9 rounded-full object-cover"/>
                 <div className="flex flex-col">
-                    <h4 className="font-semibold hover:underline cursor-pointer dark:text-white text-sm">{reply.userName}</h4>
+                    <Link to={`/user/${reply.userId}`} className="font-semibold hover:underline cursor-pointer dark:text-white text-sm">{reply.userName}</Link>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">{timeDifference(reply.createdAt)}</p>
                 </div>
 

@@ -49,7 +49,8 @@ export type UserProfileType = {
     experience: ExperienceType[],
     followerCount: number,
     followingCount: number,
-    post: PostType | null
+    post: PostType | null,
+    isFollowed: boolean
 }
 
 export type UserProfileUpdateType = {

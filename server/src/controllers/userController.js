@@ -19,8 +19,9 @@ export const getProfilePicture = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     const { userId } = req.query;
+    const ownUserId = req.user.userId;
     try {
-        const result = await getProfileService(userId);
+        const result = await getProfileService(userId, ownUserId);
         if(result.status === 200 ) {
             return res.status(200).send(response('SUCCESS', result.message, result.data))
         }

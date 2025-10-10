@@ -42,9 +42,9 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
 
     return (
         <div className="w-[100dvw] h-[100dvh] bg-black bg-opacity-30 fixed -top-4 left-0 flex justify-center items-center z-50">
-            <div className="bg-white p-5 rounded-xl shadow-md max-sm:w-[90dvw]">
+            <div className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md max-sm:w-[90dvw]">
                 <header className="items-center h-10 flex justify-between">
-                    <h2 className="text-lg font-bold">Share post</h2>
+                    <h2 className="text-lg font-bold dark:text-white">Share post</h2>
                     <button
                         onClick={() => setSharePopUp(false)}
                         className="bg-gray-200 hover:bg-gray-300 transition-all p-1 rounded-full"
@@ -53,7 +53,7 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
                     </button>
                 </header>
 
-                <p className="mt-4 font-medium">Share this link via</p>
+                <p className="mt-4 font-medium dark:text-white">Share this link via</p>
                 <div className="space-x-4 mt-2">
                     <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596109/linked_rwu28l.png" alt="" width={30} />
@@ -66,10 +66,10 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
                     </button>
                 </div>
 
-                <p className="mt-5 font-medium">Or copy link</p>
-                <div className="border border-black flex mt-2 mb-2 p-1 items-center">
-                    <img src={addLinkIcon} alt="" className="ml-2 mr-4 w-5 h-5" />
-                    <input type="text" value={url} className="w-[12rem] md:w-[18rem] focus:outline-none" readOnly />
+                <p className="mt-5 font-medium dark:text-white">Or copy link</p>
+                <div className="border border-black dark:border-white flex mt-2 mb-2 p-1 items-center">
+                    <img src={addLinkIcon} alt="" className="ml-2 mr-4 w-5 h-5 dark:invert" />
+                    <input type="text" value={url} className="w-[12rem] md:w-[18rem] focus:outline-none dark:bg-gray-800 dark:text-white" readOnly />
                     <button onClick={() => copyToClipboard()} className="bg-blue-600 py-1 px-4 font-bold text-white rounded-md hover:bg-blue-800 transition-all relative">
                         Copy
                         {copied && (

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import type { CommentType } from '../../../types/commentType';
 import { postService } from '../../../service/post.service';
 import { timeDifference } from '../../../utils/dateAndTime';
@@ -67,7 +68,7 @@ const Comments = ({ comment }: { comment: CommentType}) => {
             <div className="flex gap-3 items-center relative">
                 <img src={comment.profilePicture} alt="Profile" className="h-7 w-7 md:h-9 md:w-9 rounded-full object-cover"/>
                 <div className="flex flex-col">
-                    <h4 className="font-semibold hover:underline cursor-pointer dark:text-white text-sm">{comment.userName}</h4>
+                    <Link to={`/user/${comment.userId}`} className="font-semibold hover:underline cursor-pointer dark:text-white text-sm">{comment.userName}</Link>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">{timeDifference(comment.createdAt)}</p>
                 </div>
 

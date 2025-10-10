@@ -40,7 +40,7 @@ const SavedPostSection = () => {
             }
 
             {
-                savedPostList.length === 0 && <NoSavedPostCard />
+                savedPostList.length === 0 && !loading && <NoSavedPostCard />
             }
 
             {loading && <StaticPostLoading />}

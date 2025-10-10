@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { useCreatePost } from "../context/CreatePostContext";
 
 import Header from "./Header";
@@ -14,6 +14,7 @@ import Logout from "../components/message/Logout";
 
 
 const MainLayout = ({ showRightSidebar }: { showRightSidebar: boolean }) => {
+    const location = useLocation();
 
     const { createPost } = useCreatePost();
 
@@ -41,16 +42,32 @@ const MainLayout = ({ showRightSidebar }: { showRightSidebar: boolean }) => {
         setSuccessMessage(true);
     }
 
+    useEffect(() => {
+        setIsSideBarOpen(false);
+    }, [location.pathname]);
+
     return(
         <div className={`h-[100dvh] grid grid-cols-1 ${showRightSidebar ? 'md:grid-cols-[20%_55%_25%]' : 'md:grid-cols-[20%_80%]'} grid-rows-[auto_1fr] dark:bg-slate-950 max-md:relative`}>
             
             <div className="col-span-1 md:col-span-3">
                 <Header setLogoutPopup={setLogoutPopup} isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
             </div>
-            <div className={`max-md:z-20 md:block overflow-y-hidden bg-white dark:bg-slate-950 ${isSideBarOpen ? 'max-md:fixed' : 'max-md:hidden'} max-md:h-[calc(100dvh-3.5rem)] max-md:bottom-0`}>
+            
+            {/* Sidebar */}
+            <div className={`max-md:fixed md:block max-md:z-20 overflow-y-hidden bg-white dark:bg-slate-950
+            max-md:h-[calc(100dvh-3.5rem)] max-md:bottom-0 max-md:left-0 max-md:top-[3.5rem]
+            transition-transform duration-300 ease-in-out transform
+            ${isSideBarOpen ? 'translate-x-0' : '-translate-x-full'}
+            md:translate-x-0`} >
                 <SideNavBar setLogoutPopup={setLogoutPopup} />
             </div>
-            <div className="overflow-y-scroll ">
+
+            {/* Overlay (click to close) */}
+            {isSideBarOpen && (
+                <div onClick={() => setIsSideBarOpen(false)} className="max-md:fixed top-[3.5rem] left-0 w-full h-[calc(100dvh-3.5rem)] bg-black/40 z-10 md:hidden" />
+            )}
+
+            <div className="overflow-y-scroll hide-scrollbar">
                 <Outlet />
             </div>
             {

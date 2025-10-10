@@ -1,6 +1,6 @@
 export const timeDifference = (date: string | Date): string => {
-    const givenDate: Date = new Date(date);  // Ensure it’s a Date
-    const diffTime = Math.abs(new Date().getTime() - givenDate.getTime());  // Use .getTime() for numbers
+    const givenDate: Date = new Date(date);
+    const diffTime = Math.abs(new Date().getTime() - givenDate.getTime());
 
     const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
     if (diffYears > 0) return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;

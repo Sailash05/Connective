@@ -324,7 +324,7 @@ export const getSavedPostService = async (userId) => {
     }
 }
 
-export const getPostListService = async (userId) => {
+export const getPostListService = async (userId, ownUserId) => {
     try {
         const posts = await Post.find({ userId }).sort({ createdAt: -1 }).lean();
 
@@ -332,11 +332,11 @@ export const getPostListService = async (userId) => {
             .select("userName profilePicture")
             .lean();
 
-        const currentUser = await User.findById(userId).select("savedPost").lean();
+        const currentUser = await User.findById(ownUserId).select("savedPost").lean();
         const savedPosts = currentUser?.savedPost || [];
 
         const followingIds = new Set(
-            (await Follow.find({ follower: userId }).distinct("following"))
+            (await Follow.find({ follower: ownUserId }).distinct("following"))
                 .map(id => id.toString())
         );
 
@@ -357,7 +357,7 @@ export const getPostListService = async (userId) => {
                     noOfLikes,
                     noOfComments,
                     isPostSaved: savedPosts.some(id => id.toString() === post._id.toString()),
-                    isLiked: post.likes?.some(id => id.toString() === userId.toString()) || false,
+                    isLiked: post.likes?.some(id => id.toString() === ownUserId.toString()) || false,
                     isFollowed: followingIds.has(post.userId.toString())
                 };
             })

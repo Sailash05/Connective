@@ -16,6 +16,7 @@ import lightModeIcon from '../assets/icons/dark-mode.png';
 import settingsIcon from '../assets/mainPageImages/sideNavBarIcons/settings.png';
 import { MdLogout } from "react-icons/md";
 
+import connectiveLogo from '../assets/icons/connective_logo.png';
 import { version } from '../constants/metaData';
 
 const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: { 
@@ -82,8 +83,14 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                 }
             </button>
 
-            <div className='basis-1/2 md:basis-1/3'>
-                <Link to='/home' className='text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit'>Connective <span className='text-xs'>{version}</span></Link>
+            <div className="basis-3/4 md:basis-1/3">
+                <Link to="/home" className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit" >
+                    <img src={connectiveLogo} alt="Connective logo" className="w-10" />
+                    <span>
+                        Connective
+                        <span className="text-xs font-normal ml-2">{version}</span>
+                    </span>
+                </Link>
             </div>
             
             <div className='hidden md:flex justify-center items-center basis-1/3'>

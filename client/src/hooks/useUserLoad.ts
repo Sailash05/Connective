@@ -28,19 +28,20 @@ const useUserLoad = (
             );
             const data = response.data;
 
-            setUserList((prev) => {
-                // if page = 1 → fresh load
-                if (pageNumber === 1) {
-                    return data.data.userProfile;
-                }
-                // otherwise → append unique
+            setUserList(prev => {
+                const isFirstPage = response.data.data.paging.currentPage === 1;
+                if (isFirstPage) return data.data.userProfile;
+
                 const merged = [...prev, ...data.data.userProfile];
-                const uniqueMap = new Map<string, UserProfileCardType>();
-                for (const user of merged) {
-                    uniqueMap.set(user.userId, user);
-                }
-                return Array.from(uniqueMap.values());
+
+                // Use userProfile._id as unique key
+                const unique = Array.from(
+                    new Map(merged.map(u => [u.userProfile._id, u])).values()
+                );
+
+                return unique;
             });
+
 
             setHasMore(data.data.paging.currentPage < data.data.paging.totalPage);
             setLoading(false);

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import SearchUserPopup from "../../../components/friendsPageComponent/SearchUserPopup";
 import SearchFriendLoading from "../../../components/loadingComponent/userLoading/SearchFriendLoading";
 
 import { userService } from "../../../service/user.service";
 import type { SuggestedUserType, TopProfessionalsType, RecentlyJoinedUserType } from "../../../types/userType";
 import { istDateFormat } from "../../../utils/dateAndTime";
-import { Link } from "react-router-dom";
 
 const SuggestedUserCard = ({ user }: { user: SuggestedUserType}) => {
 
@@ -25,7 +25,7 @@ const SuggestedUserCard = ({ user }: { user: SuggestedUserType}) => {
             <div className="flex gap-4 items-center">
                 <img src={user.profilePicture ? user.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'} alt="" className="h-10 w-10 rounded-full object-cover" />
                 <div>
-                    <h3 className="text-lg font-semibold dark:text-white">{user.userName}</h3>
+                    <Link to={`/user/${user._id}`} className="text-lg hover:underline font-semibold dark:text-white">{user.userName}</Link>
                     <p className="text-gray-600 text-sm dark:text-gray-100">{user.bio}</p>
                     {
                         user.mutualFollowersCount > 0 && (
@@ -75,7 +75,7 @@ const RecentlyJoinedUserCard = ({ user }: { user: RecentlyJoinedUserType }) => {
                 {/* Avatar Placeholder */}
                 <img src={user.profilePicture ? user.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'} alt="" className="h-10 w-10 rounded-full object-cover" />
                 <div>
-                    <h3 className="text-md font-semibold dark:text-white">{user.userName}</h3>
+                    <Link to={`/user/${user._id}`} className="text-md font-semibold hover:underline dark:text-white">{user.userName}</Link>
                     <p className="text-gray-600 text-sm dark:text-gray-200">{user.bio}</p>
                     <p className="text-gray-600 text-sm dark:text-gray-200">Joined on: {istDateFormat(user.createdAt)}</p>
                 </div>

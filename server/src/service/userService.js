@@ -37,7 +37,7 @@ export const getProfilePictureService = async (userId) => {
     }
 }
 
-export const getProfileService = async (userId) => {
+export const getProfileService = async (userId, ownUserId) => {
     try {
         const user = await User.findById(userId).select({
             userName: 1,
@@ -63,10 +63,19 @@ export const getProfileService = async (userId) => {
         const userObj = user.toObject();
         if(lastPost) {
             const { _id } = lastPost;
-            const post = await getPostService(_id, userId);
+            const post = await getPostService(_id, ownUserId);
             const latestPost = post.data;
             userObj.post = latestPost;
         }
+        if(userId != ownUserId) {
+            const follows = await Follow.findOne({
+                follower: ownUserId,
+                following: userId
+            });
+            if(follows) userObj.isFollowed = true;
+            else userObj.isFollowed = false;
+        }
+        else userObj.isFollowed = false;
 
         return { status: 200, message: 'Get your profile data.', data: userObj };
     }

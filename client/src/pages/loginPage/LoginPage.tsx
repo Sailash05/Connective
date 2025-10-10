@@ -10,6 +10,9 @@ import SuccessMessage from '../../components/message/SuccessMessage';
 import loginPageImage from '../../assets/loginPageImage/image-removebg-preview.png'
 import rightArrow from '../../assets/loginPageImage/right-arrow.png'
 
+import connectiveLogo from '../../assets/icons/connective_logo.png';
+import { version } from '../../constants/metaData';
+
 const LoginPage = () => {
     const location = useLocation();
     const redirectPath = location.state?.from?.pathname || '/home';
@@ -43,10 +46,16 @@ const LoginPage = () => {
         <div className="h-[100dvh] pt-5 px-[1rem] md:pt-10 md:px-[14rem] dark:bg-slate-950">
 
             <header className="flex items-center justify-start mb-4">
-                <div className="bg-blue-600 text-white text-xl font-bold w-10 h-10 flex items-center justify-center rounded-full">
-                    C
-                </div>
-                <h1 className="text-2xl font-extrabold text-gray-800 tracking-wide ml-2 dark:text-white mr-auto">Connective</h1>
+                <h1 className="mr-auto text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-white cursor-pointer" >
+                    <div className="basis-1/2 md:basis-1/3">
+                        <div className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit" >
+                            <img src={connectiveLogo} alt="Connective logo" className="w-10" />
+                            <span>
+                                Connective <span className="text-xs font-normal">{version}</span>
+                            </span>
+                        </div>
+                    </div>
+                </h1>
                 <Link to='/'>
                     <button className='flex justify-center items-center bg-blue-600 p-1 md:p-2 rounded-md hover:bg-blue-800 transition-all'>
                         <img src={rightArrow} alt="" width={15} className='rotate-180 mr-1 invert' />

@@ -10,6 +10,7 @@ import NoPostCard from "../../components/feedPageComponent/feedComponent/NoPostC
 const ViewPostSection = () => {
 
     const { userId } = useParams<{ userId: string }>();
+    const [isOwnProfile, setIsOwnProfile] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
@@ -37,9 +38,14 @@ const ViewPostSection = () => {
         fetchPost();
     }, []);
 
+    useEffect(() => {
+        const localId = localStorage.getItem("UserId");
+        setIsOwnProfile(userId ? userId === localId : true);
+    }, [userId]);
+
     return (
-        <section className="bg-gray-100  dark:bg-gray-950 px-2 md:px-8 py-4 space-y-2 md:space-y-5 min-h-full">
-            <h1 className="font-bold text-xl md:text-3xl dark:text-white">Your Post</h1>
+        <section className="bg-gray-100 dark:bg-gray-950 px-2 md:px-8 py-4 space-y-2 md:space-y-5 min-h-full">
+            <h1 className="font-bold text-xl md:text-3xl dark:text-white">{isOwnProfile ? 'Your' : 'User'} Post</h1>
             {
                 postList.map((post, index) => (
                     <Post key={index} post={post}/>
@@ -47,7 +53,7 @@ const ViewPostSection = () => {
             }
 
             {
-                postList.length === 0 && <NoPostCard />
+                postList.length === 0 && !loading && <NoPostCard />
             }
 
             {loading && <StaticPostLoading />}

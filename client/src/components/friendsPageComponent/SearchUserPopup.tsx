@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SearchUserLoading from "../loadingComponent/userLoading/SearchUserLoading";
 import NoUserFound from "./NoUserFound";
 import { userService } from "../../service/user.service";
 import { type UserSearchListType } from "../../types/userType";
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
 
 const UserCard = ({user}: {user: UserSearchListType}) => {
     const [isFollowed, setIsFollowed] = useState<boolean>(user.isFollowed);
@@ -24,11 +24,11 @@ const UserCard = ({user}: {user: UserSearchListType}) => {
             <div className="flex items-center gap-2 md:gap-4 w-full">
                 <img src={user.profilePicture ? user.profilePicture : 'https://res.cloudinary.com/djbmyn0fw/image/upload/v1752897230/default-profile_n6tn9o.jpg'} alt="" className="h-10 w-10 rounded-full object-cover" />
                 <div>
-                    <div className="text-md font-semibold text-gray-900 dark:text-white flex items-center">
-                        <h3 className="hover:underline cursor-pointer">{user.userName}</h3>
-                        <span className="text-xs text-gray-600 dark:text-gray-200 font-medium ml-2">
+                    <div className="text-md font-semibold text-gray-900 dark:text-white items-center">
+                        <Link to={`/user/${user._id}`} className="hover:underline cursor-pointer">{user.userName}</Link>
+                        <p className="text-xs text-gray-600 dark:text-gray-200 font-medium dark:bg-gray-700 p-1 rounded-full w-fit mb-1">
                             {user.email}
-                        </span>
+                        </p>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-300">{user.bio}</p>
                     {
@@ -93,7 +93,7 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
 
     return (
         <div className="bg-black bg-opacity-25 dark:bg-opacity-30 w-[100dvw] h-[100dvh] fixed inset-0 flex justify-center items-center">
-            <div className="bg-white dark:bg-slate-800 max-md:min-w-[90dvw] max-md:overflow-y-scroll max-md:space-y-2 md:w-[35dvw] w-[95dvw] h-[90dvh] p-3 max-sm:py-6 md:p-6 rounded-2xl flex flex-col">
+            <div className="bg-white dark:bg-slate-800 max-md:min-w-[90dvw] max-md:overflow-y-scroll max-md:space-y-2 md:w-[35dvw] w-[95dvw] h-[90dvh] p-3 max-sm:py-6 md:p-6 rounded-2xl flex flex-col  hide-scrollbar">
                 <div className="flex justify-between items-center md:mb-8 mb-4 max-md:px-2">
                     <h2 className="text-blue-600 dark:text-white font-bold text-2xl">Search User</h2>
                     <button onClick={() => handleCloseBtn()} className="bg-gray-200 hover:bg-gray-300 transition-all p-1 rounded-full">
@@ -109,7 +109,7 @@ const SearchUserPopup = ({setSearchUserPopup, query, setQuery}: {
                 </div>
 
                 {/* Results */}
-                <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+                <div className="flex-1 overflow-y-auto space-y-3 pr-1 hide-scrollbar">
                 {
                     loading && <SearchUserLoading />
                 }

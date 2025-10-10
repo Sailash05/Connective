@@ -7,7 +7,7 @@ import StaticUserLoading from "../../../components/loadingComponent/userLoading/
 
 const FollowersSections = () => {
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const limit = 4;
+    const limit = 10;
 
     const [search, setSearch] = useState<string>("");
     const [sortBy, setSortBy] = useState<"popular" | "name" | "recent">("recent");
@@ -41,8 +41,8 @@ const FollowersSections = () => {
     );
 
     useEffect(() => {
-        setPageNumber(1);
         resetUsers();
+        setPageNumber(1);
     }, [search, sortBy, isMutual]);
 
     return (
