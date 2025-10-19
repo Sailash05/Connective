@@ -4,11 +4,11 @@ type StatsDataItem = {
 };
 
 export const statsData: StatsDataItem[] = [
-    {label: "Posts",value: "1K+"},
-    {label: "Users",value: "250k+"},
-    {label: "Resource", value: "800+"},
-    {label: "Communities",value: "300+"},
-    {label: "Groups",value: "250+"},
+    {label: "Posts",value: "10+"},
+    {label: "Users",value: "25+"},
+    {label: "Resource", value: "20+"},
+    {label: "Communities",value: "10+"},
+    {label: "Groups",value: "15+"},
     {label: "Positive Feedbacks",value: "99%"}
 ]
 
@@ -78,37 +78,37 @@ type BlogPostsItems = {
 
 export const blogPosts: BlogPostsItems[] = [
   {
-    title: "🧠 How to Find the Right Community",
-    excerpt: "Discover simple strategies to connect with people who truly align with your interests and goals.",
+    title: "📈  Functions of react with typescript.",
+    excerpt: "TypeScript brings static typing to JavaScript, making your code safer and easier to maintain.",
     image: "https://picsum.photos/id/1015/400/240",
-    link: "/blog/how-to-find-the-right-community",
+    link: "/blog/typescript-react",
     author: {
-      name: "Aarav Mehta",
-      avatar: "https://i.pravatar.cc/40?img=1"
+      name: "Connective Official",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758797741/connective_logo_xuvh06.png"
     },
-    date: "June 28, 2025"
+    date: "Sep 27, 2025"
   },
   {
-    title: "📈 Tips to Grow Your Network",
-    excerpt: "Learn how to expand your network effectively using tools, conversations, and shared interests.",
+    title: "🧠 Mastering React Hooks for Beginners.",
+    excerpt: "React Hooks were introduced in React 16.8 and completely changed the way developers write React components.",
     image: "https://picsum.photos/id/1016/400/240",
-    link: "/blog/grow-your-network",
+    link: "/blog/designing-component",
     author: {
-      name: "Sara Iqbal",
-      avatar: "https://i.pravatar.cc/40?img=5"
+      name: "Sailash",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975326/0f80b7dd-c3f8-4550-a4ef-3e0e59d60c3d_bwspxi.jpg"
     },
-    date: "June 26, 2025"
+    date: "Sep 28, 2025"
   },
   {
-    title: "💬 Starting Meaningful Conversations",
-    excerpt: "From breaking the ice to staying engaged, master the art of digital conversation.",
+    title: "📘 Starting Meaningful Conversations",
+    excerpt: "JavaScript is single-threaded, which means it can only run one task at a time. To avoid blocking the main thread, it uses asynchronous programming.",
     image: "https://picsum.photos/id/1018/400/240",
-    link: "/blog/meaningful-conversations",
+    link: "/blog/deployment",
     author: {
-      name: "Dev Raj",
-      avatar: "https://i.pravatar.cc/40?img=8"
+      name: "Geetha",
+      avatar: "https://res.cloudinary.com/djbmyn0fw/image/upload/v1758975721/43055cca-14f5-47c8-a494-2e1dd74391d8_pvhhk4.jpg"
     },
-    date: "June 22, 2025"
+    date: "Sep 28, 2025"
   }
 ];
 

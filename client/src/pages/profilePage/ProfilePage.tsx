@@ -83,7 +83,8 @@ const ProfilePage = () => {
 
       <div className="max-w-5xl mx-auto px-4 pt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Main Content */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-3 space-y-6">
+
 
             {/* Profile Header */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6 relative">

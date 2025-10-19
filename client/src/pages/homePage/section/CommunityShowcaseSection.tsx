@@ -1,8 +1,10 @@
-import { FaQuoteLeft, FaStar } from 'react-icons/fa';
+// import { FaQuoteLeft, FaStar } from 'react-icons/fa';
 
 import { featuredCommunities, testimonials } from '../../../constants/landingPageConstants';
 
 const CommunityShowcaseSection = ({ id }: { id: string }) => {
+    let a = testimonials; // to prevent warning from build;
+    a = a;
     return (
         <section id={id} className="scroll-mt-16 md:scroll-mt-20 pt-4 pb-10 w-11/12 max-w-6xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 md:mb-6 dark:text-white">Explore Communities & Hear from Members</h2>
@@ -30,7 +32,7 @@ const CommunityShowcaseSection = ({ id }: { id: string }) => {
             </div>
 
             {/* Testimonials */}
-            <div className="grid md:grid-cols-3 gap-4 md:gap-8">
+            {/* <div className="grid md:grid-cols-3 gap-4 md:gap-8">
                 {
                     testimonials.map((t, index) => (
                         <div key={index} className="rounded-2xl shadow-md p-6 relative hover:scale-[1.05] transition-all duration-300 cursor-pointer bg-white dark:bg-slate-800 dark:shadow-slate-900">
@@ -52,7 +54,7 @@ const CommunityShowcaseSection = ({ id }: { id: string }) => {
                         </div>
                     ))
                 }
-            </div>
+            </div> */}
 
             {/* CTA Button */}
             <div className="text-center mt-8 md:mt-16">

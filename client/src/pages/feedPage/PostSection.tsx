@@ -20,7 +20,7 @@ const PostSection = () => {
         }
 
         getPost();
-    }, []);
+    }, [postId]);
 
     return(
         <div className="bg-gray-100 dark:bg-slate-950 px-2 md:px-8 py-4 space-y-5">
