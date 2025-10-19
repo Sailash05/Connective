@@ -1,4 +1,3 @@
-import React from "react";
 
 const ProfileSidebar = ({ user }: { user: any }) => {
   return (

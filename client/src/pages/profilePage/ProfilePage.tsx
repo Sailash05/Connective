@@ -4,7 +4,7 @@ import { userService } from "../../service/user.service";
 import { type UserProfileType } from "../../types/userType";
 
 import Post from "../../components/feedPageComponent/feedComponent/Post";
-import ProfileSidebar from "./section/ProfileSidebar";
+// import ProfileSidebar from "./section/ProfileSidebar";
 
 import { Briefcase, MapPin, Globe, Users, FileText } from "lucide-react";
 
@@ -285,7 +285,7 @@ const ProfilePage = () => {
 
         </div>
 
-        {/* <ProfileSidebar user={user} /> */}
+        {/* <ProfileSidebar user={Users} /> */}
       </div>
     </div>
   );

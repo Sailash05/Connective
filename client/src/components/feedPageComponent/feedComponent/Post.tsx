@@ -63,16 +63,6 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         setIsImageOpen(true);
     };
 
-    const [isContentExpanded, setIsContentExpanded] = useState<boolean>(false);
-
-    const amountOfWords = 25;
-    const splittedText = post.content.split(' ');
-    const itCanOverflow = splittedText.length > amountOfWords;
-    const beginText = itCanOverflow
-        ? splittedText.slice(0, amountOfWords - 1).join(' ')
-        : post.content;
-    const endText = splittedText.slice(amountOfWords - 1).join(' ');
-
     const [likeCount, setLikeCount] = useState<number>(post.noOfLikes);
     const [isLiked, setIsLiked] = useState<boolean>(post.isLiked);
     const [sharePopUp, setSharePopUp] = useState<boolean>(false);
