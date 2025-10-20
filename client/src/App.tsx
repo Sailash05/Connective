@@ -16,6 +16,7 @@ import SavedPostSection from './pages/feedPage/SavedPostSection';
 import ViewPostSection from './pages/feedPage/ViewPostSection';
 
 import FriendsPage from './pages/friendsPage/FriendsPage';
+import EventPage from './pages/eventPage/EventPage';
 
 import ProfilePage from './pages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/profilePage/ProfileEditPage';
@@ -43,6 +44,8 @@ function App() {
                                 <Route path='/user' element={<ProfilePage />} />
                                 <Route path='/user/edit' element={<ProfileEditPage />} />
                                 <Route path="/user/:userId" element={<ProfilePage />} />
+
+                                <Route path='/events' element={<EventPage />} />
                             </Route>
                         </Route>
 
