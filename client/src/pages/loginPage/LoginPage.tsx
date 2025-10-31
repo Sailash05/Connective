@@ -13,11 +13,10 @@ import rightArrow from '../../assets/loginPageImage/right-arrow.png'
 import connectiveLogo from '../../assets/icons/connective_logo.png';
 import { version } from '../../constants/metaData';
 
-const LoginPage = () => {
+const LoginPage = ({ defaultSection = 'login' }: { defaultSection?: 'login' | 'signup' }) => {
     const location = useLocation();
     const redirectPath = location.state?.from?.pathname || '/home';
-
-    const [loginSection, setLoginSection] = useState(true);
+    const [loginSection, setLoginSection] = useState(defaultSection === 'login');
 
     const [failMessage, setFailMessage] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<boolean>(false);
@@ -25,11 +24,13 @@ const LoginPage = () => {
     const [title, setTitle] = useState<string>("");
     const [msg, setMsg] = useState<string[]>([]);
     const [buttonTxt, setButtonTxt] = useState<string>("");
+    const [buttonFunc, setButtonFunc] = useState<() => void>(() => setFailMessage(false));
 
-    const showFailMessage = (title: string, msg: string[], buttonTxt: string): void => {
+    const showFailMessage = (title: string, msg: string[], buttonTxt: string, buttonFunc: () => void = () => {}): void => {
         setTitle(title);
         setMsg(msg);
         setButtonTxt(buttonTxt);
+        setButtonFunc(() => buttonFunc);
         setSuccessMessage(false);
         setFailMessage(true);
     }
@@ -80,12 +81,17 @@ const LoginPage = () => {
                     <h2 className='text-2xl md:text-3xl font-extrabold text-black'>Welcome to Connective</h2>
                     <p className='text-sm text-black'>Unlock your team potential</p>
                     {
-                        loginSection ? <LoginSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage} showSuccessMessage={showSuccessMessage} /> : <SignUpSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage}/>
+                        loginSection ? 
+                            <LoginSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage} showSuccessMessage={showSuccessMessage} /> 
+                            : <SignUpSection setLoginSection={setLoginSection} redirectPath={redirectPath} showFailMessage={showFailMessage}/>
                     }
                 </section>
              </div>
             {
-                failMessage && <FailMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => setFailMessage(false)} />
+                failMessage && <FailMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => {
+                    setFailMessage(false);
+                    buttonFunc();
+                }} />
             }
             {
                 successMessage && <SuccessMessage title={title} message={msg} button={buttonTxt} buttonFunc={() => setSuccessMessage(false)} />

@@ -18,13 +18,17 @@ const OtpForm = ({ handleSignUp, getOtp }: {
         setOtp(updatedOtp);
 
         if (value && index < length - 1) {
-        inputsRef.current[index + 1]?.focus();
+            inputsRef.current[index + 1]?.focus();
         }
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
         if (e.key === 'Backspace' && !otp[index] && index > 0) {
-        inputsRef.current[index - 1]?.focus();
+            inputsRef.current[index - 1]?.focus();
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault(); // prevent form default submission twice
+            handleVerifyOtp();
         }
     };
 
@@ -34,12 +38,17 @@ const OtpForm = ({ handleSignUp, getOtp }: {
         const updatedOtp = otp.map((_, i) => pastedData[i] || '');
         setOtp(updatedOtp);
         pastedData.forEach((char, i) => {
-        if (inputsRef.current[i]) {
-            inputsRef.current[i]!.value = char;
-        }
+            if (inputsRef.current[i]) {
+                inputsRef.current[i]!.value = char;
+            }
         });
-        inputsRef.current[Math.min(pastedData.length, length - 1)]?.focus();
+        const nextIndex = pastedData.length < length ? pastedData.length : length - 1;
+        inputsRef.current[nextIndex]?.focus();
+        if (pastedData.length === length) {
+            handleSignUp(parseInt(pastedData.join(''), 10));
+        }
     };
+
 
     const handleVerifyOtp =  () => {
         handleSignUp(parseInt(otp.join(''), 10));
@@ -47,7 +56,10 @@ const OtpForm = ({ handleSignUp, getOtp }: {
 
     return (
         <div className="w-[100dvw] h-[100dvh] fixed top-0 left-0 z-50 bg-black bg-opacity-30 flex justify-center items-center">
-            <div className="bg-white md:w-[35dvw] w-[90dvw] p-10 flex flex-col gap-6 justify-center items-center rounded-xl">
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                handleVerifyOtp();
+            }} className="bg-white md:w-[35dvw] w-[90dvw] p-10 flex flex-col gap-6 justify-center items-center rounded-xl">
                 <img src={emailSecurityIcon} alt="security icon" width={70} />
                 <h1 className="text-xl font-extrabold">E-Mail Verification</h1>
                 <p className="text-center text-sm text-gray-600">
@@ -61,6 +73,7 @@ const OtpForm = ({ handleSignUp, getOtp }: {
                     otp.map((digit, index) => (
                         <input
                         key={index}
+                        autoFocus={index === 0}
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
@@ -74,7 +87,7 @@ const OtpForm = ({ handleSignUp, getOtp }: {
                 }
                 </div>
 
-                <button onClick={() => handleVerifyOtp()} className="bg-blue-600 hover:bg-blue-800 text-white py-2 w-full font-bold rounded-md">
+                <button type='submit' className="bg-blue-600 hover:bg-blue-800 text-white py-2 w-full font-bold rounded-md">
                     Verify OTP
                 </button>
 
@@ -82,7 +95,7 @@ const OtpForm = ({ handleSignUp, getOtp }: {
                     Didn't receive the OTP?{' '}
                     <span onClick={() => getOtp()} className="underline underline-offset-2 cursor-pointer text-blue-600">Resend</span>
                 </p>
-            </div>
+            </form>
         </div>
     );
 };

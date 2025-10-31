@@ -13,6 +13,13 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
         catch(err) {
         }
     }
+    const message = `
+🔥 Check out this amazing post!
+Visit the link below:
+${url}
+
+#Connective`;
+    const encoded = encodeURIComponent(message);
 
     const copyToClipboard = async () => {
         try {
@@ -54,16 +61,19 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
                 </header>
 
                 <p className="mt-4 font-medium dark:text-white">Share this link via</p>
-                <div className="space-x-4 mt-2">
-                    <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                <div className="space-x-4 mt-2 flex">
+                    <a href={`https://wa.me/?text=${url}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                        <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1760958508/whatsapp-logo_mhmzu0.png" alt="" width={30} />
+                    </a>
+                    <a href={`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encoded}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                        <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1760959451/telegram_xyblhr.png" alt="" width={30} />
+                    </a>
+                    {/* <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${URL}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596109/linked_rwu28l.png" alt="" width={30} />
-                    </button>
-                    <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
-                        <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596149/instagram_z7hjqs.png" alt="" width={30} />
-                    </button>
-                    <button className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
-                        <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596148/x_u4vyjq.png" alt="" width={30} />
-                    </button>
+                    </a> */}
+                    {/* <a href={`https://twitter.com/intent/tweet?text=hello&url=${url}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                        <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1760960454/x-logo_kc0m8d.png" alt="" width={30} />
+                    </a> */}
                 </div>
 
                 <p className="mt-5 font-medium dark:text-white">Or copy link</p>

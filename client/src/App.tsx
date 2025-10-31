@@ -16,6 +16,7 @@ import SavedPostSection from './pages/feedPage/SavedPostSection';
 import ViewPostSection from './pages/feedPage/ViewPostSection';
 
 import FriendsPage from './pages/friendsPage/FriendsPage';
+import EventPage from './pages/eventPage/EventPage';
 
 import ProfilePage from './pages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/profilePage/ProfileEditPage';
@@ -43,11 +44,15 @@ function App() {
                                 <Route path='/user' element={<ProfilePage />} />
                                 <Route path='/user/edit' element={<ProfileEditPage />} />
                                 <Route path="/user/:userId" element={<ProfilePage />} />
+
+                                <Route path='/events' element={<EventPage />} />
                             </Route>
                         </Route>
 
                         <Route path="/" element={<PublicRoute element={<HomePage />} />} />
-                        <Route path="/auth" element={<PublicRoute element={<LoginPage />} />} />
+                        <Route path="/auth" element={<Navigate to='/auth/login' />} />
+                        <Route path="/auth/login" element={<PublicRoute element={<LoginPage defaultSection="login" />} />} />
+                        <Route path="/auth/signup" element={<PublicRoute element={<LoginPage defaultSection="signup" />} />} />
                         <Route path="/auth/reset-password" element={<PublicRoute element={<PasswordResetPage />} />} />
 
                         <Route path="/oauth-success" element={<OAuthSuccess />} />
@@ -60,6 +65,3 @@ function App() {
 }
 
 export default App;
-
-
-

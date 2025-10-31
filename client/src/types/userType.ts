@@ -50,9 +50,15 @@ export type UserProfileType = {
     followerCount: number,
     followingCount: number,
     post: PostType | null,
-    isFollowed: boolean
+    isFollowed: boolean,
+    profileViewers?: ProfileViewersType[] 
 }
-
+export type ProfileViewersType = {
+    userId: string,
+    userName: string,
+    email: string,
+    profilePicture: string
+}
 export type UserProfileUpdateType = {
     _id: string,
     userName: string,
