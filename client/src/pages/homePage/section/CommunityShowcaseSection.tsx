@@ -5,6 +5,8 @@ let a = testimonials;
 a = a;
 
 const CommunityShowcaseSection = ({ id }: { id: string }) => {
+    let a = testimonials; // to prevent warning from build;
+    a = a;
     return (
         <section id={id} className="scroll-mt-16 md:scroll-mt-20 pt-4 pb-10 w-11/12 max-w-6xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 md:mb-6 dark:text-white">Explore Communities & Hear from Members</h2>

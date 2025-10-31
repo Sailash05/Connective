@@ -102,7 +102,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
 
             <div className='flex justify-end items-center gap-4 basis-1/2 md:basis-1/3'>
 
-                <button className='md:hidden text-3xl p-1 dark:text-white'><IoMdSearch /></button>
+                {/* <button className='md:hidden text-3xl p-1 dark:text-white'><IoMdSearch /></button> */}
 
                 <button onClick={() => setCreatePost(true)} className='p-2 bg-fuchsia-400 shadow-md bg-gradient-to-r from-[#FF512F] via-[#F09819] to-[#FF512F] bg-[length:200%_auto] transition-all duration-500 hover:bg-right rounded-lg'><img src={createPostIcon} alt="" className='invert w-3 md:w-5' /></button>
 

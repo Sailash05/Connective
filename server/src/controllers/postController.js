@@ -1,5 +1,5 @@
 import { response } from "../utils/response.js";
-import { createPostService, tempService, updatePostService, deletePostService, getFeedService, getSavedPostService, getPostListService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService } from "../service/postService.js";
+import { createPostService, updatePostService, deletePostService, getFeedService, getSavedPostService, getPostListService, getPostService, likePostService, getCommentService, commentPostService, deleteCommentService, likeCommentSevice, getReplyService, replyPostService, deleteReplyService, likeReplySevice, savePostService, tempService } from "../service/postService.js";
 
 export const createPost = async (req, res) => {
 

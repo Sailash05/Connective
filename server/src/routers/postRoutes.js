@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { verifyToken } from '../middleware/authMiddleware.js';
-import { createPost, temp, updatePost, deletePost, getFeed, getSavedPost, getPostList, getPost, likePost, unlikePost, getComment, postComment, deleteComment, likeComment, unLikeComment, getReply, postReply, deleteReply, likeReply, unLikeReply, savePost, unSavePost } from '../controllers/postController.js';
+import { createPost, updatePost, deletePost, getFeed, getSavedPost, getPostList, getPost, likePost, unlikePost, getComment, postComment, deleteComment, likeComment, unLikeComment, getReply, postReply, deleteReply, likeReply, unLikeReply, savePost, unSavePost, temp } from '../controllers/postController.js';
 
 import { postUpload } from '../middleware/fileUploads.js';
 

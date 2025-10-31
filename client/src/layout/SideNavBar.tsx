@@ -31,7 +31,7 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
     const currentPath = location.pathname.replace(/\/$/, '');
 
     return(
-        <aside className="h-full px-8 flex flex-col pt-4 pb-4 overflow-y-scroll hide-scrollbar text-[15px] border-r border-gray-300 dark:border-gray-600 text-slate-700 dark:text-white font-bold">
+        <aside className="h-full px-4 md:px-8 flex flex-col pt-4 pb-4 overflow-y-scroll hide-scrollbar text-[15px] border-r border-gray-300 dark:border-gray-600 text-slate-700 dark:text-white font-bold">
 
             {/* Social */}
             <div className="py-2">
