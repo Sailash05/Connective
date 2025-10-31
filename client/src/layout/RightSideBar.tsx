@@ -1,24 +1,55 @@
+import { useEffect, useState } from "react";
+import { userService } from "../service/user.service";
+import { type TopProfessionalsType } from "../types/userType";
 import { FaBolt, FaCrown } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+type Abcd = {
+    _id: string,
+    content: string
+}
 
 const RightSidebar = () => {
-    const trendingPosts = [
-        "Top Skills to Learn in 2025",
-        "Should You Join Remote Communities?",
-        "Networking Tips That Work"
-    ];
+    // const trendingPosts = [
+    //     "Top Skills to Learn in 2025",
+    //     "Should You Join Remote Communities?",
+    //     "Networking Tips That Work"
+    // ];
 
-    const recommendedCommunities = ["Productivity Gurus", "Career Switchers", "Tech Founders"];
+    // const recommendedCommunities = ["Productivity Gurus", "Career Switchers", "Tech Founders"];
 
-    const blogSnippets = [
-        "📘 How to Build a Career Roadmap",
-        "🧠 The Power of Consistent Learning"
-    ];
+    // const blogSnippets = [
+    //     "📘 How to Build a Career Roadmap",
+    //     "🧠 The Power of Consistent Learning"
+    // ];
 
-    const suggestions = [
-        { name: "Priya Sharma", mutuals: 3 },
-        { name: "Karan Patel", mutuals: 1 },
-        { name: "Anjali Rao", mutuals: 4 }
-    ];
+    // const suggestions = [
+    //     { name: "Priya Sharma", mutuals: 3 },
+    //     { name: "Karan Patel", mutuals: 1 },
+    //     { name: "Anjali Rao", mutuals: 4 }
+    // ];
+
+    const [topProfessionals, setTopProfessionals] = useState<TopProfessionalsType[]>([]);
+    const [topPost, setTopPost] = useState<Abcd[]>([]);
+
+    const getOverview = async () => {
+        try {
+            const response = await userService.getUserOverview();
+            const data = response.data;
+            setTopProfessionals(data.data.topProfessionals);
+            const response2 = await userService.temp();
+            const data2 = response2.data;
+            console.log(data2);
+            setTopPost(data2.data);
+
+        }
+        catch(err) {
+        }
+    }
+
+    useEffect(() => {
+        getOverview();
+    }, []);
 
     return (
         <aside className="w-full h-full py-4 px-6 bg-white border-l border-gray-300 dark:border-gray-600 overflow-y-auto space-y-6 text-sm hide-scrollbar dark:bg-slate-950">
@@ -33,30 +64,33 @@ const RightSidebar = () => {
             <div>
                 <h4 className="text-gray-700 dark:text-white font-semibold mb-2">🔥 Trending Posts</h4>
                 <ul className="space-y-1 text-gray-600 dark:text-gray-100">
-                {trendingPosts.map((post, idx) => (
-                    <li key={idx} className="hover:underline cursor-pointer">{post}</li>
+                {topPost.map((post, idx) => (
+                    <div>
+                        <Link to={`/post/${post._id}`} key={idx} className="hover:underline cursor-pointer">{post.content.slice(0, 50)}</Link>
+
+                    </div>
                 ))}
                 </ul>
             </div>
 
             {/* Recommended Communities */}
-            <div>
+            {/* <div>
                 <h4 className="text-gray-700 dark:text-white font-semibold mb-2">🧠 Recommended Communities</h4>
                 <ul className="space-y-1 text-blue-600 dark:text-blue-500">
                 {recommendedCommunities.map((community, idx) => (
                     <li key={idx} className="hover:underline cursor-pointer">#{community}</li>
                 ))}
                 </ul>
-            </div>
+            </div> */}
 
             {/* People You May Know */}
             <div>
-                <h4 className="text-gray-700 dark:text-white font-semibold mb-2">👥 People You May Know</h4>
+                <h4 className="text-gray-700 dark:text-white font-semibold mb-2">👥 Top Professionals</h4>
                 <ul className="space-y-2">
-                {suggestions.map((user, idx) => (
+                {topProfessionals.map((user, idx) => (
                     <li key={idx} className="flex justify-between items-center cursor-pointer">
-                    <span className="text-gray-700 dark:text-white">{user.name}</span>
-                    <span className="text-xs text-gray-400 dark:text-gray-300">{user.mutuals} mutual</span>
+                    <Link to={`/user/${user._id}`} className="text-gray-700 dark:text-white">{user.userName}</Link>
+                    <span className="text-xs text-gray-400 dark:text-gray-300">{user.followerCount} followers</span>
                     </li>
                 ))}
                 </ul>
@@ -65,21 +99,21 @@ const RightSidebar = () => {
             {/* Blog Snippets */}
             <div>
                 <h4 className="text-gray-700 dark:text-white font-semibold mb-2">📰 Blog Snippets</h4>
-                <ul className="space-y-1 text-gray-600 dark:text-gray-100">
-                {blogSnippets.map((snippet, idx) => (
-                    <li key={idx} className="hover:underline cursor-pointer">{snippet}</li>
-                ))}
-                </ul>
+                <div className="space-y-1 text-gray-600 dark:text-gray-100 flex flex-col">
+                    <Link to={'/blog/typescript-react'} className="hover:underline cursor-pointer">📈 Functions of react with typescript.</Link>
+                    <Link to={'/blog/designing-component'} className="hover:underline cursor-pointer">🧠 Mastering React Hooks for Beginners.</Link>
+                    <Link to={'/blog/deployment'} className="hover:underline cursor-pointer">📘 Understanding Async/Await in JavaScript.</Link>
+                </div>
             </div>
 
             {/* Quick Tools */}
             <div className="space-y-2">
-                <button className="w-full flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full font-semibold transition">
+                <Link to={'/comming-soon'} className="w-full flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full font-semibold transition">
                 <FaCrown /> Resume Builder
-                </button>
-                <button className="w-full flex items-center gap-2 justify-center bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-full font-semibold transition">
+                </Link>
+                <Link to={'/comming-soon'} className="w-full flex items-center gap-2 justify-center bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-full font-semibold transition">
                 <FaBolt /> Mock Test Zone
-                </button>
+                </Link>
             </div>
 
             {/* Announcement */}

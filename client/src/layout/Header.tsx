@@ -106,9 +106,9 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
 
                 <button onClick={() => setCreatePost(true)} className='p-2 bg-fuchsia-400 shadow-md bg-gradient-to-r from-[#FF512F] via-[#F09819] to-[#FF512F] bg-[length:200%_auto] transition-all duration-500 hover:bg-right rounded-lg'><img src={createPostIcon} alt="" className='invert w-3 md:w-5' /></button>
 
-                <button className='hidden md:block text-2xl p-2 dark:text-white'><MdOutlineMessage /></button>
+                <Link to={'/comming-soon'} className='hidden md:block text-2xl p-2 dark:text-white'><MdOutlineMessage /></Link>
 
-                <button className='hidden md:block text-2xl p-1 dark:text-white'><IoMdNotifications /></button>
+                <Link to={'/comming-soon'} className='hidden md:block text-2xl p-1 dark:text-white'><IoMdNotifications /></Link>
 
                 {/* PROFILE DROPDOWN */}
                 <div className='flex pl-2 relative group'>
@@ -129,7 +129,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{email}</p>
                             </div>
 
-                            <div className="md:hidden py-2">
+                            {/* <div className="md:hidden py-2">
                                 <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <MdOutlineMessage className='text-xl'/>
                                     Message
@@ -139,7 +139,7 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                                     <IoMdNotifications className='text-xl'/>
                                     Notifications
                                 </button>
-                            </div>
+                            </div> */}
 
                             <hr className="md:hidden border-gray-200 dark:border-gray-700" />
 
@@ -162,15 +162,15 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                                     Saved Post
                                 </Link> 
 
-                                <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link to={'/comming-soon'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <img src={settingsIcon} alt="" width={20} className='dark:invert' />
                                     Settings
-                                </button>                                
+                                </Link>                                
 
-                                <button className="flex items-center justify-center gap-2 w-[90%] mx-auto my-2 py-2 text-sm font-bold text-white rounded-lg shadow-md bg-gradient-to-r from-[#4776E6] via-[#8E54E9] to-[#4776E6] bg-[length:200%_auto] transition-all duration-500 ease-in-out hover:bg-right">
+                                <Link to={'/comming-soon'} className="flex items-center justify-center gap-2 w-[90%] mx-auto my-2 py-2 text-sm font-bold text-white rounded-lg shadow-md bg-gradient-to-r from-[#4776E6] via-[#8E54E9] to-[#4776E6] bg-[length:200%_auto] transition-all duration-500 ease-in-out hover:bg-right">
                                     <img src={upgradeIcon} alt="Upgrade" width={18} className="invert" />
                                     <span>Upgrade</span>
-                                </button>
+                                </Link>
 
                             </div>
 
@@ -178,10 +178,10 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
 
                             {/* Report & Logout */}
                             <div className="py-2">
-                                <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                {/* <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <img src={darkModeIcon} alt="" width={20} className='dark:invert' />
                                     Help and Support
-                                </button>
+                                </button> */}
                                 <button className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-red-500">
                                 <MdReportGmailerrorred className="text-lg" />
                                     Report a Problem

@@ -21,7 +21,7 @@ const HomePage = () => {
             <HowItWorksSection />
             <CommunityShowcaseSection id={'reviews'} />
             <BlogSection id={'blogs'} />
-            <PricingPlansSection />
+            {/* <PricingPlansSection /> */}
             <FaqSection id={'faq'} />
             <CtaSection />
             <FooterSection />

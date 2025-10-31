@@ -30,7 +30,7 @@ const CommunityShowcaseSection = ({ id }: { id: string }) => {
             </div>
 
             {/* Testimonials */}
-            <div className="grid md:grid-cols-3 gap-4 md:gap-8">
+            {/* <div className="grid md:grid-cols-3 gap-4 md:gap-8">
                 {
                     testimonials.map((t, index) => (
                         <div key={index} className="rounded-2xl shadow-md p-6 relative hover:scale-[1.05] transition-all duration-300 cursor-pointer bg-white dark:bg-slate-800 dark:shadow-slate-900">
@@ -52,7 +52,7 @@ const CommunityShowcaseSection = ({ id }: { id: string }) => {
                         </div>
                     ))
                 }
-            </div>
+            </div> */}
 
             {/* CTA Button */}
             <div className="text-center mt-8 md:mt-16">

@@ -58,10 +58,10 @@ const UserProfileCard = forwardRef<HTMLDivElement, UserProfileProps>(({ user }, 
             <p className="text-xs md:text-sm text-gray-500 dark:text-gray-200">
                 {user.userProfile.email}
             </p>
-            <p className="text-green-600 text-xs md:text-sm font-medium flex items-center gap-1 md:gap-2 mt-0.5 md:mt-1">
+            {/* <p className="text-green-600 text-xs md:text-sm font-medium flex items-center gap-1 md:gap-2 mt-0.5 md:mt-1">
                 <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500 animate-pulse inline-block" />
                 Online
-            </p>
+            </p> */}
             </div>
             <div className="text-center text-gray-700 dark:text-gray-200">
             <p className="font-bold text-sm md:text-lg">{followerCount}</p>
@@ -124,10 +124,10 @@ const UserProfileCard = forwardRef<HTMLDivElement, UserProfileProps>(({ user }, 
             >
             {isFollowed ? "Unfollow" : "Follow"}
             </button>
-            <button className="flex-1 flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 dark:bg-white dark:hover:bg-gray-200 px-2 md:px-4 py-1.5 md:py-2 border border-gray-300 rounded-lg md:rounded-xl text-xs md:text-sm text-gray-700 dark:text-gray-900 font-medium transition-all">
+            {/* <button className="flex-1 flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 dark:bg-white dark:hover:bg-gray-200 px-2 md:px-4 py-1.5 md:py-2 border border-gray-300 rounded-lg md:rounded-xl text-xs md:text-sm text-gray-700 dark:text-gray-900 font-medium transition-all">
             <MdOutlineMessage className="text-sm md:text-lg" />
             Message
-            </button>
+            </button> */}
         </div>
         </div>
 
