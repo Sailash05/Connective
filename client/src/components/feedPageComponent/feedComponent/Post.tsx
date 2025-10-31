@@ -20,7 +20,7 @@ import followIcon from '../../../assets/mainPageImages/postContainerIcons/follow
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
 import likeIcon from '../../../assets/mainPageImages/postContainerIcons/like.png';
 import commentIcon from '../../../assets/mainPageImages/postContainerIcons/comment.png';
-import sendIcon from '../../../assets/mainPageImages/postContainerIcons/send.png';
+// import sendIcon from '../../../assets/mainPageImages/postContainerIcons/send.png';
 import shareIcon from '../../../assets/mainPageImages/postContainerIcons/share.png';
 import saveIcon from '../../../assets/mainPageImages/postContainerIcons/save.png';
 import notSaveIcon from '../../../assets/mainPageImages/postContainerIcons/not_save.png';
@@ -193,22 +193,9 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
             )}
         </div>
 
-        {/* Content */}
-        {/* <pre className="font-sans dark:text-white whitespace-pre-wrap break-words">
-            {beginText}
-            {itCanOverflow && (
-            <>
-                {!isContentExpanded && <span>...</span>}
-                <span className={!isContentExpanded ? 'hidden' : ''}>{endText}</span>
-                <span className="text-blue-600 dark:text-blue-500 font-bold cursor-pointer ml-1" onClick={() => setIsContentExpanded(!isContentExpanded)} >
-                    {isContentExpanded ? '(show less)' : '(show more)'}
-                </span>
-            </>
-            )}
-        </pre> */}
         <PostContent text={post.content} />
 
-        <p className="flex gap-2 flex-wrap break-words whitespace-normal">
+        <p className="flex gap-x-2 flex-wrap break-words whitespace-normal max-sm:text-sm">
             {post.tags.map((tag, index) => (
                 <a href="" key={index} className="text-blue-600 dark:text-blue-500 font-bold hover:underline hover:underline-offset-4" >
                     #{tag}
@@ -241,7 +228,7 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
                 <div
                     key={index}
                     onClick={() => openImage(index)}
-                    className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded w-full h-40 sm:h-48 md:h-56 overflow-hidden relative cursor-pointer"
+                    className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded w-full max-h-48 sm:max-h-56 md:max-h-64 overflow-hidden relative cursor-pointer"
                 >
                     <img
                     src={file.url}
@@ -262,7 +249,7 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         </div>
 
         {/* Post meta */}
-        <div className="flex gap-3 md:gap-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">
+        <div className="flex gap-3 md:gap-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mt-0">
             <p>{likeCount} Likes</p>
             <p>{post.noOfComments} Comments</p>
         </div>
@@ -291,14 +278,14 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
             />
             &nbsp;Comments
             </button>
-            <button className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm">
+            {/* <button className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm">
             <img
                 src={sendIcon}
                 alt=""
                 className="w-4 h-4 md:w-5 md:h-5 dark:invert"
             />
             &nbsp;Send
-            </button>
+            </button> */}
             <button
             onClick={() => setSharePopUp(true)}
             className="flex justify-center items-center h-fit px-2 md:px-4 py-1 flex-grow hover:bg-gray-100 transition-all dark:hover:bg-slate-700 rounded-lg max-md:text-sm"

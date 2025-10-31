@@ -48,10 +48,10 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                         Friends
                     </Link>
 
-                    {/* <button className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    {/* <Link to={'/events'} className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/events' && 'bg-blue-50 dark:bg-blue-950'}`}>
                         <img src={exploreIcon} alt="" width={20} className='dark:invert' />
-                        Explore
-                    </button> */}
+                        Events
+                    </Link> */}
                 </div>
             </div>
 

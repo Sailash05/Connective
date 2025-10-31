@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../../service/auth.service';
-import { useNavigate } from 'react-router-dom';
 
 import LoggingInLoading from '../../../components/loadingComponent/authLoading/LoggingInLoading';
 import ResetRequestForm from '../../../components/loginPageComponent/ResetRequestForm';
@@ -22,7 +22,8 @@ const LoginSection = ({
     showFailMessage: (
         title: string,
         msg: string[],
-        buttonTxt: string
+        buttonTxt: string,
+        buttonFunc?: () => void
     ) => void;
     showSuccessMessage: (
         title: string,
@@ -31,6 +32,8 @@ const LoginSection = ({
     ) => void;
 }) => {
     const navigate = useNavigate();
+    const userNameRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
 
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -90,12 +93,12 @@ const LoginSection = ({
         const trimmedPassword: string = password.trim();
 
         if (!trimmedUserName) {
-            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again');
+            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again', () => userNameRef.current?.focus());
             return;
         }
 
         if (!trimmedPassword) {
-            showFailMessage('Failed!', ['Please enter the password', 'and try again'], 'Try again');
+            showFailMessage('Failed!', ['Please enter the password', 'and try again'], 'Try again', () => passwordRef.current?.focus());
             return;
         }
         
@@ -116,13 +119,14 @@ const LoginSection = ({
         }
         catch(error: any) {
             setLoggingInLoading(false)
+            // userNameRef.current?.focus();
             if (error.response?.status === 404) {
                 const data = error.response.data;
-                showFailMessage("Failed!", [data.message], "Try again");
+                showFailMessage("Failed!", [data.message], "Try again", () => userNameRef.current?.focus());
             }
             else if (error.response?.status === 401) {
                 const data = error.response.data;
-                showFailMessage("Unauthorized!", [data.message], "Try again");
+                showFailMessage("Unauthorized!", [data.message], "Try again", () => passwordRef.current?.focus());
             } 
             else {
                 showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
@@ -132,19 +136,22 @@ const LoginSection = ({
     }
 
     return(
-        <div className='mt-4'>
+        <form className='mt-4' onSubmit={(e) => {
+            e.preventDefault();
+            (document.activeElement as HTMLElement)?.blur();
+            handleLogin();
+        }}>
             <h3 className='text-xl md:text-2xl font-bold mb-4'>Log In</h3>
 
             <div>
                 <h5 className='font-bold text-sm'>User Name</h5>
-                <input type="text" placeholder='Enter User Name' value={userName} onChange={(e) => setUserName(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
-
+                <input type="text" autoFocus ref={userNameRef} placeholder='Enter User Name' value={userName} onChange={(e) => setUserName(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
             </div>
 
             <div>
                 <h5 className='font-bold text-sm'>Password</h5>
                 <div className='relative flex items-center'>
-                    <input type={showPassword ? 'text' : 'password'} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
+                    <input type={showPassword ? 'text' : 'password'} ref={passwordRef} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400'/>
                     <img src={showPassword ? hidePasswordIcon : showPasswordIcon} alt="" width={30} onClick={() => setShowPassword(!showPassword)} className='absolute right-5 p-1 cursor-pointer' />
                 </div>
             </div>
@@ -152,11 +159,11 @@ const LoginSection = ({
                 <span onClick={() => setResetRequestForm(true)} className="cursor-pointer underline-offset-2 hover:underline">Forgot Password?</span>
             </p>
 
-            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all' onClick={() => handleLogin()}>Log In</button>
+            <button type='submit' className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg mb-4 hover:bg-blue-800 transition-all'>Log In</button>
 
             <p className='mb-4'>
                 Don't have an account? 
-                <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(false)}> Sign Up</span>
+                <Link to={'/auth/signup'} className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(false)}> Sign Up</Link>
             </p>
 
             <p className='text-center mb-4'>————— Or —————</p>
@@ -180,7 +187,7 @@ const LoginSection = ({
             {
                 resetLinkLoading && <ResetLinkLoading />
             }
-        </div>
+        </form>
     );
 }
 

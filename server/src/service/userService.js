@@ -38,6 +38,23 @@ export const getProfilePictureService = async (userId) => {
 }
 
 export const getProfileService = async (userId, ownUserId) => {
+    if(userId != ownUserId) {
+        const user = await User.findById(userId).exec();
+        const profileViewers = user.recentProfileViewers;
+        for(let i=0; i<profileViewers.length; i++) {
+            if(profileViewers[i].user == ownUserId) {
+                profileViewers.splice(i, 1);
+                break;
+            }
+        }
+        profileViewers.push({
+            user: ownUserId,
+            time: new Date()
+        })
+        user.recentProfileViewers = profileViewers.length > 30 ? profileViewers.slice(-30) : profileViewers;
+        await user.save();
+    }
+
     try {
         const user = await User.findById(userId).select({
             userName: 1,
@@ -52,7 +69,8 @@ export const getProfileService = async (userId, ownUserId) => {
             interest: 1,
             experience: 1,
             followerCount: 1,
-            followingCount: 1
+            followingCount: 1,
+            recentProfileViewers: 1
         }).exec();
 
         if(!user) {
@@ -76,6 +94,17 @@ export const getProfileService = async (userId, ownUserId) => {
             else userObj.isFollowed = false;
         }
         else userObj.isFollowed = false;
+
+        if(userId == ownUserId) {
+            const profileViewers = []
+            for(let i = user.recentProfileViewers.length-1; i >= 0 && profileViewers.length < 5; i--) {
+                const data = await getProfilePictureService(user.recentProfileViewers[i].user);
+                data.data.userId = String(user.recentProfileViewers[i].user);
+                profileViewers.push(data.data);
+            }
+            userObj.profileViewers = profileViewers;
+        }
+        delete userObj.recentProfileViewers;
 
         return { status: 200, message: 'Get your profile data.', data: userObj };
     }

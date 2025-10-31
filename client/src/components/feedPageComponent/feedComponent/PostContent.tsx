@@ -40,7 +40,7 @@ const PostContent: React.FC<PostContentProps> = ({ text, maxWords = 25 }) => {
   };
 
   return (
-    <pre className="font-sans dark:text-white whitespace-pre-wrap break-words">
+    <pre className="font-sans dark:text-white whitespace-pre-wrap break-words max-md:text-sm">
       {renderTextWithLinks(beginText)}
       {itCanOverflow && (
         <>

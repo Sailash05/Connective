@@ -162,12 +162,12 @@ const Header = ({ setLogoutPopup, isSideBarOpen, setIsSideBarOpen }: {
                                     Saved Post
                                 </Link> 
 
-                                <Link to={'comming-soon'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link to={'/comming-soon'} className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <img src={settingsIcon} alt="" width={20} className='dark:invert' />
                                     Settings
                                 </Link>                                
 
-                                <Link to={'comming-soon'} className="flex items-center justify-center gap-2 w-[90%] mx-auto my-2 py-2 text-sm font-bold text-white rounded-lg shadow-md bg-gradient-to-r from-[#4776E6] via-[#8E54E9] to-[#4776E6] bg-[length:200%_auto] transition-all duration-500 ease-in-out hover:bg-right">
+                                <Link to={'/comming-soon'} className="flex items-center justify-center gap-2 w-[90%] mx-auto my-2 py-2 text-sm font-bold text-white rounded-lg shadow-md bg-gradient-to-r from-[#4776E6] via-[#8E54E9] to-[#4776E6] bg-[length:200%_auto] transition-all duration-500 ease-in-out hover:bg-right">
                                     <img src={upgradeIcon} alt="Upgrade" width={18} className="invert" />
                                     <span>Upgrade</span>
                                 </Link>

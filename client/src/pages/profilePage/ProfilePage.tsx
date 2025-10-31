@@ -4,7 +4,7 @@ import { userService } from "../../service/user.service";
 import { type UserProfileType } from "../../types/userType";
 
 import Post from "../../components/feedPageComponent/feedComponent/Post";
-// import ProfileSidebar from "./section/ProfileSidebar";
+import ProfileSidebar from "./section/ProfileSidebar";
 
 import { Briefcase, MapPin, Globe, Users, FileText } from "lucide-react";
 
@@ -83,14 +83,13 @@ const ProfilePage = () => {
 
       <div className="max-w-5xl mx-auto px-4 pt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Main Content */}
-        <div className="md:col-span-3 space-y-6">
-
+        <div className={`md:col-span-2 space-y-6 ${isOwnProfile ? 'md:col-span-2' : 'md:col-span-3'}`}>
 
             {/* Profile Header */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6 relative">
                 <h1 className="text-2xl font-bold dark:text-white">{profileData?.userName}</h1>
                 <p className="text-gray-600 dark:text-gray-200 text-sm">{profileData?.email}</p>
-                <p className="dark:text-white mt-2">{profileData?.bio}</p>
+                <p className="dark:text-white mt-2 line-clamp-2">{profileData?.bio}</p>
 
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-2 flex-wrap dark:text-white">
                     {
@@ -285,8 +284,9 @@ const ProfilePage = () => {
 
 
         </div>
-
-        {/* <ProfileSidebar user={Users} /> */}
+        {
+            isOwnProfile && <ProfileSidebar profileViewers={profileData?.profileViewers ? profileData.profileViewers : []}/>
+        }
       </div>
     </div>
   );

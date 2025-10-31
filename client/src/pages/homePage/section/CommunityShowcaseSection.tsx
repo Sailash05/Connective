@@ -1,6 +1,8 @@
 // import { FaQuoteLeft, FaStar } from 'react-icons/fa';
 
 import { featuredCommunities, testimonials } from '../../../constants/landingPageConstants';
+let a = testimonials;
+a = a;
 
 const CommunityShowcaseSection = ({ id }: { id: string }) => {
     let a = testimonials; // to prevent warning from build;

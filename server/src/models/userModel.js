@@ -55,8 +55,8 @@ const userSchema = mongoose.Schema({
     followerCount: { type: Number, default: 0 },
     followingCount: { type: Number, default: 0 },
 
-    recentProfileViewers: [
-        {
+    recentProfileViewers: {
+        type: [{
             user: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
@@ -66,8 +66,11 @@ const userSchema = mongoose.Schema({
                 type: Date,
                 default: Date.now
             }
-        }
-    ],
+        }],
+        default: [],
+        _id: false
+    },
+
 
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

@@ -30,7 +30,7 @@ const UserCard = ({user}: {user: UserSearchListType}) => {
                             {user.email}
                         </p>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{user.bio}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{user.bio}</p>
                     {
                         user.mutualFollowersCount > 0 && (
                             <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-200 rounded-full">
