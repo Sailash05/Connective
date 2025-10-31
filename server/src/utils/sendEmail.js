@@ -68,9 +68,7 @@ export const passwordResetLink = async (userName, email, resetToken) => {
 }
 
 export const sendWelcomeTemplate = async (userName, email) => {
-
-    // Need PROFILE LINK
-    // const resetLink = process.env.FRONTEND_URL + `/auth/reset-password?email=${email}&token=${resetToken}`;
+    const editProfileLink = process.env.FRONTEND_URL + '/user/edit';
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -84,7 +82,8 @@ export const sendWelcomeTemplate = async (userName, email) => {
     let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
     htmlContent = htmlContent
-        .replace('{{name}}', userName);
+        .replace('{{name}}', userName)
+        .replace('{{editProfileLink}}', editProfileLink);
 
     await transporter.sendMail({
         from: process.env.EMAIL,

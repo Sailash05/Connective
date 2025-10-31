@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthService } from "../../../service/auth.service";
 
 import CreatingAccountLoading from "../../../components/loadingComponent/authLoading/CreatingAccountLoading";
@@ -21,11 +21,15 @@ const SignUpSection = ({
     showFailMessage: (
         title: string,
         msg: string[],
-        buttonTxt: string
+        buttonTxt: string,
+        buttonFunc?: () => void
     ) => void;
 }) => {
 
     const navigate = useNavigate();
+    const userNameRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
 
     const [userName, setUserName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -43,19 +47,19 @@ const SignUpSection = ({
         const trimmedPassword: string = password.trim();
 
         if (!trimmedUserName) {
-            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again');
+            showFailMessage('Failed!', ['Please enter the user name', 'and try again'], 'Try again', () => userNameRef.current?.focus());
             return;
         }
 
         const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(trimmedEmail)) {
-            showFailMessage('Failed!', ['Please enter a valid email address', 'and try again'], 'Try again');
+            showFailMessage('Failed!', ['Please enter a valid email address', 'and try again'], 'Try again', () => emailRef.current?.focus());
             return;
         }
 
         const passwordRegex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(trimmedPassword)) {
-            showFailMessage('Set strong password!', ['Password must be at least 8 characters long and include letters, numbers, and a special character.'], 'Try again');
+            showFailMessage('Set strong password!', ['Password must be at least 8 characters long and include letters, numbers, and a special character.'], 'Try again', () => passwordRef.current?.focus());
             return;
         }
 
@@ -75,7 +79,7 @@ const SignUpSection = ({
             setGettingOtp(false);
             if (error.response?.status === 409) {
                 const data = error.response.data;
-                showFailMessage("Failed!", [data.message], "Try again");
+                showFailMessage("Failed!", [data.message], "Try again", data.message === 'Username already exists' ? () => userNameRef.current?.focus() : () => emailRef.current?.focus());
             } 
             else {
                 showFailMessage("Failed!", ["Something went wrong.", "Please try again."], "Try again");
@@ -126,30 +130,34 @@ const SignUpSection = ({
 
 
     return(
-        <div className='mt-2'>
+        <form className='mt-2' onSubmit={(e) => {
+            e.preventDefault();
+            (document.activeElement as HTMLElement)?.blur();
+            getOtp();
+        }}>
             <h3 className='text-xl md:text-2xl font-bold mb-4'>Sign Up</h3>
 
             <div>
                 <h5 className='font-bold text-sm'>User Name</h5>
-                <input type="text" placeholder='Enter User Name' value={userName} onChange={(e) => setUserName(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
+                <input type="text" autoFocus ref={userNameRef} placeholder='Enter User Name' value={userName} onChange={(e) => setUserName(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4'/>
             </div>
 
             <div>
                 <h5 className='font-bold text-sm'>Email</h5>
-                <input type='email' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4' />
+                <input type='email' ref={emailRef} placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400 mb-4' />
             </div>
 
             <div>
                 <h5 className='font-bold text-sm'>Set Password</h5>
                 <div className='relative flex items-center'>
-                    <input type={showPassword ? 'text' : 'password'} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400' />
+                    <input type={showPassword ? 'text' : 'password'} ref={passwordRef} placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} className='placeholder-black w-full px-4 py-2 rounded-md bg-white outline-blue-600 border border-gray-400' />
                     <img src={showPassword ? hidePasswordIcon : showPasswordIcon} alt="" width={30} onClick={() => setShowPassword(!showPassword)} className='absolute right-5 p-1 cursor-pointer' />
                 </div>
             </div>
 
-            <button className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg my-4 hover:bg-blue-800 transition-all' onClick={() => getOtp()}>Sign Up</button>
+            <button type="submit" className='bg-blue-600 w-full py-2 text-white font-medium rounded-lg my-4 hover:bg-blue-800 transition-all'>Sign Up</button>
 
-            <p className='mb-4'>Already have an account? <span className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(true)}>Log In</span></p>
+            <p className='mb-4'>Already have an account? <Link to={'/auth/login'} className='text-blue-700 font-bold cursor-pointer hover:text-blue-800' onClick={() => setLoginSection(true)}>Log In</Link></p>
 
             <p className='text-center mb-4'>————— Or —————</p>
 
@@ -171,7 +179,7 @@ const SignUpSection = ({
             {
                 gettingOtp && <OtpLoading />
             }
-        </div>
+        </form>
     );
 }
 

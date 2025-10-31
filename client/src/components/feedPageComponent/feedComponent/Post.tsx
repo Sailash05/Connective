@@ -193,22 +193,9 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
             )}
         </div>
 
-        {/* Content */}
-        {/* <pre className="font-sans dark:text-white whitespace-pre-wrap break-words">
-            {beginText}
-            {itCanOverflow && (
-            <>
-                {!isContentExpanded && <span>...</span>}
-                <span className={!isContentExpanded ? 'hidden' : ''}>{endText}</span>
-                <span className="text-blue-600 dark:text-blue-500 font-bold cursor-pointer ml-1" onClick={() => setIsContentExpanded(!isContentExpanded)} >
-                    {isContentExpanded ? '(show less)' : '(show more)'}
-                </span>
-            </>
-            )}
-        </pre> */}
         <PostContent text={post.content} />
 
-        <p className="flex gap-2 flex-wrap break-words whitespace-normal">
+        <p className="flex gap-x-2 flex-wrap break-words whitespace-normal max-sm:text-sm">
             {post.tags.map((tag, index) => (
                 <a href="" key={index} className="text-blue-600 dark:text-blue-500 font-bold hover:underline hover:underline-offset-4" >
                     #{tag}
@@ -241,7 +228,7 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
                 <div
                     key={index}
                     onClick={() => openImage(index)}
-                    className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded w-full h-40 sm:h-48 md:h-56 overflow-hidden relative cursor-pointer"
+                    className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 rounded w-full max-h-48 sm:max-h-56 md:max-h-64 overflow-hidden relative cursor-pointer"
                 >
                     <img
                     src={file.url}
@@ -262,7 +249,7 @@ const Post = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         </div>
 
         {/* Post meta */}
-        <div className="flex gap-3 md:gap-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">
+        <div className="flex gap-3 md:gap-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mt-0">
             <p>{likeCount} Likes</p>
             <p>{post.noOfComments} Comments</p>
         </div>

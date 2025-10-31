@@ -50,7 +50,9 @@ function App() {
                         </Route>
 
                         <Route path="/" element={<PublicRoute element={<HomePage />} />} />
-                        <Route path="/auth" element={<PublicRoute element={<LoginPage />} />} />
+                        <Route path="/auth" element={<Navigate to='/auth/login' />} />
+                        <Route path="/auth/login" element={<PublicRoute element={<LoginPage defaultSection="login" />} />} />
+                        <Route path="/auth/signup" element={<PublicRoute element={<LoginPage defaultSection="signup" />} />} />
                         <Route path="/auth/reset-password" element={<PublicRoute element={<PasswordResetPage />} />} />
 
                         <Route path="/oauth-success" element={<OAuthSuccess />} />
@@ -63,6 +65,3 @@ function App() {
 }
 
 export default App;
-
-
-
