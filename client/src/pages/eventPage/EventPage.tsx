@@ -9,44 +9,6 @@ const EventPage = () => {
     { id: 3, title: "Hackathon", date: "2025-10-27", joined: true },
   ];
 
-  let events = [
-  {
-    "_id": "6714f82ef18b28a65c2a3e4b",
-    "title": "Design Sync",
-    "description": "Weekly design discussion with the UI/UX team.",
-    "date": "2025-10-21T00:00:00.000Z",
-    "startTime": "10:00 AM",
-    "endTime": "11:00 AM",
-    "location": "Google Meet",
-    "category": "Team Meeting",
-    "isPublic": true,
-    "createdBy": "670fa8a5e93bcd0021aaf654",
-    "participants": [
-      "670fa8a5e93bcd0021aaf654",
-      "6714f81fe18b28a65c2a3e4a"
-    ],
-    "maxParticipants": 10,
-    "createdAt": "2025-10-19T14:40:46.291Z",
-    "updatedAt": "2025-10-19T14:40:46.291Z"
-  },
-  {
-    "_id": "6714f84bf18b28a65c2a3e4c",
-    "title": "Frontend Dev Meetup",
-    "description": "Connect with other frontend developers to share ideas.",
-    "date": "2025-10-23T00:00:00.000Z",
-    "startTime": "6:00 PM",
-    "endTime": "8:00 PM",
-    "location": "Zoom",
-    "category": "Networking",
-    "isPublic": true,
-    "createdBy": "670fa8a5e93bcd0021aaf654",
-    "participants": [
-      "6714f81fe18b28a65c2a3e4a"
-    ],
-    "maxParticipants": 50,
-    "createdAt": "2025-10-19T15:00:00.000Z",
-    "updatedAt": "2025-10-19T15:00:00.000Z"
-  }];
 
     return (
         <div className="md:p-6 p-3">

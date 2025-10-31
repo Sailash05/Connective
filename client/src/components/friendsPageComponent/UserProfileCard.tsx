@@ -1,7 +1,7 @@
 import { useState, forwardRef } from "react";
 import { userService } from "../../service/user.service";
 import { type UserProfileCardType } from "../../types/UserProfileCardType";
-import { MdOutlineMessage } from "react-icons/md";
+// import { MdOutlineMessage } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 type UserProfileProps = {

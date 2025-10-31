@@ -20,7 +20,7 @@ import followIcon from '../../../assets/mainPageImages/postContainerIcons/follow
 import notLikeIcon from '../../../assets/mainPageImages/postContainerIcons/not_like.png';
 import likeIcon from '../../../assets/mainPageImages/postContainerIcons/like.png';
 import commentIcon from '../../../assets/mainPageImages/postContainerIcons/comment.png';
-import sendIcon from '../../../assets/mainPageImages/postContainerIcons/send.png';
+// import sendIcon from '../../../assets/mainPageImages/postContainerIcons/send.png';
 import shareIcon from '../../../assets/mainPageImages/postContainerIcons/share.png';
 import saveIcon from '../../../assets/mainPageImages/postContainerIcons/save.png';
 import notSaveIcon from '../../../assets/mainPageImages/postContainerIcons/not_save.png';

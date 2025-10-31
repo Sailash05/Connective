@@ -4,7 +4,7 @@ import FeaturesSection from "./section/FeaturesSection";
 import HowItWorksSection from "./section/HowItWorksSection";
 import CommunityShowcaseSection from "./section/CommunityShowcaseSection";
 import BlogSection from "./section/BlogSection";
-import PricingPlansSection from "./section/PricingPlansSection";
+// import PricingPlansSection from "./section/PricingPlansSection";
 import FaqSection from "./section/FaqSection";
 import CtaSection from "./section/CtaSection";
 import FooterSection from "./section/FooterSection";
