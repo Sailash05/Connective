@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useSearchParams } from "react-router-dom";
 
 import FollowersSections from "./section/FollowersSection";
 import FollowingSection from "./section/FollowingSection";
@@ -7,8 +8,23 @@ import SearchFriendSection from "./section/SearchFriendSection";
 import { userService } from "../../service/user.service";
 
 const FriendsPage = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const tabParam = searchParams.get("tab") || "followers";
+
+    const [tab, setTab] = useState<'followers'|'following'|'search'>(tabParam as any);
+
+    useEffect(() => {
+        setSearchParams({ tab });
+    }, [tab]);
+    useEffect(() => {
+        const param = searchParams.get("tab") || "followers";
+        if (param !== tab) {
+            setTab(param as 'followers' | 'following' | 'search');
+        }
+    }, [searchParams]);
     
-    const [tab, setTab] = useState<'Followers'|'Following'|'Search'>('Followers');
+    // const [tab, setTab] = useState<'Followers'|'Following'|'Search'>('Followers');
 
     const [followersCount, setFollowersCount] = useState<number>(0);
     const [followingCount, setFollowingCount] = useState<number>(0);
@@ -48,26 +64,26 @@ const FriendsPage = () => {
 
             <div className="flex gap-6 md:mb-6 mb-3 border-b dark:border-b-gray-700">
                 {
-                    ['Followers', 'Following', 'Search'].map((t, index) => (
-                        <button onClick={() => setTab(t as 'Followers'|'Following'|'Search')} className={`pb-2 font-medium -mb-px transition-colors ${
+                    ['followers', 'following', 'search'].map((t, index) => (
+                        <button onClick={() => setTab(t as 'followers'|'following'|'search')} className={`pb-2 font-medium -mb-px transition-colors ${
                             tab === t ?
                             'border-b-2 border-blue-500 text-blue-600 dark:text-blue-500' :
                             'text-gray-500 hover:text-gray-700 dark:text-gray-200'
                         }`} key={index}>
-                            {t}
+                            {t.charAt(0).toUpperCase() + t.slice(1)}
                         </button>
                     ))
                 }
             </div>
 
             {
-                tab === 'Followers' && <FollowersSections />
+                tab === 'followers' && <FollowersSections />
             }
             {
-                tab === 'Following' && <FollowingSection setTab={setTab}/>
+                tab === 'following' && <FollowingSection />
             }
             {
-                tab === 'Search' && <SearchFriendSection />
+                tab === 'search' && <SearchFriendSection />
             }
 
         </div>

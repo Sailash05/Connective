@@ -13,8 +13,7 @@ const SharePopUp = ({ postId, url, setSharePopUp }: { postId: string; url: strin
         catch(err) {
         }
     }
-    const message = `
-🔥 Check out this amazing post!
+    const message = `🔥 Check out this amazing post!
 Visit the link below:
 ${url}
 
@@ -68,12 +67,12 @@ ${url}
                     <a href={`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encoded}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1760959451/telegram_xyblhr.png" alt="" width={30} />
                     </a>
-                    {/* <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${URL}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                    <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all" >
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1752596109/linked_rwu28l.png" alt="" width={30} />
-                    </a> */}
-                    {/* <a href={`https://twitter.com/intent/tweet?text=hello&url=${url}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
+                    </a>
+                    <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${url}`} target="_blank" rel="noopener noreferrer" className="p-1 rounded-full border border-gray-400 hover:bg-gray-100 transition-all">
                         <img src="https://res.cloudinary.com/djbmyn0fw/image/upload/v1760960454/x-logo_kc0m8d.png" alt="" width={30} />
-                    </a> */}
+                    </a>
                 </div>
 
                 <p className="mt-5 font-medium dark:text-white">Or copy link</p>

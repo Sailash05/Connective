@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import homeIcon from '../assets/mainPageImages/sideNavBarIcons/social/home.png';
 import friendsIcon from '../assets/mainPageImages/sideNavBarIcons/social/friends.png'
-// import exploreIcon from '../assets/mainPageImages/sideNavBarIcons/social/explore.png';
+import exploreIcon from '../assets/mainPageImages/sideNavBarIcons/social/explore.png';
 
 import communityIcon from '../assets/mainPageImages/sideNavBarIcons/community/community.png';
 // import resourceIcon from '../assets/mainPageImages/sideNavBarIcons/community/resource.png';
@@ -48,10 +48,10 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                         Friends
                     </Link>
 
-                    {/* <Link to={'/events'} className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/events' && 'bg-blue-50 dark:bg-blue-950'}`}>
+                    <Link to={'/events'} className={`flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950 ${currentPath === '/events' && 'bg-blue-50 dark:bg-blue-950'}`}>
                         <img src={exploreIcon} alt="" width={20} className='dark:invert' />
                         Events
-                    </Link> */}
+                    </Link>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@ const SideNavBar = ({ setLogoutPopup }: { setLogoutPopup: (value: boolean) => vo
                         Discussion Forums
                     </button> */}
 
-                    <Link to={'/comming-soon'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
+                    <Link to={'/blog'} className="flex justify-start items-center w-full gap-2 py-2 pl-4 hover:bg-blue-50 rounded-md transition-all dark:hover:bg-blue-950">
                         <img src={blogIcon} alt="" width={20} className='dark:invert' />
                         Blogs
                     </Link>

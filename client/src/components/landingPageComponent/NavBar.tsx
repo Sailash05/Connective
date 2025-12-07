@@ -22,7 +22,7 @@ const NavBar = () => {
     return(
         <nav className="w-full fixed top-0 left-0 right-0 z-40 shadow-sm dark:shadow-slate-800 bg-white dark:bg-slate-950">
             <div className="w-[90%] md:w-[70%] mx-auto flex justify-between items-center gap-10 py-3 md:py-4 h-full">
-                <h1 className="mr-auto text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-white cursor-pointer" >
+                <div className="mr-auto text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-white cursor-pointer" >
                     <div className="basis-1/2 md:basis-1/3">
                         <a href="#home" className="flex items-center text-xl md:text-3xl font-extrabold text-blue-600 dark:text-white cursor-pointer w-fit" >
                             <img src={connectiveLogo} alt="Connective logo" className="w-10" />
@@ -31,7 +31,7 @@ const NavBar = () => {
                             </span>
                         </a>
                     </div>
-                </h1>
+                </div>
                 <ul className="hidden md:flex text-lg font-medium dark:text-white">
                     <li><a href='#home' className="py-2 px-4">Home</a></li>
                     <li><a href='#features' className="py-2 px-4">Features</a></li>
@@ -41,7 +41,7 @@ const NavBar = () => {
                 </ul>
                 <button className="cursor-pointer dark:invert" onClick={() => setDarkMode(!darkMode)}>
                     {
-                        darkMode ? <img src={darkModeIcon} alt="Dark-mode icon" width={25} /> : <img src={lightModeIcon} alt="dark-mode icon" width={25} />
+                        darkMode ? <img src={darkModeIcon} alt="Dark-mode icon" width={25} /> : <img src={lightModeIcon} alt="Light-mode icon" width={25} />
                     }
                 </button>
 

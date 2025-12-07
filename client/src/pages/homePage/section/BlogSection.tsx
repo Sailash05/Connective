@@ -16,7 +16,7 @@ const BlogSection = ({ id }: { id: string }) => {
                             <h3 className="text-lg font-semibold mb-2 dark:text-white">{post.title}</h3>
                             <p className="text-sm text-gray-600 dark:text-gray-200">{post.excerpt}</p>
                             <div className="flex items-center gap-3 mt-4">
-                                <img src={post.author.avatar} alt={post.author.name} className="w-8 h-8 rounded-full" />
+                                <img src={post.author.avatar} alt={post.author.name + " profile picture"} className="w-8 h-8 rounded-full" />
                                 <div>
                                     <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{post.author.name}</p>
                                     <p className="text-xs text-gray-500 dark:text-gray-300">{post.date}</p>

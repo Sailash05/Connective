@@ -39,7 +39,6 @@ const RightSidebar = () => {
             setTopProfessionals(data.data.topProfessionals);
             const response2 = await userService.temp();
             const data2 = response2.data;
-            console.log(data2);
             setTopPost(data2.data);
 
         }

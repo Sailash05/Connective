@@ -1,4 +1,8 @@
-const NoFollowingCard = ({ setTab }: { setTab: (tab: 'Followers'|'Following'|'Search') => void}) => {
+import { useNavigate } from "react-router-dom";
+
+const NoFollowingCard = () => {
+
+    const navigate = useNavigate();
     
     return(
         <div className="p-6 border border-gray-300 dark:border-gray-700 rounded-2xl text-center bg-white dark:bg-gray-800 shadow-sm col-span-full w-fit mx-auto mt-5">
@@ -10,14 +14,12 @@ const NoFollowingCard = ({ setTab }: { setTab: (tab: 'Followers'|'Following'|'Se
                     No Connections Yet
                 </h2>
 
-                {/* Message */}
                 <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
                 You are not following anyone right now. Start connecting with people to
                 grow your network.
                 </p>
 
-                {/* Action button */}
-                <button onClick={() => setTab('Search')} className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-all">
+                <button onClick={() => navigate('/friends?tab=search')} className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-all">
                     Discover People
                 </button>
             </div>

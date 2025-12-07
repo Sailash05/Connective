@@ -16,13 +16,14 @@ import SavedPostSection from './pages/feedPage/SavedPostSection';
 import ViewPostSection from './pages/feedPage/ViewPostSection';
 
 import FriendsPage from './pages/friendsPage/FriendsPage';
-// import EventPage from './pages/eventPage/EventPage';
+import EventPage from './pages/eventPage/EventPage';
 
 import ProfilePage from './pages/profilePage/ProfilePage';
 import ProfileEditPage from './pages/profilePage/ProfileEditPage';
 
 import OAuthSuccess from './pages/loginPage/OAuthSuccess';
 
+import BlogPage from './pages/othersPage/BlogPage';
 import BlogApp from './pages/othersPage/BlogApp';
 import SecondBlog from './pages/othersPage/SecondBlog';
 import ThirdBlog from './pages/othersPage/ThirdBlog';
@@ -41,6 +42,7 @@ function App() {
                                 <Route path="/home" element={<FeedPage />} />
                                 <Route path="/post/:postId" element={<PostSection />} />
                                 <Route path='/friends' element={<FriendsPage />} />
+                                {/* <Route path='/friends' element={<Navigate to='/friends?tab=followers' />}  /> */}
                                 <Route path='/saved-post' element={<SavedPostSection />} />
                                 <Route path='/view-post' element={<ViewPostSection />} />
                                 <Route path='/view-post/:userId' element={<ViewPostSection />} />
@@ -50,10 +52,11 @@ function App() {
                                 <Route path='/user/edit' element={<ProfileEditPage />} />
                                 <Route path="/user/:userId" element={<ProfilePage />} />
                                 <Route path="/comming-soon" element={<ComingSoonPage />} />
-                                {/* <Route path='/events' element={<EventPage />} /> */}
+                                <Route path='/events' element={<EventPage />} />
                             </Route>
                         </Route>
 
+                        <Route path='/blog' element={<BlogPage />} />
                         <Route path='/blog/typescript-react' element={<BlogApp />} />
                         <Route path='/blog/designing-component' element={<SecondBlog />} />
                         <Route path='/blog/deployment' element={<ThirdBlog />} />

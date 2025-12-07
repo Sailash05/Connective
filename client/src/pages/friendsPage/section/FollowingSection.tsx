@@ -5,7 +5,7 @@ import UserProfileCard from "../../../components/friendsPageComponent/UserProfil
 import NoFollowingsCard from "../../../components/friendsPageComponent/NoFollowingsCard";
 import StaticUserLoading from "../../../components/loadingComponent/userLoading/StaticUserLoading";
 
-const FollowingSection = ({ setTab }: { setTab: (tab: 'Followers'|'Following'|'Search') => void}) => {
+const FollowingSection = () => {
     const [pageNumber, setPageNumber] = useState<number>(1);
     const limit = 10;
 
@@ -84,7 +84,7 @@ const FollowingSection = ({ setTab }: { setTab: (tab: 'Followers'|'Following'|'S
                             }
                         })
                     ) : (
-                        !loading && <NoFollowingsCard setTab={setTab} />
+                        !loading && <NoFollowingsCard />
                     )
                 }
                 
